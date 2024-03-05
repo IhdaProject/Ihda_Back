@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ZNW5ArftQEgq3Y/Cb9XNy4TUjSZEVZ6H2SO1aww1wxo=",
+  "Source": "WebCore",
+  "BasePath": "_content/WebCore",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

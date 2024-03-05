@@ -1,0 +1,401 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/ami/RiderProjects/study/EimzoApi/EimzoApi.csproj": {}
+  },
+  "projects": {
+    "/home/ami/RiderProjects/study/AuthenticationBroker/AuthenticationBroker.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ami/RiderProjects/study/AuthenticationBroker/AuthenticationBroker.csproj",
+        "projectName": "AuthenticationBroker",
+        "projectPath": "/home/ami/RiderProjects/study/AuthenticationBroker/AuthenticationBroker.csproj",
+        "packagesPath": "/home/ami/.nuget/packages/",
+        "outputPath": "/home/ami/RiderProjects/study/AuthenticationBroker/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ami/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "/home/ami/RiderProjects/study/Entity/Entity.csproj": {
+                "projectPath": "/home/ami/RiderProjects/study/Entity/Entity.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/ami/.dotnet/sdk/7.0.404/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/ami/RiderProjects/study/DatabaseBroker/DatabaseBroker.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ami/RiderProjects/study/DatabaseBroker/DatabaseBroker.csproj",
+        "projectName": "DatabaseBroker",
+        "projectPath": "/home/ami/RiderProjects/study/DatabaseBroker/DatabaseBroker.csproj",
+        "packagesPath": "/home/ami/.nuget/packages/",
+        "outputPath": "/home/ami/RiderProjects/study/DatabaseBroker/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ami/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "/home/ami/RiderProjects/study/Entity/Entity.csproj": {
+                "projectPath": "/home/ami/RiderProjects/study/Entity/Entity.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/ami/.dotnet/sdk/7.0.404/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/ami/RiderProjects/study/EimzoApi/EimzoApi.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ami/RiderProjects/study/EimzoApi/EimzoApi.csproj",
+        "projectName": "EimzoApi",
+        "projectPath": "/home/ami/RiderProjects/study/EimzoApi/EimzoApi.csproj",
+        "packagesPath": "/home/ami/.nuget/packages/",
+        "outputPath": "/home/ami/RiderProjects/study/EimzoApi/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ami/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "/home/ami/RiderProjects/study/WebCore/WebCore.csproj": {
+                "projectPath": "/home/ami/RiderProjects/study/WebCore/WebCore.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
+            "System.ServiceModel.Http": {
+              "target": "Package",
+              "version": "[4.9.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/ami/.dotnet/sdk/7.0.404/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/ami/RiderProjects/study/Entity/Entity.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ami/RiderProjects/study/Entity/Entity.csproj",
+        "projectName": "Entity",
+        "projectPath": "/home/ami/RiderProjects/study/Entity/Entity.csproj",
+        "packagesPath": "/home/ami/.nuget/packages/",
+        "outputPath": "/home/ami/RiderProjects/study/Entity/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ami/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[6.0.0-preview.4.21253.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Abstractions": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/ami/.dotnet/sdk/7.0.404/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/ami/RiderProjects/study/WebCore/WebCore.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ami/RiderProjects/study/WebCore/WebCore.csproj",
+        "projectName": "WebCore",
+        "projectPath": "/home/ami/RiderProjects/study/WebCore/WebCore.csproj",
+        "packagesPath": "/home/ami/.nuget/packages/",
+        "outputPath": "/home/ami/RiderProjects/study/WebCore/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ami/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "/home/ami/RiderProjects/study/AuthenticationBroker/AuthenticationBroker.csproj": {
+                "projectPath": "/home/ami/RiderProjects/study/AuthenticationBroker/AuthenticationBroker.csproj"
+              },
+              "/home/ami/RiderProjects/study/DatabaseBroker/DatabaseBroker.csproj": {
+                "projectPath": "/home/ami/RiderProjects/study/DatabaseBroker/DatabaseBroker.csproj"
+              },
+              "/home/ami/RiderProjects/study/Entity/Entity.csproj": {
+                "projectPath": "/home/ami/RiderProjects/study/Entity/Entity.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.7.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/ami/.dotnet/sdk/7.0.404/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

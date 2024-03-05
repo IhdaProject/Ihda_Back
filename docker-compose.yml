@@ -1,0 +1,110 @@
+version: '3.4'
+
+services:
+  GatewayApi:
+    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:gatewayapi
+    labels:
+      NAME: "Gateway Api"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    ##  - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+
+    build:
+      context: .
+      dockerfile: GatewayApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+    restart: always
+    ports:
+      - "1000:1000"
+        
+  AuthApi:
+    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:authapi
+    labels:
+      NAME: "Auth Api"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    ## - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+
+    build:
+      context: .
+      dockerfile: AuthApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+    restart: always
+    ports:
+      - "1001:1001"
+        
+  EImzoApi:
+    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:eimzoapi
+    labels:
+      NAME: "EImzo Api"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    ##  - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+
+    build:
+      context: .
+      dockerfile: EimzoApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+    restart: always
+    ports:
+      - "1020:1020"
+
+  AssetApi:
+    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:assetapi
+    labels:
+      NAME: "Asset Api"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/study_portal/AssetApi/wwwroot:/app/wwwroot"
+    ##  - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+
+    build:
+      context: .
+      dockerfile: AssetApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+    #restart: always
+    ports:
+      - "1003:1003"
+      
+      
+  LearningApi:
+    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:learningapi
+    labels:
+      NAME: "Learning Api"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    ##  - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+
+    build:
+      context: .
+      dockerfile: LearningApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+    #restart: always
+    ports:
+      - "1006:1006"
+        
+  #RedisCache:
+  #  image: redis:6.2-alpine
+  #  restart: always
+  #  ports:
+  #    - '36379:6379'
+  #  command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+
+networks:
+  sanoat_net:
+    driver: bridge
