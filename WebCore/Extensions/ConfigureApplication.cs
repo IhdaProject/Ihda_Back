@@ -7,12 +7,15 @@ using Entity.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NCrontab;
 using Serilog;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
+using WebCore.CronSchedulers;
 using WebCore.Filters;
 using WebCore.Middlewares;
 using WebCore.Models;
@@ -210,5 +213,19 @@ public static class ConfigureApplication
         {
             Log.Error(e, "Permissions synchronization crashed.");
         }
+    }
+    public static IServiceCollection AddCronJob<T>(this IServiceCollection services, string cronExpression)
+        where T : class, ICronJob
+    {
+        var cron = CrontabSchedule.TryParse(cronExpression)
+                   ?? throw new ArgumentException("Invalid cron expression", nameof(cronExpression));
+
+        var entry = new CronRegistryEntry(typeof(T), cron);
+
+        services.AddHostedService<CronScheduler>();
+        services.TryAddSingleton<T>();
+        services.AddSingleton(entry);
+
+        return services;
     }
 }

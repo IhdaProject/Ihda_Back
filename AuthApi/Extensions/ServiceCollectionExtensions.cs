@@ -1,7 +1,9 @@
+using AuthApi.CronJobs;
 using AuthenticationBroker.TokenHandler;
 using AuthService.Services;
 using DatabaseBroker.Repositories.Auth;
 using RoleService.Service;
+using WebCore.Extensions;
 
 namespace AuthApi.Extensions;
 
@@ -14,6 +16,7 @@ public static class ServiceCollectionExtensions
     }
     public static IServiceCollection AddService(this IServiceCollection services)
     {
+        services.AddCronJob<TemplateCroneJob>("* * * * *");
         services.AddScoped<HttpClient, HttpClient>();
         services.AddScoped<IAuthService, AuthService.Services.AuthService>();
         services.AddScoped<IRoleService, RoleService.Service.RoleService>();

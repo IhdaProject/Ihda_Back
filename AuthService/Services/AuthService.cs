@@ -40,7 +40,7 @@ public class AuthService : IAuthService
         _httpClient = httpClient;
     }
 
-    public TokenDto DeleteToken(string accesstoken)
+    public TokenDto DeleteToken(string accessToken)
     {
         throw new NotImplementedException();
     }
