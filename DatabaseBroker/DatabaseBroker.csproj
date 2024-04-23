@@ -3,7 +3,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>DatabaseBroker</AssemblyName>
@@ -12,6 +12,7 @@
         <Authors>DatabaseBroker</Authors>
         <Company>DatabaseBroker</Company>
         <Product>DatabaseBroker</Product>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,0 +1,76 @@
+2024-04-01 10:20:14.402 +05:00 [INF] Migrations applying...
+2024-04-01 10:20:15.948 +05:00 [INF] Executed DbCommand (70ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2024-04-01 10:20:16.038 +05:00 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2024-04-01 10:20:16.105 +05:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2024-04-01 10:20:16.142 +05:00 [INF] No migrations were applied. The database is already up to date.
+2024-04-01 10:20:16.142 +05:00 [INF] Migrations applied.
+2024-04-01 10:20:16.164 +05:00 [INF] Permissions synchronization starting....
+2024-04-01 10:20:16.586 +05:00 [INF] Executed DbCommand (16ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.749 +05:00 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.770 +05:00 [INF] Executed DbCommand (16ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.774 +05:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.779 +05:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.783 +05:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.789 +05:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.794 +05:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.799 +05:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code = @__p_0
+LIMIT 1
+2024-04-01 10:20:16.946 +05:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.code, p.is_delete, p.name
+FROM auth.permissions AS p
+WHERE p.code NOT IN (1100, 1102, 1200, 1201, 1202, 1203, 1300, 1301, 1302)
+2024-04-01 10:20:16.949 +05:00 [INF] Permissions synchronization finished successfully.
+2024-04-01 10:20:17.039 +05:00 [INF] User profile is available. Using '/home/ami/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2024-04-01 10:20:17.073 +05:00 [INF] Creating key {78d7ede7-f4f7-4c7d-9d3f-cd4a26d62e4f} with creation date 2024-04-01 05:20:17Z, activation date 2024-04-01 05:20:17Z, and expiration date 2024-06-30 05:20:17Z.
+2024-04-01 10:20:17.080 +05:00 [WRN] No XML encryptor configured. Key {78d7ede7-f4f7-4c7d-9d3f-cd4a26d62e4f} may be persisted to storage in unencrypted form.
+2024-04-01 10:20:17.083 +05:00 [INF] Writing data to file '/home/ami/.aspnet/DataProtection-Keys/key-78d7ede7-f4f7-4c7d-9d3f-cd4a26d62e4f.xml'.

@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2KmM8raXt0CykEH7gAqwQgzDzjZKwqSs62EfI6qpxTWm98ZuV+4VAQAxqZs7IEkByA5ik1GhcQjI5K+8BVtTGQ==",
+  "dgSpecHash": "4Yjj734Na8rqATD4QUUGsXBbJ/y7onyDtQG+zd1IC7W6yPGwCmD4+RdwKGMhW6yENSkqqEyXEOkTai4rWllXbg==",
   "success": true,
   "projectFilePath": "/home/ami/RiderProjects/BaseProgram/ApiBroker/ApiBroker.csproj",
-  "expectedPackageFiles": [
-    "/home/ami/.nuget/packages/microsoft.netcore.app.ref/7.0.18/microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.18/microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.netcore.app.host.linux-x64/7.0.18/microsoft.netcore.app.host.linux-x64.7.0.18.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

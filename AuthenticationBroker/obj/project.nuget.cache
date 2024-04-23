@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "TMD/SR1udzekrn+qlEXMgLXrc05gas0oYt7luVOE8VWPmhWKHQH1XrwntkaqzTJHz2pHkuQLitXyU4zQqWkwMQ==",
+  "dgSpecHash": "SqH6Ky11Pzz86WiL4ylB7NcnKwZoQ/HDLtuqO0TvVBx4sTFcF3X2lkbjLyddJNhTT8ep7tpthSmj8QDdrGId2Q==",
   "success": true,
   "projectFilePath": "/home/ami/RiderProjects/BaseProgram/AuthenticationBroker/AuthenticationBroker.csproj",
   "expectedPackageFiles": [
@@ -18,10 +18,7 @@
     "/home/ami/.nuget/packages/system.identitymodel.tokens.jwt/7.0.0/system.identitymodel.tokens.jwt.7.0.0.nupkg.sha512",
     "/home/ami/.nuget/packages/system.io.pipelines/6.0.0-preview.4.21253.7/system.io.pipelines.6.0.0-preview.4.21253.7.nupkg.sha512",
     "/home/ami/.nuget/packages/system.text.encodings.web/7.0.0/system.text.encodings.web.7.0.0.nupkg.sha512",
-    "/home/ami/.nuget/packages/system.text.json/7.0.3/system.text.json.7.0.3.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.netcore.app.ref/7.0.18/microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.18/microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.netcore.app.host.linux-x64/7.0.18/microsoft.netcore.app.host.linux-x64.7.0.18.nupkg.sha512"
+    "/home/ami/.nuget/packages/system.text.json/7.0.3/system.text.json.7.0.3.nupkg.sha512"
   ],
   "logs": [
     {
@@ -31,7 +28,7 @@
       "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
       "libraryId": "System.IdentityModel.Tokens.Jwt",
       "targetGraphs": [
-        "net7.0"
+        "net8.0"
       ]
     }
   ]

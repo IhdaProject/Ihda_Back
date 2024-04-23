@@ -83,9 +83,10 @@
 /home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/DatabaseBroker.AssemblyInfoInputs.cache
 /home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/DatabaseBroker.AssemblyInfo.cs
 /home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/DatabaseBroker.csproj.CoreCompileInputs.cache
-/home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/DatabaseBroker.csproj.CopyComplete
 /home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/DatabaseBroker.dll
 /home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/refint/DatabaseBroker.dll
 /home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/DatabaseBroker.pdb
 /home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/DatabaseBroker.genruntimeconfig.cache
 /home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/ref/DatabaseBroker.dll
+/home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/DatabaseBroker.sourcelink.json
+/home/ami/RiderProjects/BaseProgram/DatabaseBroker/obj/Debug/net7.0/Database.22E2B33D.Up2Date

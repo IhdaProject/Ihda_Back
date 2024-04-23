@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xnylfWgrPJJn3iF3mTjlLfc8/y4gEQBK0VVkLJvn+KeAX0ZjA94xGmA1WaFt3XeJwkrBi86JfNkJB64zspryjA==",
+  "dgSpecHash": "TMvTZMST4/Gp7PM4Squ92JP066Q8eFylzlbIqBPTnEdwkyoeWUyLh3gnESYPT6YIS+xGDZgxj8QL2Q9PSCQwvg==",
   "success": true,
   "projectFilePath": "/home/ami/RiderProjects/BaseProgram/StaticFileService/StaticFileService.csproj",
   "expectedPackageFiles": [
@@ -27,10 +27,7 @@
     "/home/ami/.nuget/packages/system.diagnostics.eventlog/6.0.0/system.diagnostics.eventlog.6.0.0.nupkg.sha512",
     "/home/ami/.nuget/packages/system.io.pipelines/6.0.0-preview.4.21253.7/system.io.pipelines.6.0.0-preview.4.21253.7.nupkg.sha512",
     "/home/ami/.nuget/packages/system.text.encodings.web/7.0.0/system.text.encodings.web.7.0.0.nupkg.sha512",
-    "/home/ami/.nuget/packages/system.text.json/7.0.3/system.text.json.7.0.3.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.netcore.app.ref/7.0.18/microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.18/microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.netcore.app.host.linux-x64/7.0.18/microsoft.netcore.app.host.linux-x64.7.0.18.nupkg.sha512"
+    "/home/ami/.nuget/packages/system.text.json/7.0.3/system.text.json.7.0.3.nupkg.sha512"
   ],
   "logs": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Xygx8T2tsrqtqP7/0RBKSHDBzI8OHHUnAoPoBDL0qeiacR6gyv3fcIe1RtN6yF3KatUdKM/z9YoQGMQiFQYkjQ==",
+  "dgSpecHash": "fvuABpyGht2b065tvOjRH2cBpE4Wy7Ug1SncIjlKMGXWaIrh77nv0JZLJXKMfpaE5f7A8O0Y3pTQ4CStHmgpMA==",
   "success": true,
   "projectFilePath": "/home/ami/RiderProjects/BaseProgram/AuthService/AuthService.csproj",
   "expectedPackageFiles": [
@@ -32,10 +32,7 @@
     "/home/ami/.nuget/packages/system.identitymodel.tokens.jwt/7.0.0/system.identitymodel.tokens.jwt.7.0.0.nupkg.sha512",
     "/home/ami/.nuget/packages/system.io.pipelines/6.0.0-preview.4.21253.7/system.io.pipelines.6.0.0-preview.4.21253.7.nupkg.sha512",
     "/home/ami/.nuget/packages/system.text.encodings.web/7.0.0/system.text.encodings.web.7.0.0.nupkg.sha512",
-    "/home/ami/.nuget/packages/system.text.json/7.0.3/system.text.json.7.0.3.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.netcore.app.ref/7.0.18/microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.18/microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.netcore.app.host.linux-x64/7.0.18/microsoft.netcore.app.host.linux-x64.7.0.18.nupkg.sha512"
+    "/home/ami/.nuget/packages/system.text.json/7.0.3/system.text.json.7.0.3.nupkg.sha512"
   ],
   "logs": []
 }

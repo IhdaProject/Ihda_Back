@@ -59,8 +59,9 @@
 /home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/staticwebassets.build.json
 /home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/staticwebassets.development.json
 /home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/scopedcss/bundle/WebCore.styles.css
-/home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/WebCore.csproj.CopyComplete
 /home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/WebCore.dll
 /home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/refint/WebCore.dll
 /home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/WebCore.pdb
 /home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/ref/WebCore.dll
+/home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/WebCore.sourcelink.json
+/home/ami/RiderProjects/BaseProgram/WebCore/obj/Debug/net7.0/WebCore.csproj.Up2Date

@@ -22,3 +22,4 @@
 /home/ami/RiderProjects/BaseProgram/Entity/obj/Debug/net7.0/refint/Entity.dll
 /home/ami/RiderProjects/BaseProgram/Entity/obj/Debug/net7.0/Entity.pdb
 /home/ami/RiderProjects/BaseProgram/Entity/obj/Debug/net7.0/ref/Entity.dll
+/home/ami/RiderProjects/BaseProgram/Entity/obj/Debug/net7.0/Entity.sourcelink.json

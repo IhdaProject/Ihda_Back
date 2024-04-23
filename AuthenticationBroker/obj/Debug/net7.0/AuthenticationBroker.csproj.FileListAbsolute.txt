@@ -53,9 +53,10 @@
 /home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/AuthenticationBroker.AssemblyInfoInputs.cache
 /home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/AuthenticationBroker.AssemblyInfo.cs
 /home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/AuthenticationBroker.csproj.CoreCompileInputs.cache
-/home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/AuthenticationBroker.csproj.CopyComplete
 /home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/AuthenticationBroker.dll
 /home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/refint/AuthenticationBroker.dll
 /home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/AuthenticationBroker.pdb
 /home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/AuthenticationBroker.genruntimeconfig.cache
 /home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/ref/AuthenticationBroker.dll
+/home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/AuthenticationBroker.sourcelink.json
+/home/ami/RiderProjects/BaseProgram/AuthenticationBroker/obj/Debug/net7.0/Authenti.3CC41AF1.Up2Date
