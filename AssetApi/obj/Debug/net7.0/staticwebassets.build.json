@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "IWHUETzRQ5Kpp7RFDCHbDpqpeLgBvoVbFKuOylFoIW4=",
+  "Hash": "/YOAflR4KFuKuJB0Z/XcG1XnMlF8+XP6JDdfN/wJjTM=",
   "Source": "AssetApi",
   "BasePath": "_content/AssetApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "/home/ami/RiderProjects/study/WebCore/WebCore.csproj",
+      "Identity": "/home/ami/RiderProjects/BaseProgram/WebCore/WebCore.csproj",
       "Version": 2,
       "Source": "WebCore",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",

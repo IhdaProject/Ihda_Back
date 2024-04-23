@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StaticFileService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d141ccabd9454af2e1d40e0ba9c4c3ccffd5f614")]
 [assembly: System.Reflection.AssemblyProductAttribute("StaticFileService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StaticFileService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
