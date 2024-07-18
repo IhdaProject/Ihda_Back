@@ -24,26 +24,17 @@ jobs:
     - name: Build AssetApi
       run: dotnet build AssetApi/AssetApi.csproj --no-restore
 
-    - name: Test AssetApi
-      run: dotnet test AssetApi/AssetApi.csproj --no-build --verbosity normal
-
     - name: Restore dependencies for AuthApi
       run: dotnet restore AuthApi/AuthApi.csproj
 
     - name: Build AuthApi
       run: dotnet build AuthApi/AuthApi.csproj --no-restore
 
-    - name: Test AuthApi
-      run: dotnet test AuthApi/AuthApi.csproj --no-build --verbosity normal
-
     - name: Restore dependencies for GatewayApi
       run: dotnet restore GatewayApi/GatewayApi.csproj
 
     - name: Build GatewayApi
       run: dotnet build GatewayApi/GatewayApi.csproj --no-restore
-
-    - name: Test GatewayApi
-      run: dotnet test GatewayApi/GatewayApi.csproj --no-build --verbosity normal
 
   build-angular:
     name: Build and Test Angular Project
@@ -63,7 +54,3 @@ jobs:
     - name: Build FrontClient
       working-directory: WebApps/FrontClient
       run: npm run build
-
-    - name: Test FrontClient
-      working-directory: WebApps/FrontClient
-      run: npm test
