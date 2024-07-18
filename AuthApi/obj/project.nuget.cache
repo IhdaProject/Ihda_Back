@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3PdjOSQB1KOUyklLrihBKBNclNVddmRaMtjCCdFXbJMR3D5tTwX3wlKCjnXO0+6aV/DzAC8j3uXhEw3sY3Xbpg==",
+  "dgSpecHash": "TsvuQDW4iqRhg33c2OkKMBA49bj96G3B0pbWT/JYmWFoubD7RIO7Me4fOpx3SgLJh+xkdQIQfYaYSRKkhD0H3w==",
   "success": true,
   "projectFilePath": "/home/ami/RiderProjects/BaseProgram/AuthApi/AuthApi.csproj",
   "expectedPackageFiles": [
