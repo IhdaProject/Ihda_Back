@@ -8,34 +8,42 @@ on:
 
 jobs:
   build-dotnet:
-    name: Build and Test .NET Project
+    name: Build and Test .NET Projects
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v4
-
-    - name: Cache .NET SDK and NuGet packages
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.nuget/packages
-          ~/.dotnet/tools
-        key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj', '**/*.fsproj') }}
-        restore-keys: |
-          ${{ runner.os }}-dotnet-
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
-    - name: Restore .NET dependencies
-      run: dotnet restore Program.sln
+    - name: Restore dependencies for AssetApi
+      run: dotnet restore AssetApi/AssetApi.csproj
 
-    - name: Build .NET project
-      run: dotnet build Program.sln --no-restore
+    - name: Build AssetApi
+      run: dotnet build AssetApi/AssetApi.csproj --no-restore
 
-    - name: Test .NET project
-      run: dotnet test Program.sln --no-build --verbosity normal
+    - name: Test AssetApi
+      run: dotnet test AssetApi/AssetApi.csproj --no-build --verbosity normal
+
+    - name: Restore dependencies for AuthApi
+      run: dotnet restore AuthApi/AuthApi.csproj
+
+    - name: Build AuthApi
+      run: dotnet build AuthApi/AuthApi.csproj --no-restore
+
+    - name: Test AuthApi
+      run: dotnet test AuthApi/AuthApi.csproj --no-build --verbosity normal
+
+    - name: Restore dependencies for GatewayApi
+      run: dotnet restore GatewayApi/GatewayApi.csproj
+
+    - name: Build GatewayApi
+      run: dotnet build GatewayApi/GatewayApi.csproj --no-restore
+
+    - name: Test GatewayApi
+      run: dotnet test GatewayApi/GatewayApi.csproj --no-build --verbosity normal
 
   build-angular:
     name: Build and Test Angular Project
@@ -46,15 +54,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '14.x'
-
-    - name: Cache npm modules
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-npm-${{ hashFiles('WebApps/FrontClient/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-npm-
+        node-version: '18.x'
 
     - name: Install dependencies for FrontClient
       working-directory: WebApps/FrontClient
