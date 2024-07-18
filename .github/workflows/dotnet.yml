@@ -1,4 +1,4 @@
-name: .NET
+name: Build and Test .NET and Angular Projects
 
 on:
   push:
@@ -7,10 +7,9 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  build:
-
+  build-dotnet:
+    name: Build and Test .NET Project
     runs-on: windows-2019
-
     steps:
     - uses: actions/checkout@v4
 
@@ -29,11 +28,42 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Restore .NET dependencies
+      run: dotnet restore Program.sln
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Build .NET project
+      run: dotnet build Program.sln --no-restore
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Test .NET project
+      run: dotnet test Program.sln --no-build --verbosity normal
+
+  build-angular:
+    name: Build and Test Angular Project
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '14.x'
+
+    - name: Cache npm modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-${{ hashFiles('WebApps/FrontClient/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+
+    - name: Install dependencies for FrontClient
+      working-directory: WebApps/FrontClient
+      run: npm install
+
+    - name: Build FrontClient
+      working-directory: WebApps/FrontClient
+      run: npm run build
+
+    - name: Test FrontClient
+      working-directory: WebApps/FrontClient
+      run: npm test
