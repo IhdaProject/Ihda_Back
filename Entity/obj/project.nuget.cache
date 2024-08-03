@@ -1,18 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "fAIL9OvPLs0Xf/ZeiTq+CSok1+bgswBK+6l2U3yK8CLPCxYf0evFlFGo/EcaQyKJtxYzxUsPo2Z+F6yYsxiu1w==",
+  "dgSpecHash": "xUrJcNK/vW0cPRusxK0Tmz3Je4iJTIJt3g+XANgCN766N+g54hrHiM4IjnPbSRrwddeZkxgGfupPOQuR7YsByQ==",
   "success": true,
-  "projectFilePath": "/home/ami/RiderProjects/BaseProgram/Entity/Entity.csproj",
+  "projectFilePath": "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\Entity\\Entity.csproj",
   "expectedPackageFiles": [
-    "/home/ami/.nuget/packages/microsoft.aspnetcore.http.features/6.0.0-preview.4.21253.5/microsoft.aspnetcore.http.features.6.0.0-preview.4.21253.5.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.entityframeworkcore.abstractions/7.0.10/microsoft.entityframeworkcore.abstractions.7.0.10.nupkg.sha512",
-    "/home/ami/.nuget/packages/microsoft.extensions.primitives/6.0.0-preview.4.21253.7/microsoft.extensions.primitives.6.0.0-preview.4.21253.7.nupkg.sha512",
-    "/home/ami/.nuget/packages/restsharp/110.2.1-alpha.0.16/restsharp.110.2.1-alpha.0.16.nupkg.sha512",
-    "/home/ami/.nuget/packages/serilog/3.0.1/serilog.3.0.1.nupkg.sha512",
-    "/home/ami/.nuget/packages/system.io.pipelines/6.0.0-preview.4.21253.7/system.io.pipelines.6.0.0-preview.4.21253.7.nupkg.sha512",
-    "/home/ami/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0-preview.4.21253.7/system.runtime.compilerservices.unsafe.6.0.0-preview.4.21253.7.nupkg.sha512",
-    "/home/ami/.nuget/packages/system.text.encodings.web/7.0.0/system.text.encodings.web.7.0.0.nupkg.sha512",
-    "/home/ami/.nuget/packages/system.text.json/7.0.3/system.text.json.7.0.3.nupkg.sha512"
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\microsoft.aspnetcore.http.features\\6.0.0-preview.4.21253.5\\microsoft.aspnetcore.http.features.6.0.0-preview.4.21253.5.nupkg.sha512",
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.10\\microsoft.entityframeworkcore.abstractions.7.0.10.nupkg.sha512",
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0-preview.4.21253.7\\microsoft.extensions.primitives.6.0.0-preview.4.21253.7.nupkg.sha512",
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\restsharp\\110.2.1-alpha.0.16\\restsharp.110.2.1-alpha.0.16.nupkg.sha512",
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\serilog\\3.0.1\\serilog.3.0.1.nupkg.sha512",
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\system.io.pipelines\\6.0.0-preview.4.21253.7\\system.io.pipelines.6.0.0-preview.4.21253.7.nupkg.sha512",
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0-preview.4.21253.7\\system.runtime.compilerservices.unsafe.6.0.0-preview.4.21253.7.nupkg.sha512",
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\system.text.json\\7.0.3\\system.text.json.7.0.3.nupkg.sha512"
   ],
   "logs": []
 }

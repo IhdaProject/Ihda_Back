@@ -2800,38 +2800,46 @@
     ]
   },
   "packageFolders": {
-    "/home/ami/.nuget/packages/": {}
+    "C:\\Users\\z_zayniddinov\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ami/RiderProjects/BaseProgram/AuthApi/AuthApi.csproj",
+      "projectUniqueName": "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\AuthApi\\AuthApi.csproj",
       "projectName": "AuthApi",
-      "projectPath": "/home/ami/RiderProjects/BaseProgram/AuthApi/AuthApi.csproj",
-      "packagesPath": "/home/ami/.nuget/packages/",
-      "outputPath": "/home/ami/RiderProjects/BaseProgram/AuthApi/obj/",
+      "projectPath": "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\AuthApi\\AuthApi.csproj",
+      "packagesPath": "C:\\Users\\z_zayniddinov\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\AuthApi\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/ami/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\z_zayniddinov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/ami/RiderProjects/BaseProgram/AuthService/AuthService.csproj": {
-              "projectPath": "/home/ami/RiderProjects/BaseProgram/AuthService/AuthService.csproj"
+            "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\AuthService\\AuthService.csproj": {
+              "projectPath": "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\AuthService\\AuthService.csproj"
             },
-            "/home/ami/RiderProjects/BaseProgram/StructureService/RoleService.csproj": {
-              "projectPath": "/home/ami/RiderProjects/BaseProgram/StructureService/RoleService.csproj"
+            "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\StructureService\\RoleService.csproj": {
+              "projectPath": "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\StructureService\\RoleService.csproj"
             },
-            "/home/ami/RiderProjects/BaseProgram/WebCore/WebCore.csproj": {
-              "projectPath": "/home/ami/RiderProjects/BaseProgram/WebCore/WebCore.csproj"
+            "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\WebCore\\WebCore.csproj": {
+              "projectPath": "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\WebCore\\WebCore.csproj"
             }
           }
         }
@@ -2880,7 +2888,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.107/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
