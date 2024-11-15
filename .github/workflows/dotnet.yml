@@ -1,4 +1,4 @@
-name: Build and Test .NET and Angular Projects
+name: Build and Test .NET Project
 
 on:
   push:
@@ -35,22 +35,3 @@ jobs:
 
     - name: Build GatewayApi
       run: dotnet build GatewayApi/GatewayApi.csproj --no-restore
-
-  build-angular:
-    name: Build and Test Angular Project
-    runs-on: windows-2019
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.x'
-
-    - name: Install dependencies for FrontClient
-      working-directory: WebApps/FrontClient
-      run: npm install
-
-    - name: Build FrontClient
-      working-directory: WebApps/FrontClient
-      run: npm run build
