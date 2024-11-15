@@ -11,3 +11,16 @@
 /home/ami/RiderProjects/BaseProgram/Entity/obj/Debug/net8.0/refint/Entity.dll
 /home/ami/RiderProjects/BaseProgram/Entity/obj/Debug/net8.0/Entity.pdb
 /home/ami/RiderProjects/BaseProgram/Entity/obj/Debug/net8.0/ref/Entity.dll
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\bin\Debug\net8.0\Entity.deps.json
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\bin\Debug\net8.0\Entity.dll
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\bin\Debug\net8.0\Entity.pdb
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\Entity.csproj.AssemblyReference.cache
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\Entity.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\Entity.AssemblyInfoInputs.cache
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\Entity.AssemblyInfo.cs
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\Entity.csproj.CoreCompileInputs.cache
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\Entity.sourcelink.json
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\Entity.dll
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\refint\Entity.dll
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\Entity.pdb
+C:\Users\z_zayniddinov\RiderProjects\BaseProgram\Entity\obj\Debug\net8.0\ref\Entity.dll

@@ -1,20 +1,20 @@
 {
   "Version": 1,
-  "Hash": "hQGdnIwdL4wf8F8taVWh3ptiAY1Frk/UrH4gSIPa4jY=",
+  "Hash": "2Y/oXTjy0gDXjO8AhU8Yb7QmK4RwRrmun0+Z5riWOVg=",
   "Source": "GatewayApi",
   "BasePath": "_content/GatewayApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "/home/ami/RiderProjects/BaseProgram/WebCore/WebCore.csproj",
+      "Identity": "C:\\Users\\z_zayniddinov\\RiderProjects\\BaseProgram\\WebCore\\WebCore.csproj",
       "Version": 2,
       "Source": "WebCore",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
       "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
     }
   ],
