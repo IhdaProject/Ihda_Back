@@ -5,23 +5,23 @@ namespace RoleService.Service;
 
 public interface IRoleService
 {
-    ValueTask<StructureDTO> CreateStructureAsync(StructureForCreationDTO structureForCreationDTO);
+    Task<StructureDTO> CreateStructureAsync(StructureForCreationDTO structureForCreationDTO);
     Task<IEnumerable<StructureDTO>> RetrieveStructureAsync();
     IQueryable<StructureDTO> RetrieveStructureByName(string Name);
-    ValueTask<StructureDTO> ModifyStructureAsync(StructureDTO structure);
-    ValueTask<Structure> RemoveStructureAsync(long structureId);
+    Task<StructureDTO> ModifyStructureAsync(StructureDTO structure);
+    Task<Structure> RemoveStructureAsync(long structureId);
 
 
     // Permission Service
-    ValueTask<Permission> ModifyPermission(Permission permission);
+    Task<Permission> ModifyPermission(Permission permission);
     IQueryable<Permission> RetrievePermissionAsync();
     IQueryable<Permission> RetrievePermissionByNameAsync(string Name);
 
 
-    public ValueTask<StructurePermissionDTO> CreateStructurePermission(
+    public Task<StructurePermissionDTO> CreateStructurePermission(
         StructurePermissionForCreationDTO structurePermissionDTO);
 
-    public ValueTask<StructurePermissionDTO> RemoveStructurePermissionAsync(
+    public Task<StructurePermissionDTO> RemoveStructurePermissionAsync(
         StructurePermissionForCreationDTO structurePermissionForCreationDTO);
 
     public IQueryable<StructurePermissionDTO> RetriveStructurePermission();
@@ -32,5 +32,5 @@ public interface IRoleService
     /// <param name="structureId"></param>
     /// <param name="permissionsIds"></param>
     /// <returns></returns>
-    public ValueTask AssignPermissionsToStructureById(long structureId, long assignerId, params long[] permissionsIds);
+    public Task AssignPermissionsToStructureById(long structureId, long assignerId, params long[] permissionsIds);
 }

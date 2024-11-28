@@ -4,6 +4,6 @@ namespace StaticFileService.Service;
 
 public interface IStaticFileService
 {
-    ValueTask<StaticFileDto> AddFileAsync(FileDto fileDto);
-    ValueTask<StaticFileDto> RemoveAsync(RemoveFileDto removeFileDto);
+    Task<StaticFileDto> AddFileAsync(FileDto fileDto);
+    Task<StaticFileDto> RemoveAsync(RemoveFileDto removeFileDto);
 }
