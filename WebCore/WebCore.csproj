@@ -11,6 +11,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\AuthenticationBroker\AuthenticationBroker.csproj" />
+        <ProjectReference Include="..\CacheBroker\CacheBroker.csproj" />
         <ProjectReference Include="..\DatabaseBroker\DatabaseBroker.csproj"/>
         <ProjectReference Include="..\Entity\Entity.csproj"/>
     </ItemGroup>

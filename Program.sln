@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticFileService", "Static
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiBroker", "ApiBroker\ApiBroker.csproj", "{F03CF14D-BC2D-425C-98AC-00AC5E1D0875}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheBroker", "CacheBroker\CacheBroker.csproj", "{BC180B78-2B7D-428A-A579-4494FFFDCBCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{F03CF14D-BC2D-425C-98AC-00AC5E1D0875}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F03CF14D-BC2D-425C-98AC-00AC5E1D0875}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F03CF14D-BC2D-425C-98AC-00AC5E1D0875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC180B78-2B7D-428A-A579-4494FFFDCBCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC180B78-2B7D-428A-A579-4494FFFDCBCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC180B78-2B7D-428A-A579-4494FFFDCBCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC180B78-2B7D-428A-A579-4494FFFDCBCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{4930E584-4DC0-4EFB-B3C5-0DF7E40AA983} = {C797BED8-696F-45AC-8B97-B157AC79F375}
 		{E4053C11-68F7-49AB-98D4-FD22171EC579} = {026002AA-727F-4B37-88A9-B1D22262B5BD}
 		{F03CF14D-BC2D-425C-98AC-00AC5E1D0875} = {CA2C7A00-8ADB-4CED-984E-D08046D61DA1}
+		{BC180B78-2B7D-428A-A579-4494FFFDCBCE} = {CA2C7A00-8ADB-4CED-984E-D08046D61DA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B0A13641-9D7A-40CC-B5F6-EDA9F6EC62B2}

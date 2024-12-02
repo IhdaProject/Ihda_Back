@@ -1,6 +1,8 @@
 using AuthApi.CronJobs;
 using AuthenticationBroker.TokenHandler;
 using AuthService.Services;
+using CacheBroker.Interfaces;
+using CacheBroker.MemoryCache;
 using DatabaseBroker.Repositories.Auth;
 using RoleService.Service;
 using WebCore.Extensions;
@@ -34,6 +36,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<ISignMethodsRepository, SignMethodsRepository>();
+        services.AddScoped<ICacheService, MemoryCacheService>();
 
 
         return services;

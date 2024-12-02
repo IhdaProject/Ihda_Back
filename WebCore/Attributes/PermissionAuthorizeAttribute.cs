@@ -8,9 +8,9 @@ public class PermissionAuthorizeAttribute : TypeFilterAttribute
 {
     public PermissionAuthorizeAttribute(params UserPermissions[] permissions) : base(typeof(PermissionRequirementFilter))
     {
-        this.Arguments = new object[]
-        {
+        Arguments =
+        [
             permissions.Cast<int>().ToArray()
-        };
+        ];
     }
 }
