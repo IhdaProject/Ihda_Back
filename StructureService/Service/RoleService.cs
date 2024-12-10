@@ -1,8 +1,8 @@
 using Entity.DataTransferObjects.Role;
 using Entity.Exeptions;
 using Entity.Models;
-using System.ComponentModel.DataAnnotations;
 using DatabaseBroker.Repositories.Auth;
+using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace RoleService.Service;
@@ -13,199 +13,95 @@ public class RoleService(
     IStructurePermissionRepository structurePermissionsRepository)
     : IRoleService
 {
-    public async Task<StructureDTO> CreateStructureAsync(
-        StructureForCreationDTO structureForCreationDTO)
+    public async Task<StructureDto> CreateStructureAsync(
+        StructureForCreationDto structureForCreationDto)
     {
-        ValidationForCreation(structureForCreationDTO);
-
-        var newStructure = new Structure()
+        var newStructure = new Structure
         {
-            Name = structureForCreationDTO.name,
+            Name = structureForCreationDto.Name,
         };
 
         var structureModel = await structureRepository.AddAsync(newStructure);
 
-        return new StructureDTO(
+        return new StructureDto(
             structureModel.Id,
             structureModel.Name);
     }
 
-    public async Task<StructureDTO> ModifyStructureAsync(
-        StructureDTO structure)
+    public async Task<StructureDto> ModifyStructureAsync(
+        StructureDto structure)
     {
-        Validate(structure);
+        var newStructure = await structureRepository.GetByIdAsync(structure.Id)
+            ?? throw new NotFoundException("Not found structure");
 
-        var newStructure = await structureRepository.GetByIdAsync(structure.id);
+        newStructure.Name = structure.Name;
 
-        newStructure.Name = structure.name ?? newStructure.Name;
+        var changedStructure = await structureRepository.UpdateAsync(newStructure);
 
-        var ChangedStructure = await structureRepository.UpdateAsync(newStructure);
-
-        return new StructureDTO(
-            ChangedStructure.Id,
-            ChangedStructure.Name);
+        return new StructureDto(
+            changedStructure.Id,
+            changedStructure.Name);
     }
 
-    public async Task<Structure> RemoveStructureAsync(long structureId)
+    public async Task<bool> RemoveStructureAsync(long structureId)
     {
-        var newStructure = await structureRepository.GetByIdAsync(structureId);
+        var deletedStructure = await structureRepository.RemoveAsync(new Structure()
+                               {
+                                   Id = structureId
+                               }) ?? throw new NotFoundException("Not found structure");;
 
-        Validate(newStructure);
-
-        var Deletedstructure = await structureRepository.RemoveAsync(newStructure);
-
-        return Deletedstructure;
+        return true;
     }
 
-    public async Task<IEnumerable<StructureDTO>> RetrieveStructureAsync()
+    public Task<List<StructureDto>> RetrieveStructureAsync(string name)
     {
-        var newStructureList = structureRepository.OrderBy(x => x.Id);
+        throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<StructureDto>> RetrieveStructureAsync()
+    {
+        var newStructureList = structureRepository
+            .OrderBy(x => x.Id);
 
         return await newStructureList.Select(structure =>
-            new StructureDTO
-            (structure.Id,
-                structure.Name, structure.IsDefault)).ToListAsync();
+            new StructureDto(
+                structure.Id,
+                structure.Name))
+            .ToListAsync();
     }
-
-    public IQueryable<StructureDTO> RetrieveStructureByName(string Name)
+    public async Task<Permission> ModifyPermissionAsync(Permission permission)
     {
-        var newStructure = structureRepository.GetAllAsQueryable()
-            .Where(s => s.Name.uz.Contains(Name) ||
-                        s.Name.ru.Contains(Name));
+        var newPermission = await permissionsRepository.GetByIdAsync(permission.Id)
+            ?? throw new NotFoundException("Not found permission");
 
-        return newStructure.Select(structure =>
-            new StructureDTO
-            (structure.Id,
-                structure.Name, structure.IsDefault));
+        newPermission.Name = permission.Name;
+
+        var changedPermission = await permissionsRepository.UpdateAsync(newPermission);
+
+        return changedPermission;
     }
 
-    private void Validate(Structure structure)
+    public Task<List<Permission>> RetrievePermissionAsync(string name)
     {
-        if (structure is null)
-        {
-            throw new NotFoundException("Structure not found");
-        }
+        throw new NotImplementedException();
     }
-
-    private void Validate(StructureDTO structure)
-    {
-        if (structure is null)
-        {
-            throw new NotFoundException("StructureDTO not found");
-        }
-    }
-
-    private void ValidationForCreation(StructureForCreationDTO structure)
-    {
-        if (structure is null)
-        {
-            throw new ValidationException("StructureForCreationDTO can not be null");
-        }
-    }
-
-    public async Task<Permission> ModifyPermission(Permission permission)
-    {
-        var newPermission = await permissionsRepository.GetByIdAsync(permission.Id);
-
-        newPermission.Name = permission.Name ?? newPermission.Name;
-
-        var ChengedPermission = await permissionsRepository.UpdateAsync(newPermission);
-
-        return ChengedPermission;
-    }
-
-    public IQueryable<Permission> RetrievePermissionAsync()
-    {
-        return permissionsRepository.GetAllAsQueryable();
-    }
-
-    public IQueryable<Permission> RetrievePermissionByNameAsync(string Name)
-    {
-        return permissionsRepository.GetAllAsQueryable()
-            .Where(permission =>
-                permission.Name.uz.Contains(Name) ||
-                permission.Name.ru.Contains(Name));
-    }
-    
-    public async Task<StructurePermissionDTO> CreateStructurePermission(
-        StructurePermissionForCreationDTO structurePermissionDTO)
-    {
-        var StructurePermission = new StructurePermission()
-        {
-            PermissionId = structurePermissionDTO.permissionId,
-            StructureId = structurePermissionDTO.structureId,
-            GrantedById = 12
-        };
-
-        var StructurePermissionValidation = await structurePermissionsRepository.GetAllAsQueryable()
-            .Where(sp => sp.StructureId == structurePermissionDTO.structureId &&
-                         sp.PermissionId == structurePermissionDTO.permissionId).FirstOrDefaultAsync();
-
-
-        var newStructurePermission = StructurePermissionValidation ??
-                                     await structurePermissionsRepository.AddAsync(StructurePermission);
-
-        return new StructurePermissionDTO(
-            newStructurePermission.Id,
-            newStructurePermission.StructureId,
-            newStructurePermission.PermissionId);
-    }
-
-    public async Task<StructurePermissionDTO> RemoveStructurePermissionAsync(
-        StructurePermissionForCreationDTO structurePermissionForCreationDTO)
+    public async Task<StructurePermissionDto> RemoveStructurePermissionAsync(
+        StructurePermissionForCreationDto structurePermissionForCreationDto)
     {
         var structurePermission = await structurePermissionsRepository.GetAllAsQueryable()
-            .Where(sp =>
-                (sp.StructureId == structurePermissionForCreationDTO.structureId &&
-                 sp.PermissionId == structurePermissionForCreationDTO.permissionId)).FirstOrDefaultAsync();
+            .Where(sp => sp.StructureId == structurePermissionForCreationDto.StructureId &&
+                         sp.PermissionId == structurePermissionForCreationDto.PermissionId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException("Not found permission");
 
         var newStructurePermission = await structurePermissionsRepository.RemoveAsync(structurePermission);
 
-        return new StructurePermissionDTO(
+        return new StructurePermissionDto(
             newStructurePermission.Id,
             newStructurePermission.StructureId,
             newStructurePermission.PermissionId);
     }
-
-    public IQueryable<StructurePermissionDTO> RetriveStructurePermission()
+    public Task<List<StructurePermissionDto>> RetrieveStructurePermissionByStructureIdAsync(long structureId)
     {
-        var structureList = structurePermissionsRepository.GetAllAsQueryable();
-
-        return structureList.Select(sp =>
-            new StructurePermissionDTO(
-                sp.Id,
-                sp.StructureId,
-                sp.PermissionId));
-    }
-
-    public IQueryable<StructurePermissionDTO> RetriveStructurePermissionByStructureId(long structureId)
-    {
-        var structureList =
-            structurePermissionsRepository.GetAllAsQueryable()
-                .Where(sp => sp.StructureId == structureId);
-
-        return structureList.Select(sp =>
-            new StructurePermissionDTO(
-                sp.Id,
-                sp.StructureId,
-                sp.PermissionId));
-    }
-
-    public async Task AssignPermissionsToStructureById(long structureId, long assignerId,
-        params long[] permissionsIds)
-    {
-        var structure = await structureRepository.FirstOrDefaultAsync(x => x.Id == structureId);
-
-        NotFoundException.ThrowIfNull(structure);
-
-        await structurePermissionsRepository.RemoveRangeAsync(structure.StructurePermissions.ToArray());
-
-        await structurePermissionsRepository
-            .AddRangeAsync(permissionsIds.Select(x => new StructurePermission()
-        {
-            PermissionId = x,
-            GrantedById = assignerId,
-            StructureId = structure.Id,
-        }).ToArray());
+        throw new NotImplementedException();
     }
 }

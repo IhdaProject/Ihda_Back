@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
-namespace Entitys.Models
+namespace Entity.Models.Common
 {
     [Keyless, ComplexType]
     public class MultiLanguageField
@@ -20,19 +20,25 @@ namespace Entitys.Models
         /// <summary>
         /// Inglis tilida
         /// </summary>
-        [NotMapped]
-        public string en { get; set; } = "null";
+        public string en { get; set; }
 
-        public static implicit operator MultiLanguageField(string data) => new MultiLanguageField()
+        public static implicit operator MultiLanguageField(string data) => new()
         {
             ru = data,
             uz = data,
             en = data
         };
 
-        public override string? ToString()
+        public override string ToString()
         {
             return JsonSerializer.Serialize(this);
         }
+        public string Label(string language)
+            => language switch
+            {
+                "ru" => ru,
+                "en" => en,
+                _ => uz
+            };
     }
 }

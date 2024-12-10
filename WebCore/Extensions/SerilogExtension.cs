@@ -1,15 +1,17 @@
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Configuration;
-using Serilog.Events;
 using Serilog.Core;
+using Serilog.Events;
 using WebCore.Models;
+
+namespace WebCore.Extensions;
 
 public static class SerilogExtension
 {
     public static LoggerConfiguration Api(
         this LoggerSinkConfiguration loggerConfiguration,
-        IOptions<TelegramBotCredential> botCredential,
+        IOptions<TelegramBotCredential>? botCredential,
         LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose)
     {
         if (loggerConfiguration == null)
@@ -24,7 +26,7 @@ public static class SerilogExtension
 public class ApiSink : ILogEventSink
 {
     private readonly TelegramBotCredential _botCredential;
-    public ApiSink(IOptions<TelegramBotCredential> botCredential)
+    public ApiSink(IOptions<TelegramBotCredential>? botCredential)
     {
         _botCredential = botCredential.Value;
     }

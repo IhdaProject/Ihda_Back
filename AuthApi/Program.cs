@@ -2,7 +2,7 @@ using AuthApi.Extensions;
 using WebCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://*:1001");
+builder.WebHost.UseUrls("http://*:3001");
 builder.ConfigureDefault();
 builder.Services.AddConfig(builder.Configuration);
 // Add services to the container.
@@ -12,10 +12,13 @@ builder.Services.AddService();
 
 
 var app = builder.Build();
-await app.ConfigureDefault();
+//await app.ConfigureDefault();
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/Client/swagger.json", "Client API");
+});
 app.UseCors();
 
 app.UseHttpsRedirection();

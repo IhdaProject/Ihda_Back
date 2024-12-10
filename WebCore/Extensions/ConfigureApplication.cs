@@ -5,17 +5,15 @@ using AuthenticationBroker.Options;
 using CacheBroker.Interfaces;
 using DatabaseBroker.DataContext;
 using Entity.Enum;
-using Entity.Models;
+using Entity.Models.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NCrontab;
 using Serilog;
-using Serilog.Events;
 using Serilog.Extensions.Logging;
 using WebCore.CronSchedulers;
 using WebCore.Filters;
@@ -34,10 +32,10 @@ public static class ConfigureApplication
         Log.Logger = new LoggerConfiguration()
             .WriteTo
             .Console()
+            //.WriteTo
+            //.Api(builder.Services.BuildServiceProvider().GetService<IOptions<TelegramBotCredential>>(),LogEventLevel.Fatal)
             .WriteTo
-            .Api(builder.Services.BuildServiceProvider().GetService<IOptions<TelegramBotCredential>>(),LogEventLevel.Fatal)
-            .WriteTo
-            .File("logs/log-.log", rollingInterval: RollingInterval.Day)
+            .File("logs/log-.log", rollingInterval: RollingInterval.Hour)
             .CreateLogger();
 
         builder.Logging.ClearProviders().AddSerilog();
@@ -60,6 +58,8 @@ public static class ConfigureApplication
                 optionsBuilder
                     .UseLazyLoadingProxies();
             });
+
+        builder.Services.AddMemoryCache();
 
         builder
             .Services
@@ -96,7 +96,7 @@ public static class ConfigureApplication
         builder.Services.AddSwaggerGen(options =>
         {
             options
-                .SwaggerDoc("Client",new OpenApiInfo(){Title = AppDomain.CurrentDomain.FriendlyName});
+                .SwaggerDoc("Client",new OpenApiInfo{Title = AppDomain.CurrentDomain.FriendlyName});
             
             options
                 .AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()

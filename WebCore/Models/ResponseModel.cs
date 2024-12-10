@@ -168,8 +168,8 @@ public class ResponseModel<T>
     public static ResponseModel ResultFromModelState(ModelStateDictionary modelState, Exception? exception = null) =>
         new ResponseModel(modelState, exception);
 
-    public static ResponseModel ResultFromContent(T content, HttpStatusCode statusCode = HttpStatusCode.OK) =>
-        new ResponseModel(content, statusCode);
+    public static ResponseModel<T> ResultFromContent(T content, HttpStatusCode statusCode = HttpStatusCode.OK) =>
+        new ResponseModel<T>(content, statusCode);
 
     public static implicit operator ResponseModel<T>(Exception exception) =>
         new ResponseModel<T>(exception, HttpStatusCode.InternalServerError);

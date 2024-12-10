@@ -1,8 +1,8 @@
 using Entity.Enum;
 using Entity.Models;
 using Entity.Models.Auth;
+using Entity.Models.Common;
 using Entity.Models.StaticFiles;
-using Entitys.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseBroker.DataContext;

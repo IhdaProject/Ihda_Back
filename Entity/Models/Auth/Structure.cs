@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Entitys.Models;
+using Entity.Models.Common;
 
 namespace Entity.Models;
 

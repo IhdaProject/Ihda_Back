@@ -5,9 +5,7 @@ using WebCore.Controllers;
 using WebCore.Models;
 
 namespace AuthApi.Controllers;
-
-[Route("api/[controller]/[action]")]
-[ApiController]
+[ApiExplorerSettings(GroupName = "Client")]
 public class AuthController(IAuthService authService) : ApiControllerBase
 {
     [HttpPost]
