@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Entity.Models.Common;
 
 namespace Entity.Models.StaticFiles;
 [Table("static_files",Schema = "asset")]

@@ -14,23 +14,25 @@ public class ProgramDataContext : DbContext
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
-
-
-    protected void TrackActionsAt()
+    
+    private void TrackActionsAt()
     {
-        foreach (var entity in this.ChangeTracker.Entries()
-                     .Where(x => x.State == EntityState.Added && x.Entity is AuditableModelBase<int>))
+        var dateTimeNow = DateTime.Now;
+        
+        foreach (var entity in ChangeTracker.Entries()
+                     .Where(x => x is { State: EntityState.Added, Entity: AuditableModelBase<int> }))
         {
             var model = (AuditableModelBase<int>)entity.Entity;
-            model.CreatedAt = DateTime.Now;
-            model.UpdatedAt = model.CreatedAt;
+            model.CreatedAt = dateTimeNow;
+            //model.CreatedBy = _currentUserService.UserId;
         }
 
-        foreach (var entity in this.ChangeTracker.Entries()
-                     .Where(x => x.State == EntityState.Modified && x.Entity is AuditableModelBase<int>))
+        foreach (var entity in ChangeTracker.Entries()
+                     .Where(x => x is { State: EntityState.Modified, Entity: AuditableModelBase<int> }))
         {
             var model = (AuditableModelBase<int>)entity.Entity;
-            model.UpdatedAt = DateTime.Now;
+            model.UpdatedAt = dateTimeNow;
+            //model.UpdatedBy = _currentUserService.UserId;
         }
     }
 

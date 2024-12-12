@@ -47,18 +47,16 @@ public static class ConfigureApplication
 
         builder.Services.Configure<JwtOption>(builder.Configuration
             .GetSection("JwtOption"));
-
+        
         builder
             .Services
             .AddDbContextPool<ProgramDataContext>(optionsBuilder =>
             {
-                optionsBuilder
-                    .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+                optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
                 optionsBuilder.UseLoggerFactory(new SerilogLoggerFactory(Log.Logger));
-                optionsBuilder
-                    .UseLazyLoadingProxies();
+                optionsBuilder.UseLazyLoadingProxies();
             });
-
+        
         builder.Services.AddMemoryCache();
 
         builder
@@ -70,9 +68,9 @@ public static class ConfigureApplication
             .AddCors(options =>
             {
                 options
-                    .AddDefaultPolicy(builder =>
+                    .AddDefaultPolicy(policyBuilder =>
                     {
-                        builder
+                        policyBuilder
                             .AllowAnyOrigin()
                             .AllowAnyHeader()
                             .AllowAnyMethod();
@@ -119,7 +117,10 @@ public static class ConfigureApplication
                                 Id = "Bearer"
                             }
                         },
-                        new List<string>() { }
+                        new List<string>
+                        {
+                            Capacity = 0
+                        }
                     }
                 });
         });
@@ -140,7 +141,7 @@ public static class ConfigureApplication
                     ValidAudience = jwtOptionsSection["Audience"],
 
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptionsSection["SecretKey"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptionsSection["SecretKey"]!)),
 
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
@@ -163,7 +164,7 @@ public static class ConfigureApplication
                             message = "This token is blacklisted"
                         });
                     },
-                    OnAuthenticationFailed = context => Task.CompletedTask
+                    OnAuthenticationFailed = _ => Task.CompletedTask
                 };
             });
 
@@ -176,7 +177,7 @@ public static class ConfigureApplication
         using var scope = app.Services.CreateScope();
         await using var dataContext = scope.ServiceProvider.GetService<ProgramDataContext>();
         Log.Information("{0}", "Migrations applying...");
-        await dataContext?.Database.MigrateAsync()!;
+        //await dataContext?.Database.MigrateAsync()!;
         Log.Information("{0}", "Migrations applied.");
         scope.Dispose();
 
@@ -211,7 +212,6 @@ public static class ConfigureApplication
                     Code = (int)permissionCode,
                     Name = permissionCode.ToString() ?? string.Empty
                 });
-                continue;
             }
 
             await dataContext.SaveChangesAsync();

@@ -11,27 +11,43 @@ namespace AuthApi.Controllers;
 [ApiExplorerSettings(GroupName = "Client")]
 public class RoleController(IRoleService structureService) : ApiControllerBase
 {
-    [HttpPost, PermissionAuthorize(UserPermissions.StructureCreate)]
-    public async Task<ResponseModel> CreateStructure(StructureForCreationDto structureDto)
-        => ResponseModel.ResultFromContent(await structureService.CreateStructureAsync(structureDto));
+    [HttpGet]
+    //[PermissionAuthorize(UserPermissions.StructureView)]
+    public async Task<ResponseModel<List<StructureDto>>> GetAllStructures()
+        => ResponseModel<List<StructureDto>>.ResultFromContent(await structureService.RetrieveStructureAsync(""));
     
-    [HttpPut, PermissionAuthorize(UserPermissions.StructureEdit)]
-    public async Task<ResponseModel> PutStructure(StructureDto structure)
-        => ResponseModel.ResultFromContent(await structureService.ModifyStructureAsync(structure));
+    [HttpGet]
+    [PermissionAuthorize(UserPermissions.StructureView)]
+    public async Task<ResponseModel<List<StructurePermissionDto>>> GetStructureById(long structureId)
+        => ResponseModel<List<StructurePermissionDto>>.ResultFromContent(await structureService.RetrieveStructurePermissionByStructureIdAsync(structureId));
+    
+    [HttpPost]
+    [PermissionAuthorize(UserPermissions.StructureCreate)]
+    public async Task<ResponseModel<StructureDto>> CreateStructure(StructureForCreationDto structureDto)
+        => ResponseModel<StructureDto>.ResultFromContent(await structureService.CreateStructureAsync(structureDto));
+    
+    [HttpPut]
+    [PermissionAuthorize(UserPermissions.StructureEdit)]
+    public async Task<ResponseModel<StructureDto>> EditStructure(StructureDto structure)
+        => ResponseModel<StructureDto>.ResultFromContent(await structureService.ModifyStructureAsync(structure));
 
-    [HttpGet, PermissionAuthorize(UserPermissions.StructureView)]
-    public async Task<ResponseModel> GetAllStructures()
-        => ResponseModel.ResultFromContent(await structureService.RetrieveStructureAsync(""));
+    [HttpDelete]
+    [PermissionAuthorize(UserPermissions.StructureEdit)]
+    public async Task<ResponseModel<StructurePermissionDto>> DeleteStructurePermission(StructurePermissionForCreationDto structurePermission)
+        => ResponseModel<StructurePermissionDto>.ResultFromContent(await structureService.RemoveStructurePermissionAsync(structurePermission));
 
-    [HttpPut, PermissionAuthorize(UserPermissions.PermissionNameEdit)]
-    public async Task<ResponseModel<Permission>> UpdatePermissionName(Permission permissionName)
-        => ResponseModel<Permission>.ResultFromContent(await structureService.ModifyPermissionAsync(permissionName));
+    [HttpDelete]
+    [PermissionAuthorize(UserPermissions.StructureDelete)]
+    public async Task<ResponseModel<bool>> DeleteStructure(long structureId)
+        => ResponseModel<bool>.ResultFromContent(await structureService.RemoveStructureAsync(structureId));
 
-    [HttpGet, PermissionAuthorize(UserPermissions.PermissionView)]
+    [HttpGet]
+    [PermissionAuthorize(UserPermissions.PermissionView)]
     public async Task<ResponseModel<List<Permission>>> GetPermissions()
         => ResponseModel<List<Permission>>.ResultFromContent(await structureService.RetrievePermissionAsync(""));
 
-    [HttpDelete, PermissionAuthorize(UserPermissions.StructureEdit)]
-    public async Task<ResponseModel<StructurePermissionDto>> DeleteStructurePermission(StructurePermissionForCreationDto structurePermission)
-        => ResponseModel<StructurePermissionDto>.ResultFromContent(await structureService.RemoveStructurePermissionAsync(structurePermission));
+    [HttpPut]
+    [PermissionAuthorize(UserPermissions.PermissionNameEdit)]
+    public async Task<ResponseModel<Permission>> UpdatePermissionName(Permission permissionName)
+        => ResponseModel<Permission>.ResultFromContent(await structureService.ModifyPermissionAsync(permissionName));
 }
