@@ -177,7 +177,7 @@ public static class ConfigureApplication
         using var scope = app.Services.CreateScope();
         await using var dataContext = scope.ServiceProvider.GetService<ProgramDataContext>();
         Log.Information("{0}", "Migrations applying...");
-        //await dataContext?.Database.MigrateAsync()!;
+        await dataContext?.Database.MigrateAsync()!;
         Log.Information("{0}", "Migrations applied.");
         scope.Dispose();
 

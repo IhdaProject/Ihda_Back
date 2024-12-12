@@ -12,7 +12,7 @@ builder.Services.AddService();
 
 
 var app = builder.Build();
-//await app.ConfigureDefault();
+await app.ConfigureDefault();
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI(options =>
