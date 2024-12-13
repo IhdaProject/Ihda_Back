@@ -1,8 +1,5 @@
-namespace Entity.Exeptions.Eimzo;
+using Entity.Exeptions.Common;
 
-public class ExpiredException : Exception
-{
-    public ExpiredException(string message, Exception? innerException = null) : base(message, innerException)
-    {
-    }
-}
+namespace Entity.Exeptions;
+
+public class ExpiredException(string message, Exception? innerException = null) : ApiExceptionBase(message, innerException);

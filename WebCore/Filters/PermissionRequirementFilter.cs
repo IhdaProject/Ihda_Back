@@ -6,15 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WebCore.Filters;
 
-public class PermissionRequirementFilter : IAsyncAuthorizationFilter
+public class PermissionRequirementFilter(int[] requiredPermissionsCodes) : IAsyncAuthorizationFilter
 {
-    private readonly int[] _requiredPermissionsCodes;
-
-    public PermissionRequirementFilter(int[] requiredPermissionsCodes)
-    {
-        _requiredPermissionsCodes = requiredPermissionsCodes;
-    }
-
     public Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
         var rawStructureId = context.HttpContext.User.FindFirstValue(CustomClaimNames.Structure);
@@ -26,14 +19,14 @@ public class PermissionRequirementFilter : IAsyncAuthorizationFilter
 
         var rawPermissionCodes = context.HttpContext.User.FindFirstValue(CustomClaimNames.Permissions);
         if (rawPermissionCodes.IsNullOrEmpty())
-            throw new UnauthorizedException("Forbidden");
+            throw new UnauthorizedException("Unauthorized");
 
-        var permissionCodes = rawPermissionCodes.Split(", ").Select(int.Parse);
+        var permissionCodes = rawPermissionCodes?.Split(", ").Select(int.Parse);
 
-        var anyNotMatched = _requiredPermissionsCodes.Any(x => permissionCodes.All(pc => pc != x));
+        var anyNotMatched = requiredPermissionsCodes.Any(x => permissionCodes != null && permissionCodes.All(pc => pc != x));
 
         if (anyNotMatched)
-            throw new UnauthorizedException("Forbidden");
+            throw new AlreadyExistsException("Forbidden");
 
         return Task.CompletedTask;
     }

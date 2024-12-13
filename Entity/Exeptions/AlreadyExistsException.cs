@@ -2,10 +2,11 @@
 
 namespace Entity.Exeptions;
 
-public class AlreadyExistsException : ApiExceptionBase
+public sealed class AlreadyExistsException : ApiExceptionBase
 {
-    public AlreadyExistsException(string message) : base(message)
+    public AlreadyExistsException(string message,int errorCode = 403) : base(message)
     {
-        this.StatusCode = 403;
+        StatusCode = 403;
+        ErrorCode = errorCode;
     }
 }

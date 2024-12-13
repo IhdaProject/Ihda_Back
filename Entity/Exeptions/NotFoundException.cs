@@ -2,15 +2,16 @@
 
 namespace Entity.Exeptions;
 
-public class NotFoundException : ApiExceptionBase
+public sealed class NotFoundException : ApiExceptionBase
 {
-    public NotFoundException(string message) : base(message)
+    public NotFoundException(string message, int errorCode = 404) : base(message)
     {
-        this.StatusCode = 404;
+        StatusCode = 404;
+        ErrorCode = errorCode;
     }
 
-    public static void ThrowIfNull(object? data, string message = "Not found")
+    public static void ThrowIfNull(object? data, string message = "Not found", int errorCode = 404)
     {
-        if (data is null) throw new NotFoundException(message);
+        if (data is null) throw new NotFoundException(message, errorCode);
     }
 }

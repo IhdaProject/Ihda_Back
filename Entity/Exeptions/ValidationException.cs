@@ -2,10 +2,11 @@
 
 namespace Entity.Exeptions;
 
-internal class ValidationException : ApiExceptionBase
+internal sealed class ValidationException : ApiExceptionBase
 {
-    public ValidationException(string message) : base(message)
+    public ValidationException(string message, int errorCode = 400) : base(message)
     {
-        this.StatusCode = 400;
+        StatusCode = 400;
+        ErrorCode = errorCode;
     }
 }
