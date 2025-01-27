@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Entity.Enum;
+using Entity.Enums;
+using Entity.Models.Common;
 
 namespace Entity.Models.Auth;
 

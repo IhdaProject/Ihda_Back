@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq.Expressions;
 using Entity.Models;
+using Entity.Models.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseBroker.Repositories;

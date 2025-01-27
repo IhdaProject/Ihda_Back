@@ -1,14 +1,9 @@
 ﻿namespace Entity.Models.ApiModels;
 
-public class MetaQueryModel
+public abstract class MetaQueryModel
 {
-    public List<string>? FilteringExpressions { get; set; }
-    public string? FilterPropName { get; set; }
-    public string? FilterPropValue { get; set; }
-    public bool IsDeleted { get; set; } = false;
+    public List<MetaQueryFilterModel>? FilteringExpressions { get; set; }
     public int Skip { get; set; } = 0;
     public int Take { get; set; } = 10;
-    public string? SortPropName { get; set; }
-    public string SortDirection { get; set; } = "asc";
-    public int Total { get; set; }
+    public List<MetaQuerySortModel>? SortingExpressions { get; set; }
 }

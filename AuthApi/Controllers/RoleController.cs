@@ -1,7 +1,7 @@
 using Entity.DataTransferObjects.Role;
+using Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
 using RoleService.Service;
-using Entity.Enum;
 using Entity.Models.Auth;
 using WebCore.Attributes;
 using WebCore.Controllers;

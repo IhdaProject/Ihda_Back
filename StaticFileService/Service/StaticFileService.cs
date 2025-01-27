@@ -10,8 +10,8 @@ public class StaticFileService(IStaticFileRepository staticFileRepository) : ISt
 {
     public async Task<StaticFileDto> AddFileAsync(FileDto fileDto)
     {
-        var filePath = Guid.NewGuid() + Path.GetExtension(fileDto.file.FileName);
-        var fieldName = fileDto.fieldName;
+        var filePath = Guid.NewGuid() + Path.GetExtension(fileDto.File.FileName);
+        var fieldName = fileDto.FieldName;
         if(fieldName.Length == 0)
             fieldName = "temp";
         
@@ -27,14 +27,14 @@ public class StaticFileService(IStaticFileRepository staticFileRepository) : ISt
         var staticFile = new StaticFile()
         {
             Path = path,
-            FileExtension = Path.GetExtension(fileDto.file.FileName),
+            FileExtension = Path.GetExtension(fileDto.File.FileName),
             Url = $"{fieldName}/{filePath}",
-            Size = fileDto.file.Length,
-            OldName = fileDto.fileName ?? Path.GetFileName(fileDto.file.FileName)
+            Size = fileDto.File.Length,
+            OldName = fileDto.FileName ?? Path.GetFileName(fileDto.File.FileName)
         };
 
         await using Stream fileStream = new FileStream(path, FileMode.Create);
-        await  fileDto.file.CopyToAsync(fileStream);
+        await  fileDto.File.CopyToAsync(fileStream);
 
         staticFile = await staticFileRepository.AddAsync(staticFile);
 
@@ -43,16 +43,14 @@ public class StaticFileService(IStaticFileRepository staticFileRepository) : ISt
     public async Task<StaticFileDto> RemoveAsync(RemoveFileDto removeFileDto)
     {
         var staticFile = await staticFileRepository.GetAllAsQueryable()
-            .FirstOrDefaultAsync(sf => sf.Url == removeFileDto.filePath);
+            .FirstOrDefaultAsync(sf => sf.Url == removeFileDto.FilePath);
         
         var path = Path.Combine(
             Directory.GetCurrentDirectory(),
             staticFile.Path);
         
         if (staticFile == null || staticFile.Id == 0)
-        {
-            throw new NotFoundException($"Static File Not found by url: {removeFileDto.filePath}");
-        }
+            throw new NotFoundException($"Static File Not found by url: {removeFileDto.FilePath}");
 
         await staticFileRepository.RemoveAsync(staticFile);
 

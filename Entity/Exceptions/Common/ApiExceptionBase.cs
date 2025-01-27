@@ -1,9 +1,11 @@
-namespace Entity.Exeptions.Common;
+using Entity.Enums;
+
+namespace Entity.Exceptions.Common;
 
 public class ApiExceptionBase : Exception
 {
     public virtual int StatusCode { get; set; }
-    public virtual int ErrorCode { get; set; }
+    public virtual ErrorTypes ErrorCode { get; set; }
 
     public ApiExceptionBase(string message) : base(message)
     {
@@ -16,6 +18,6 @@ public class ApiExceptionBase : Exception
     public ApiExceptionBase(Exception exception) : base(exception.Message, exception)
     {
         StatusCode = 500;
-        ErrorCode = 500;
+        ErrorCode = ErrorTypes.ServerIntervalError;
     }
 }

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using AuthenticationBroker.Options;
 using CacheBroker.Interfaces;
 using DatabaseBroker.DataContext;
-using Entity.Enum;
+using Entity.Enums;
 using Entity.Models.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;

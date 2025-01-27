@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using AuthenticationBroker.TokenHandler;
+using Entity.Exceptions;
 using Entity.Exeptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;

@@ -3,4 +3,4 @@
 namespace Entity.DataTransferObjects.Role;
 
 public record StructureForCreationDto(
-    MultiLanguageField Name);
+    string Name);

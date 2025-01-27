@@ -1,4 +1,4 @@
-using Entity.Enum;
+using Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
 using WebCore.Filters;
 

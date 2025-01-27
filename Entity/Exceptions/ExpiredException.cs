@@ -1,4 +1,4 @@
-using Entity.Exeptions.Common;
+using Entity.Exceptions.Common;
 
 namespace Entity.Exeptions;
 

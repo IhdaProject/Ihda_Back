@@ -1,5 +1,5 @@
 using System.Net;
-using Entity.Exeptions.Common;
+using Entity.Exceptions.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;

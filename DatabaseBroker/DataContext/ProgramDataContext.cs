@@ -1,4 +1,4 @@
-using Entity.Enum;
+using Entity.Enums;
 using Entity.Models;
 using Entity.Models.Auth;
 using Entity.Models.Common;

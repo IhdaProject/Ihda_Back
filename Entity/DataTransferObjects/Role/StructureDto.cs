@@ -5,4 +5,4 @@ namespace Entity.DataTransferObjects.Role;
 
 public record StructureDto(
     long Id,
-    MultiLanguageField Name);
+    string Name);

@@ -1,4 +1,4 @@
-﻿namespace Entity.Enum;
+﻿namespace Entity.Enums;
 
 public enum TokenTypes
 {

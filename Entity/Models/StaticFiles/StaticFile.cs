@@ -11,6 +11,5 @@ public class StaticFile : AuditableModelBase<long>
     [Column("size")] public long? Size { get; set; }
     [Column("type")] public string? Type { get; set; }
     [Column("file_extension")] public string? FileExtension { get; set; }
-    [Column("old_name")]
-    public string? OldName { get; set; }
+    [Column("old_name")] public string? OldName { get; set; }
 }

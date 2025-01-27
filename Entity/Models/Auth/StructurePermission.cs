@@ -12,8 +12,7 @@ namespace Entity.Models
 
         public virtual Structure Structure { get; set; }
 
-        [Column("permission_id")]
-        [ForeignKey("Permission")]
+        [Column("permission_id"), ForeignKey("Permission")]
         public long PermissionId { get; set; }
 
         public virtual Permission Permission { get; set; }
@@ -21,6 +20,6 @@ namespace Entity.Models
         [Column("granted_by_id"), ForeignKey(nameof(GrantedBy))]
         public long GrantedById { get; set; }
 
-        [NotMapped]public virtual User GrantedBy { get; set; }
+        [NotMapped] public virtual User GrantedBy { get; set; }
     }
 }

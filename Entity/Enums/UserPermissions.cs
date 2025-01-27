@@ -1,4 +1,4 @@
-namespace Entity.Enum;
+namespace Entity.Enums;
 /// <summary>
 /// Represents permissions for users in the system.
 /// The structure is defined as follows:
