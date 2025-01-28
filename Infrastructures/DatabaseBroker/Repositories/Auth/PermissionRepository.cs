@@ -4,9 +4,5 @@ using Entity.Models.Auth;
 
 namespace DatabaseBroker.Repositories.Auth;
 
-public class PermissionRepository : RepositoryBase<Permission, long>,IPermissionRepository
-{
-    public PermissionRepository(ProgramDataContext dbContext) : base(dbContext)
-    {
-    }
-}
+public class PermissionRepository(IhdaDataContext dbContext)
+    : RepositoryBase<Permission, long>(dbContext), IPermissionRepository;

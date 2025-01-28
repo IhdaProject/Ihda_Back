@@ -6,20 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseBroker.Repositories;
 
-public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IAsyncEnumerable<T>
+public class RepositoryBase<T, TId>(DbContext dbContext) : IRepositoryBase<T, TId>, IAsyncEnumerable<T>
     where T : ModelBase<TId>
 {
-    private protected readonly DbContext _dbContext;
-
-    public RepositoryBase(DbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task<T> AddAsync(T entity)
     {
         entity.IsDelete = false;
-        var addedEntityEntry = await this._dbContext
+        var addedEntityEntry = await dbContext
             .Set<T>()
             .AddAsync(entity);
 
@@ -30,8 +23,7 @@ public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IA
 
     public async Task<T> UpdateAsync(T entity)
     {
-        var updatedEntityEntry = this
-            ._dbContext
+        var updatedEntityEntry = dbContext
             .Set<T>()
             .Update(entity);
 
@@ -49,7 +41,7 @@ public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IA
 
     public async Task AddRangeAsync(params T[] entities)
     {
-        await this._dbContext
+        await dbContext
             .Set<T>()
             .AddRangeAsync(entities);
         await this.SaveChangesAsync();
@@ -57,8 +49,7 @@ public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IA
 
     public async Task UpdateRangeAsync(params T[] entities)
     {
-        this
-            ._dbContext
+        dbContext
             .Set<T>()
             .UpdateRange(entities);
 
@@ -68,8 +59,7 @@ public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IA
     public async Task<T> RemoveAsync(T entity)
     {
         var existingEntity =
-            await this
-            ._dbContext
+            await dbContext
             .Set<T>()
             .FindAsync(entity.Id);
 
@@ -85,7 +75,7 @@ public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IA
     {
         foreach (var entityOne in entity)
         {
-            var existingEntity = await this._dbContext.Set<T>().FindAsync(entityOne.Id);
+            var existingEntity = await dbContext.Set<T>().FindAsync(entityOne.Id);
 
             if (existingEntity != null)
             {
@@ -96,7 +86,7 @@ public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IA
         await this.SaveChangesAsync();
     }
 
-    private async Task SaveChangesAsync() => await this._dbContext.SaveChangesAsync();
+    private async Task SaveChangesAsync() => await dbContext.SaveChangesAsync();
 
     public IEnumerator<T> GetEnumerator()
     {
@@ -128,18 +118,18 @@ public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IA
     public IQueryable<T> GetAllAsQueryable(bool asNoTracking = false,bool deleted = false)
     {
         if (asNoTracking)
-            return this._dbContext
+            return dbContext
                 .Set<T>()
                 .Where(e => e.IsDelete == deleted)
                 .AsNoTracking();
 
-        return this._dbContext
+        return dbContext
             .Set<T>()
             .Where(e => e.IsDelete == deleted);
     }
     public IQueryable<T> GetAllWithDetails(string[] includes = null,bool deleted = false)
     {
-        IQueryable<T> entities = this._dbContext
+        var entities = dbContext
             .Set<T>()
             .Where(e => e.IsDelete == deleted);
 
@@ -154,6 +144,6 @@ public class RepositoryBase<T, TId> : IRepositoryBase<T, TId>, IQueryable<T>, IA
 
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new CancellationToken())
     {
-        return this._dbContext.Set<T>().GetAsyncEnumerator(cancellationToken);
+        return dbContext.Set<T>().GetAsyncEnumerator(cancellationToken);
     }
 }

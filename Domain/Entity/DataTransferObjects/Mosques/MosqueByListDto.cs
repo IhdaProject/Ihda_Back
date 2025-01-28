@@ -1,9 +1,7 @@
 namespace Entity.DataTransferObjects.Mosques;
 
-public record MosqueDto(
+public record MosqueByListDto(
     long Id,
     string Name,
-    string Description,
-    List<string> PhotoUrls,
     double Latitude,
     double Longitude);

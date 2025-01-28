@@ -50,7 +50,7 @@ public static class ConfigureApplication
         
         builder
             .Services
-            .AddDbContextPool<ProgramDataContext>(optionsBuilder =>
+            .AddDbContextPool<IhdaDataContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
                 optionsBuilder.UseLoggerFactory(new SerilogLoggerFactory(Log.Logger));
@@ -175,7 +175,7 @@ public static class ConfigureApplication
     public static async Task ConfigureDefault(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        await using var dataContext = scope.ServiceProvider.GetService<ProgramDataContext>();
+        await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
         Log.Information("{0}", "Migrations applying...");
         await dataContext?.Database.MigrateAsync()!;
         Log.Information("{0}", "Migrations applied.");
@@ -196,7 +196,7 @@ public static class ConfigureApplication
         {
             Log.Information("Permissions synchronization starting....");
             using var scope = app.Services.CreateScope();
-            await using var dataContext = scope.ServiceProvider.GetService<ProgramDataContext>();
+            await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
 
             ArgumentNullException.ThrowIfNull(dataContext);
 

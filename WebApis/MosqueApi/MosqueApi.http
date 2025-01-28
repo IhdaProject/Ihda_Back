@@ -1,0 +1,6 @@
+@MosqueApi_HostAddress = http://localhost:5183
+
+GET {{MosqueApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

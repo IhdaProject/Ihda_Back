@@ -3,9 +3,5 @@ using Entity.Models;
 
 namespace DatabaseBroker.Repositories.Auth;
 
-public class StructureRepository : RepositoryBase<Structure, long>, IStructureRepository
-{
-    public StructureRepository(ProgramDataContext dbContext) : base(dbContext)
-    {
-    }
-}
+public class StructureRepository(IhdaDataContext dbContext)
+    : RepositoryBase<Structure, long>(dbContext), IStructureRepository;

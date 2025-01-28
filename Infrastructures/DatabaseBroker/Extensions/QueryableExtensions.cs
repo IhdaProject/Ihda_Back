@@ -48,8 +48,8 @@ public static class QueryableExtensions
                 "<=" => Expression.LessThanOrEqual(left, right),
                 "<<" => Expression.LessThan(left, right),
                 ">>" => Expression.GreaterThan(left, right),
-                "==" => Expression.Equal(left, right),
                 "$$" => Expression.Call(iLikeMethod, efFunctions, left, Expression.Constant($"%{filterData.Value}%")),
+                "==" => Expression.Equal(left, right),
                 _ => Expression.Equal(left, right)
             };
             

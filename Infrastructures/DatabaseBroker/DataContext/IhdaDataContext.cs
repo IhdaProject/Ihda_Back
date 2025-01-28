@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseBroker.DataContext;
 
-public class ProgramDataContext : DbContext
+public class IhdaDataContext : DbContext
 {
-    public ProgramDataContext(DbContextOptions<ProgramDataContext> options)
+    public IhdaDataContext(DbContextOptions<IhdaDataContext> options)
         : base(options)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

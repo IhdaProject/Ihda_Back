@@ -3,9 +3,5 @@ using Entity.Models.Auth;
 
 namespace DatabaseBroker.Repositories.Auth;
 
-public class SignMethodsRepository : RepositoryBase<SignMethod, long>, ISignMethodsRepository
-{
-    public SignMethodsRepository(ProgramDataContext dbContext) : base(dbContext)
-    {
-    }
-}
+public class SignMethodsRepository(IhdaDataContext dbContext)
+    : RepositoryBase<SignMethod, long>(dbContext), ISignMethodsRepository;
