@@ -5,35 +5,37 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{D589C1CA-4E1B-4970-B26B-7DE0DF6EE005}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{CA2C7A00-8ADB-4CED-984E-D08046D61DA1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructures", "Infrastructures", "{CA2C7A00-8ADB-4CED-984E-D08046D61DA1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{026002AA-727F-4B37-88A9-B1D22262B5BD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{026002AA-727F-4B37-88A9-B1D22262B5BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{C797BED8-696F-45AC-8B97-B157AC79F375}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Entity\Entity.csproj", "{4D03B997-0BCB-4EFF-B9F9-93E7DECBBFF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Domain\Entity\Entity.csproj", "{4D03B997-0BCB-4EFF-B9F9-93E7DECBBFF0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCore", "WebCore\WebCore.csproj", "{651028A5-BE39-4409-B361-3A6B2D5C89CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCore", "Domain\WebCore\WebCore.csproj", "{651028A5-BE39-4409-B361-3A6B2D5C89CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseBroker", "DatabaseBroker\DatabaseBroker.csproj", "{468B6AB7-DEB4-45AB-946B-F539E3F74FE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseBroker", "Infrastructures\DatabaseBroker\DatabaseBroker.csproj", "{468B6AB7-DEB4-45AB-946B-F539E3F74FE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthService", "AuthService\AuthService.csproj", "{09817CA6-D6B6-467A-A897-6E09EA4C4BAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthService", "Services\AuthService\AuthService.csproj", "{09817CA6-D6B6-467A-A897-6E09EA4C4BAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayApi", "GatewayApi\GatewayApi.csproj", "{0090C870-F342-436F-AC53-B6270D07671A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayApi", "WebApis\GatewayApi\GatewayApi.csproj", "{0090C870-F342-436F-AC53-B6270D07671A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthApi", "AuthApi\AuthApi.csproj", "{8DE5BB07-F67A-4D3B-A87A-9B005B4D3C92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthApi", "WebApis\AuthApi\AuthApi.csproj", "{8DE5BB07-F67A-4D3B-A87A-9B005B4D3C92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationBroker", "AuthenticationBroker\AuthenticationBroker.csproj", "{31EFCAF7-B42C-4557-8653-D836F5479945}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationBroker", "Infrastructures\AuthenticationBroker\AuthenticationBroker.csproj", "{31EFCAF7-B42C-4557-8653-D836F5479945}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoleService", "StructureService\RoleService.csproj", "{157CC9F8-0DE6-4473-AB3B-BB3F0E3A1B7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoleService", "Services\StructureService\RoleService.csproj", "{157CC9F8-0DE6-4473-AB3B-BB3F0E3A1B7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetApi", "AssetApi\AssetApi.csproj", "{4930E584-4DC0-4EFB-B3C5-0DF7E40AA983}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetApi", "WebApis\AssetApi\AssetApi.csproj", "{4930E584-4DC0-4EFB-B3C5-0DF7E40AA983}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticFileService", "StaticFileService\StaticFileService.csproj", "{E4053C11-68F7-49AB-98D4-FD22171EC579}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticFileService", "Services\StaticFileService\StaticFileService.csproj", "{E4053C11-68F7-49AB-98D4-FD22171EC579}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiBroker", "ApiBroker\ApiBroker.csproj", "{F03CF14D-BC2D-425C-98AC-00AC5E1D0875}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiBroker", "Infrastructures\ApiBroker\ApiBroker.csproj", "{F03CF14D-BC2D-425C-98AC-00AC5E1D0875}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheBroker", "CacheBroker\CacheBroker.csproj", "{BC180B78-2B7D-428A-A579-4494FFFDCBCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheBroker", "Infrastructures\CacheBroker\CacheBroker.csproj", "{BC180B78-2B7D-428A-A579-4494FFFDCBCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MosqueService", "Services\MosqueService\MosqueService.csproj", "{DB2F11EF-266A-45B5-B6E9-F92EB3AEF8FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{BC180B78-2B7D-428A-A579-4494FFFDCBCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC180B78-2B7D-428A-A579-4494FFFDCBCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC180B78-2B7D-428A-A579-4494FFFDCBCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB2F11EF-266A-45B5-B6E9-F92EB3AEF8FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB2F11EF-266A-45B5-B6E9-F92EB3AEF8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB2F11EF-266A-45B5-B6E9-F92EB3AEF8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB2F11EF-266A-45B5-B6E9-F92EB3AEF8FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +112,7 @@ Global
 		{E4053C11-68F7-49AB-98D4-FD22171EC579} = {026002AA-727F-4B37-88A9-B1D22262B5BD}
 		{F03CF14D-BC2D-425C-98AC-00AC5E1D0875} = {CA2C7A00-8ADB-4CED-984E-D08046D61DA1}
 		{BC180B78-2B7D-428A-A579-4494FFFDCBCE} = {CA2C7A00-8ADB-4CED-984E-D08046D61DA1}
+		{DB2F11EF-266A-45B5-B6E9-F92EB3AEF8FA} = {026002AA-727F-4B37-88A9-B1D22262B5BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B0A13641-9D7A-40CC-B5F6-EDA9F6EC62B2}
