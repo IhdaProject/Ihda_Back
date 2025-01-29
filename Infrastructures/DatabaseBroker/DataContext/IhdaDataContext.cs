@@ -2,6 +2,7 @@ using Entity.Enums;
 using Entity.Models;
 using Entity.Models.Auth;
 using Entity.Models.Common;
+using Entity.Models.Mosques;
 using Entity.Models.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,6 +95,7 @@ public class IhdaDataContext : DbContext
     public DbSet<Structure> Structures { get; set; }
     public DbSet<StructurePermission> StructurePermissions { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Mosque> Mosques { get; set; }
     public DbSet<TokenModel> Tokens { get; set; }
     public DbSet<SignMethod> UserSignMethods { get; set; }
     public DbSet<StaticFile> StaticFiles { get; set; }

@@ -1,6 +1,6 @@
 namespace Entity.Models.ApiModels;
 
-public abstract class MetaQueryFilterModel
+public class MetaQueryFilterModel
 {
     public string PropertyName { get; set; }
     public string Value { get; set; }

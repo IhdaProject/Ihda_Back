@@ -3,12 +3,11 @@ using Microsoft.Net.Http.Headers;
 using WebCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://*:1003");
+builder.WebHost.UseUrls("http://*:5002");
 builder.ConfigureDefault();
 // Add services to the container.
 builder.Services.AddService();
 builder.Services.AddInfrastructure();
-builder.Services.AddService();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

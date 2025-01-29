@@ -1,6 +1,6 @@
 ﻿namespace Entity.Models.ApiModels;
 
-public abstract class MetaQueryModel
+public class MetaQueryModel
 {
     public List<MetaQueryFilterModel>? FilteringExpressions { get; set; }
     public int Skip { get; set; } = 0;
