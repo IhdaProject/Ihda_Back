@@ -1,12 +1,11 @@
 using System.Text;
-using Entity.Extensions;
 using RestSharp;
 
 namespace Entity.Helpers;
 
 public static class RestClientHelpers
 {
-    public static RestClient GetInstance(string? baseAddress = null)
+    private static RestClient GetInstance(string? baseAddress = null)
     {
         var httpClient = new RestClient(baseAddress);
         return httpClient;

@@ -1,7 +1,5 @@
 namespace Entity.DataTransferObjects.Authentication;
 
-public record ChangeUserStructureDto
-{
-    public long UserId { get; set; }
-    public long StructureId { get; set; }
-}
+public record ChangeUserStructureDto(
+    long UserId,
+    long StructureId);

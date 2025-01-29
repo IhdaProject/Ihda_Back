@@ -1,13 +1,12 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
-using Entity.Extensions;
 
 namespace Entity.Helpers;
 
 public static class HttpClientHelpers
 {
-    public static HttpClient GetInstance(string? baseAddress = null)
+    private static HttpClient GetInstance(string? baseAddress = null)
     {
         var httpClient = new HttpClient(new CustomHttpClientHandler())
         {
@@ -65,9 +64,9 @@ public static class HttpClientHelpers
     /// </returns>
     /// <exception cref="HttpRequestException">If status code is not OK</exception>
     public static async Task<TResult?> GetJsonAsync<TResult>(this HttpClient client, string url,
-        params KeyValuePair<string, object>[] queryParams)
+        params KeyValuePair<string, object>[]? queryParams)
     {
-        string queryString = "";
+        var queryString = "";
         if (queryParams is not null && queryParams.Length != 0)
             queryString = "?" + string.Join("&", queryParams.Select(x => $"{x.Key}={x.Value}"));
 

@@ -8,12 +8,5 @@ namespace WebCore.Controllers;
 [ApiController]
 public abstract class ApiControllerBase : ControllerBase
 {
-    public long UserId
-    {
-        get
-        {
-            var rawUserId = this.User.FindFirstValue(CustomClaimNames.UserId);
-            return long.TryParse(rawUserId, out var userId) ? userId : default;
-        }
-    }
+    protected long UserId => long.TryParse(User.FindFirstValue(CustomClaimNames.UserId), out var userId) ? userId : 0;
 }

@@ -5,7 +5,7 @@ using Entity.DataTransferObjects.Authentication;
 using Entity.Enums;
 using Entity.Exceptions;
 using Entity.Exeptions;
-using Entity.Extensions;
+using Entity.Helpers;
 using Entity.Models;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
@@ -24,15 +24,15 @@ public class AuthService(
     public async Task<bool> Register(UserRegisterDto userRegisterDto)
     {
         var hasStoredUser = await signMethodsRepository.OfType<DefaultSignMethod>()
-            .AnyAsync(x => x.Username == userRegisterDto.username);
+            .AnyAsync(x => x.Username == userRegisterDto.UserName);
         if (hasStoredUser)
             throw new AlreadyExistsException("User name or login already exists");
 
         User newUser = new User()
         {
-            FirstName = userRegisterDto.firstname,
-            LastName = userRegisterDto.lastname,
-            MiddleName = userRegisterDto.middlename,
+            FirstName = userRegisterDto.FirstName,
+            LastName = userRegisterDto.LastName,
+            MiddleName = userRegisterDto.MiddleName,
             SignMethods = new List<SignMethod>(),
             StructureId = (await structureRepository.FirstOrDefaultAsync(x => x.IsDefault))?.Id,
         };
@@ -40,8 +40,8 @@ public class AuthService(
         var storedUser = await userRepository.AddAsync(newUser);
         await signMethodsRepository.AddAsync(new DefaultSignMethod()
         {
-            Username = userRegisterDto.username,
-            PasswordHash = PasswordHelper.Encrypt(userRegisterDto.password),
+            Username = userRegisterDto.UserName,
+            PasswordHash = PasswordHelper.Encrypt(userRegisterDto.Password),
             UserId = storedUser.Id
         });
         return true;
@@ -50,12 +50,12 @@ public class AuthService(
     public async Task<TokenDto> SignByPassword(AuthenticationDto authenticationDto)
     {
         var signMethod = await signMethodsRepository.OfType<DefaultSignMethod>()
-            .FirstOrDefaultAsync(x => x.Username == authenticationDto.username);
+            .FirstOrDefaultAsync(x => x.Username == authenticationDto.UserName);
 
         if (signMethod is null)
             throw new NotFoundException("That credentials not found");
 
-        if (!PasswordHelper.Verify(signMethod.PasswordHash, authenticationDto.password))
+        if (!PasswordHelper.Verify(signMethod.PasswordHash, authenticationDto.Password))
             throw new NotFoundException("User not found");
 
         var user = signMethod.User;
@@ -86,8 +86,8 @@ public class AuthService(
     {
         var token = await tokenRepository
             .GetAllAsQueryable()
-            .FirstOrDefaultAsync(t => t.AccessToken == tokenDto.accessToken
-                && t.RefreshToken == tokenDto.refreshToken)
+            .FirstOrDefaultAsync(t => t.AccessToken == tokenDto.AccessToken
+                && t.RefreshToken == tokenDto.RefreshToken)
             ?? throw new NotFoundException("Not Found Token");
 
         if (token.ExpireRefreshToken < DateTime.UtcNow)
@@ -116,8 +116,8 @@ public class AuthService(
     {
         var token = await tokenRepository
                         .GetAllAsQueryable()
-                        .FirstOrDefaultAsync(t => t.AccessToken == tokenDto.accessToken
-                                                  && t.RefreshToken == tokenDto.refreshToken)
+                        .FirstOrDefaultAsync(t => t.AccessToken == tokenDto.AccessToken
+                                                  && t.RefreshToken == tokenDto.RefreshToken)
                     ?? throw new NotFoundException("Not Found Token");
 
         var deleteToken = await tokenRepository.RemoveAsync(token);

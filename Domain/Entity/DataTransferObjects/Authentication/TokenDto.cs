@@ -3,6 +3,6 @@ using Entity.Models;
 namespace Entity.DataTransferObjects.Authentication;
 
 public record TokenDto(
-    string accessToken,
-    string refreshToken,
-    DateTime? expireRefreshToken);
+    string AccessToken,
+    string RefreshToken,
+    DateTime? ExpireRefreshToken);

@@ -1,9 +1,9 @@
 namespace Entity.DataTransferObjects.Authentication;
 
 public record UserRegisterDto(
-    string firstname,
-    string lastname,
-    string? middlename,
-    string username,
-    string password
+    string FirstName,
+    string LastName,
+    string? MiddleName,
+    string UserName,
+    string Password
 );

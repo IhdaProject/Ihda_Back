@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Entity.Extensions;
+namespace Entity.Helpers;
 
 public static class SerializerHelper
 {
