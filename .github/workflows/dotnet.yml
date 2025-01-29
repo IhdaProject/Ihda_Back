@@ -19,19 +19,19 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies for AssetApi
-      run: dotnet restore AssetApi/AssetApi.csproj
+      run: dotnet restore WebApis/AssetApi/AssetApi.csproj
 
     - name: Build AssetApi
-      run: dotnet build AssetApi/AssetApi.csproj --no-restore
+      run: dotnet build WebApis/AssetApi/AssetApi.csproj --no-restore
 
     - name: Restore dependencies for AuthApi
-      run: dotnet restore AuthApi/AuthApi.csproj
+      run: dotnet restore WebApis/AuthApi/AuthApi.csproj
 
     - name: Build AuthApi
-      run: dotnet build AuthApi/AuthApi.csproj --no-restore
+      run: dotnet build WebApis/AuthApi/AuthApi.csproj --no-restore
 
     - name: Restore dependencies for GatewayApi
-      run: dotnet restore GatewayApi/GatewayApi.csproj
+      run: dotnet restore WebApis/GatewayApi/GatewayApi.csproj
 
     - name: Build GatewayApi
-      run: dotnet build GatewayApi/GatewayApi.csproj --no-restore
+      run: dotnet build WebApis/GatewayApi/GatewayApi.csproj --no-restore
