@@ -10,6 +10,10 @@ namespace MosqueApi.Controllers;
 [ApiExplorerSettings(GroupName = "Client")]
 public class MosqueController(IMosqueService mosqueService) : ApiControllerBase
 {
+    [HttpPost]
+    public async Task<ResponseModel<MosqueDto>> OnSave([FromBody]MosqueDto mosqueDto)
+        => await mosqueService.OnSaveAsync(mosqueDto);
+    
     [HttpGet]
     public async Task<ResponseModel<List<MosqueByListDto>>> Get([FromQuery]MetaQueryModel metaQuery)
         => await mosqueService.GetListAsync(metaQuery);
