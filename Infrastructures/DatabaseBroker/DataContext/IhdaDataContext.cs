@@ -21,17 +21,17 @@ public class IhdaDataContext : DbContext
         var dateTimeNow = DateTime.Now;
         
         foreach (var entity in ChangeTracker.Entries()
-                     .Where(x => x is { State: EntityState.Added, Entity: AuditableModelBase<int> }))
+                     .Where(x => x is { State: EntityState.Added, Entity: AuditableModelBase<long> }))
         {
-            var model = (AuditableModelBase<int>)entity.Entity;
+            var model = (AuditableModelBase<long>)entity.Entity;
             model.CreatedAt = dateTimeNow;
             //model.CreatedBy = _currentUserService.UserId;
         }
 
         foreach (var entity in ChangeTracker.Entries()
-                     .Where(x => x is { State: EntityState.Modified, Entity: AuditableModelBase<int> }))
+                     .Where(x => x is { State: EntityState.Modified, Entity: AuditableModelBase<long> }))
         {
-            var model = (AuditableModelBase<int>)entity.Entity;
+            var model = (AuditableModelBase<long>)entity.Entity;
             model.UpdatedAt = dateTimeNow;
             //model.UpdatedBy = _currentUserService.UserId;
         }
