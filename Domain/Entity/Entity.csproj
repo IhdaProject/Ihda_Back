@@ -15,7 +15,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\PrayerTimes\PrayerTime\" />
+      <Compile Remove="Models\PrayerTimes\PrayerTime\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Models\PrayerTimes\PrayerTime\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Models\PrayerTimes\PrayerTime\**" />
     </ItemGroup>
 
 

@@ -3,6 +3,7 @@ using Entity.Models;
 using Entity.Models.Auth;
 using Entity.Models.Common;
 using Entity.Models.Mosques;
+using Entity.Models.ReferenceBook;
 using Entity.Models.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
@@ -91,12 +92,28 @@ public class IhdaDataContext : DbContext
             .HasValue<DefaultSignMethod>(SignMethods.Normal);
     }
 
+    #region Mosques Schema
+    public DbSet<Mosque> Mosques { get; set; }
+    #endregion
+
+    #region Auth schema
     public DbSet<Permission> Permissions { get; set; }
     public DbSet<Structure> Structures { get; set; }
     public DbSet<StructurePermission> StructurePermissions { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<Mosque> Mosques { get; set; }
-    public DbSet<TokenModel> Tokens { get; set; }
     public DbSet<SignMethod> UserSignMethods { get; set; }
+    public DbSet<TokenModel> Tokens { get; set; }
+    #endregion
+
+    #region Static file schema
     public DbSet<StaticFile> StaticFiles { get; set; }
+    #endregion
+
+    #region Reference Book schema
+    public DbSet<Country> Countries { get; set; }
+    public DbSet<Region> Regions { get; set; }
+    public DbSet<District> Districts { get; set; }
+    public DbSet<PrayerTimeStyle> PrayerTimeStyles { get; set; }
+    public DbSet<CalculatingCentury> CalculatingCenturies { get; set; }
+    #endregion
 }

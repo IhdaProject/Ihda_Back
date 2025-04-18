@@ -1,6 +1,3 @@
 namespace Entity.DataTransferObjects.PrayerTimes;
 
-public class PrayerTimeDto
-{
-    
-}
+public record PrayerTimeDto();
