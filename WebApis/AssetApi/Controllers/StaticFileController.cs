@@ -11,18 +11,14 @@ namespace AssetApi.Controllers;
 public class StaticFileController(IStaticFileService staticFileService) : ControllerBase
 {
     [HttpPost]
-    public async Task<ResponseModel> Add([FromForm]FileDto fileDto)
-    {
-        return ResponseModel
+    public async Task<ResponseModel<StaticFileDto>> Add([FromForm]FileDto fileDto)
+        => ResponseModel<StaticFileDto>
             .ResultFromContent(
                 await staticFileService.AddFileAsync(fileDto));
-    }
 
-    [HttpDelete]
-    public async Task<ResponseModel> Remove([FromBody]RemoveFileDto removeFileDto)
-    {
-        return ResponseModel
+    /*[HttpDelete]
+    public async Task<ResponseModel<StaticFileDto>> Remove([FromBody]RemoveFileDto removeFileDto)
+        => ResponseModel<StaticFileDto>
             .ResultFromContent(
-                await staticFileService.RemoveAsync(removeFileDto));
-    }
+                await staticFileService.RemoveAsync(removeFileDto));*/
 }
