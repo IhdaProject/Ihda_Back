@@ -1,6 +1,5 @@
 using System.Net;
 using Entity.Exceptions.Common;
-using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using WebCore.Models;
 
@@ -21,17 +20,15 @@ public class GlobalExceptionHandlerMiddleware : IMiddleware
                 context.Response.StatusCode = apiException.StatusCode;
                 await context.Response.WriteAsJsonAsync(
                     ResponseModel.ResultFromException(e, (HttpStatusCode)apiException.StatusCode));
+                Log.Error(e, "Exception: " + e.Message);
             }
             else
             {
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsJsonAsync(
                     ResponseModel.ResultFromException(e));
-            }
-            Log.Error(e, "Exception: " + e.Message);
-            
-            if (context.Response.StatusCode >= 400)
                 Log.Fatal(e,"Exception: ");
+            }
         }
     }
 }

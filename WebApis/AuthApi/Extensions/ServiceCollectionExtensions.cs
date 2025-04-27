@@ -26,8 +26,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IStructureRepository, StructureRepository>();
@@ -37,7 +36,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<ISignMethodsRepository, SignMethodsRepository>();
         services.AddScoped<ICacheService, MemoryCacheService>();
-
 
         return services;
     }

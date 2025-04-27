@@ -10,10 +10,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NCrontab;
 using Serilog;
+using Serilog.Events;
 using Serilog.Extensions.Logging;
 using WebCore.CronSchedulers;
 using WebCore.Filters;
@@ -26,19 +28,36 @@ public static class ConfigureApplication
 {
     public static void ConfigureDefault(this WebApplicationBuilder builder)
     {
+        builder.Configuration
+            .AddJsonFile(Path.Combine(Path.Combine(Directory.GetParent(builder.Environment.ContentRootPath)!.Parent!.FullName,
+                "Domain", "WebCore"), "GeneralSettings.json"), optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+            .AddEnvironmentVariables();
+        
+        builder.WebHost.UseUrls(builder.Configuration.GetConnectionString("Port")!);
+        
         builder.Services.Configure<TelegramBotCredential>(builder.Configuration
             .GetSection("TelegramBotCredential"));
         
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo
-            .Console()
-            //.WriteTo
-            //.Api(builder.Services.BuildServiceProvider().GetService<IOptions<TelegramBotCredential>>(),LogEventLevel.Fatal)
-            .WriteTo
-            .File("logs/log-.log", rollingInterval: RollingInterval.Hour)
-            .CreateLogger();
+        var loggerConfig = new LoggerConfiguration()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .WriteTo.File(
+                $"Logs/mylog-.log",
+                rollingInterval: RollingInterval.Day,
+                rollOnFileSizeLimit: true,
+                fileSizeLimitBytes: 5 * 1024 * 1024);
+        
+        var environment = builder.Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT");
 
-        builder.Logging.ClearProviders().AddSerilog();
+        if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
+            loggerConfig = loggerConfig.Enrich.FromLogContext()
+                .WriteTo.Api(
+                    builder.Services.BuildServiceProvider().GetService<IOptions<TelegramBotCredential>>(),
+                    LogEventLevel.Fatal);
+
+        Log.Logger = loggerConfig.CreateLogger();
 
         builder
             .Configuration
@@ -169,11 +188,17 @@ public static class ConfigureApplication
             });
 
 
+        builder.Services.AddScoped<RequestResponseLoggingMiddleware>();
         builder.Services.AddScoped<GlobalExceptionHandlerMiddleware>();
     }
 
     public static async Task ConfigureDefault(this WebApplication app)
     {
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
+        {
+            options.SwaggerEndpoint("/swagger/Client/swagger.json", "Client API");
+        });
         using var scope = app.Services.CreateScope();
         await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
         Log.Information("{0}", "Migrations applying...");
@@ -185,6 +210,7 @@ public static class ConfigureApplication
         app.UseCors();
         app.UseHealthChecks("/healths");
 
+        app.UseMiddleware<RequestResponseLoggingMiddleware>();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
         await app.SynchronizePermissions();

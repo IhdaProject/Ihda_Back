@@ -3,32 +3,20 @@ using Microsoft.Net.Http.Headers;
 using WebCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://*:5002");
 builder.ConfigureDefault();
-// Add services to the container.
 builder.Services
     .AddService()
     .AddInfrastructure();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDirectoryBrowser();
 var app = builder.Build();
 await app.ConfigureDefault();
-// Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.UseRouting();
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseStaticFiles(new StaticFileOptions()
 {
     OnPrepareResponse = (context) =>
     {
-        var fileName = "Download(BusinessStudy)"+Path.GetExtension(context.File.Name);
+        var fileName = "Download"+Path.GetExtension(context.File.Name);
         var header = new ContentRangeHeaderValue(context.File.Length);
         context.Context.Response.Headers.ContentDisposition = $"attachment; filename=\"{fileName}\"";
         context.Context.Response.Headers.ContentType = "application/octet-stream";
@@ -38,7 +26,5 @@ app.UseStaticFiles(new StaticFileOptions()
 });
 
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -33,6 +33,8 @@ public class ApiSink : ILogEventSink
     public void Emit(LogEvent logEvent)
     {
         var message = logEvent.RenderMessage();
+        
+        message += $"\n#{_botCredential.Project}";
 
         if (logEvent.Exception != null)
             message += $"\n\nException:\n{logEvent.Exception.GetType().FullName}: {logEvent.Exception.Message}\n{logEvent.Exception.StackTrace}";

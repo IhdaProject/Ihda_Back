@@ -1,0 +1,21 @@
+{
+  "JwtOption": {
+    "Issuer": "<ihda_back_nimadurlar>",
+    "Audience": "ihda_back_nimadurlar",
+    "SecretKey": "ihda_back_nimadurlarihda_back_nimadurlarihda_back_nimadurlarihda_back_nimadurlar",
+    "ExpirationInMinutes": 60,
+    "ExpirationRefreshTokenInMinutes": 180
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "TelegramBotCredential": {
+    "Domain": "https://api.telegram.org",
+    "Token": "7222865145:AAEIOHD-YPLm_qSRhhxFng0HFouyTFvWv9Q",
+    "ChatId": "-1002387000788",
+    "Project": "Ihda_back"
+  }
+}

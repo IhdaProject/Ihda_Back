@@ -16,17 +16,35 @@ public class IhdaDataContext : DbContext
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
+    /*private T GetService<T>() where T : class
+    {
+        var serviceProvider = this.GetInfrastructure<IServiceProvider>();
+        return serviceProvider.GetService<T>();
+    }
+    
+    private int GetCurrentUserId()
+    {
+        var httpContextAccessor = GetService<IHttpContextAccessor>();
+        var httpContextAccessor2 = GetService<IMosqueRepository>();
+        var userIdClaim = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
+    
+        if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
+            return userId;
+    
+        return -1;
+    }*/
     
     private void TrackActionsAt()
     {
         var dateTimeNow = DateTime.Now;
+        //var userId = GetCurrentUserId();
         
         foreach (var entity in ChangeTracker.Entries()
                      .Where(x => x is { State: EntityState.Added, Entity: AuditableModelBase<long> }))
         {
             var model = (AuditableModelBase<long>)entity.Entity;
             model.CreatedAt = dateTimeNow;
-            //model.CreatedBy = _currentUserService.UserId;
+            //model.CreatedBy = userId;
         }
 
         foreach (var entity in ChangeTracker.Entries()
@@ -34,7 +52,7 @@ public class IhdaDataContext : DbContext
         {
             var model = (AuditableModelBase<long>)entity.Entity;
             model.UpdatedAt = dateTimeNow;
-            //model.UpdatedBy = _currentUserService.UserId;
+            //model.UpdatedBy = userId;
         }
     }
 

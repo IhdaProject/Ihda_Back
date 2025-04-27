@@ -20,11 +20,7 @@ builder
     });
 
 builder.Services.AddOcelot(builder.Configuration);
-
-builder.WebHost.UseUrls("http://*:5000");
 var app = builder.Build();
-
 app.UseHttpsRedirection();
 app.UseOcelot().Wait();
-
 app.Run();
