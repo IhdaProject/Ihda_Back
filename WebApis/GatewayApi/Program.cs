@@ -1,5 +1,6 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Serilog;
 using WebCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,7 @@ builder
 
 builder.Services.AddOcelot(builder.Configuration);
 var app = builder.Build();
+Log.Fatal("Application starting...");
 app.UseHttpsRedirection();
 app.UseOcelot().Wait();
 app.Run();

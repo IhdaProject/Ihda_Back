@@ -51,7 +51,7 @@ public static class ConfigureApplication
         
         var environment = builder.Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT");
 
-        if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
+        //if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
             loggerConfig = loggerConfig.Enrich.FromLogContext()
                 .WriteTo.Api(
                     builder.Services.BuildServiceProvider().GetService<IOptions<TelegramBotCredential>>(),
@@ -218,6 +218,8 @@ public static class ConfigureApplication
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
         await app.SynchronizePermissions();
+        
+        Log.Fatal("Application starting...");
     }
 
     private static async Task SynchronizePermissions(this WebApplication app)

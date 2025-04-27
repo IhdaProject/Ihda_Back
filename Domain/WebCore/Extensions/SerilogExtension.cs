@@ -40,7 +40,7 @@ public class ApiSink : ILogEventSink
             message += $"\n\nException:\n{logEvent.Exception.GetType().FullName}: {logEvent.Exception.Message}\n{logEvent.Exception.StackTrace}";
 
         using var client = new HttpClient();
-        var response = client.GetAsync($"{_botCredential.Domain}/bot{_botCredential.Token}/sendMessage?chat_id={_botCredential.ChatId}&text={message}").Result;
+        var response = client.GetAsync($"{_botCredential.Domain}/bot{_botCredential.Token}/sendMessage?chat_id={_botCredential.ChatId}&text={Uri.EscapeDataString(message)}").Result;
 
         if (!response.IsSuccessStatusCode)
             throw new Exception($"Log ma'lumotlari jo'natilishda xatolik yuz berdi: {response.StatusCode}");
