@@ -116,6 +116,9 @@ public static class ConfigureApplication
                 .SwaggerDoc("Client",new OpenApiInfo{Title = AppDomain.CurrentDomain.FriendlyName});
             
             options
+                .SwaggerDoc("Admin",new OpenApiInfo{Title = AppDomain.CurrentDomain.FriendlyName});
+            
+            options
                 .AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Description = "JWT Authorization",
@@ -198,6 +201,7 @@ public static class ConfigureApplication
         app.UseSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/Client/swagger.json", "Client API");
+            options.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API");
         });
         using var scope = app.Services.CreateScope();
         await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();

@@ -11,6 +11,7 @@ namespace MosqueApi.Controllers;
 public class MosqueController(IMosqueService mosqueService) : ApiControllerBase
 {
     [HttpPost]
+    [ApiExplorerSettings(GroupName = "Admin")]
     public async Task<ResponseModel<MosqueDto>> OnSave([FromBody]MosqueDto mosqueDto)
         => await mosqueService.OnSaveAsync(mosqueDto);
     
