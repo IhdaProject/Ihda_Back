@@ -18,20 +18,32 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    - name: Restore dependencies for GatewayApi
+      run: dotnet restore WebApis/GatewayApi/GatewayApi.csproj
+      
+    - name: Build GatewayApi
+      run: dotnet build WebApis/GatewayApi/GatewayApi.csproj --no-restore
+      
+    - name: Restore dependencies for AuthApi
+      run: dotnet restore WebApis/AuthApi/AuthApi.csproj
+
+    - name: Build AuthApi
+      run: dotnet build WebApis/AuthApi/AuthApi.csproj --no-restore
+      
     - name: Restore dependencies for AssetApi
       run: dotnet restore WebApis/AssetApi/AssetApi.csproj
 
     - name: Build AssetApi
       run: dotnet build WebApis/AssetApi/AssetApi.csproj --no-restore
 
-    - name: Restore dependencies for AuthApi
-      run: dotnet restore WebApis/AuthApi/AuthApi.csproj
+    - name: Restore dependencies for ReferenceBookApi
+      run: dotnet restore WebApis/ReferenceBookApi/ReferenceBookApi.csproj
 
-    - name: Build AuthApi
-      run: dotnet build WebApis/AuthApi/AuthApi.csproj --no-restore
+    - name: Build ReferenceBookApi
+      run: dotnet build WebApis/ReferenceBookApi/ReferenceBookApi.csproj --no-restore
 
-    - name: Restore dependencies for GatewayApi
-      run: dotnet restore WebApis/GatewayApi/GatewayApi.csproj
+    - name: Restore dependencies for PrayerTimeApi
+      run: dotnet restore WebApis/PrayerTimeApi/PrayerTimeApi.csproj
 
-    - name: Build GatewayApi
-      run: dotnet build WebApis/GatewayApi/GatewayApi.csproj --no-restore
+    - name: Build PrayerTimeApi
+      run: dotnet build WebApis/PrayerTimeApi/PrayerTimeApi.csproj --no-restore
