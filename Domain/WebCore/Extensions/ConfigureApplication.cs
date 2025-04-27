@@ -51,7 +51,7 @@ public static class ConfigureApplication
         
         var environment = builder.Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT");
 
-        //if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
+        if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
             loggerConfig = loggerConfig.Enrich.FromLogContext()
                 .WriteTo.Api(
                     builder.Services.BuildServiceProvider().GetService<IOptions<TelegramBotCredential>>(),
