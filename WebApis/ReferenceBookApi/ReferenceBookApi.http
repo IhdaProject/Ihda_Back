@@ -1,6 +1,0 @@
-@ReferenceBookApi_HostAddress = http://localhost:5085
-
-GET {{ReferenceBookApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
