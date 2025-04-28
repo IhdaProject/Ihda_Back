@@ -9,31 +9,18 @@ namespace AuthApi.Controllers;
 public class AuthController(IAuthService authService) : ApiControllerBase
 {
     [HttpPost]
-    public async Task<ResponseModel> Sign([FromBody] AuthenticationDto authenticationDto)
-        => ResponseModel.ResultFromContent(await authService.SignByPassword(authenticationDto));
-
-    [HttpPost]
-    public async Task<ResponseModel> Register(
-        [FromBody] UserRegisterDto userRegisterDto)
-    {
-        return (await authService
-            .Register(userRegisterDto), 
-            StatusCodes.Status200OK);
-    }
+    public async Task<ResponseModel<bool>> Register([FromBody] UserRegisterDto userRegisterDto)
+        => ResponseModel<bool>.ResultFromContent(await authService.Register(userRegisterDto));
     
     [HttpPost]
-    public async Task<ResponseModel> RefreshToken([FromBody]TokenDto tokenDto)
-    {
-        return ResponseModel
-            .ResultFromContent(
-                await authService.RefreshTokenAsync(tokenDto));
-    }
+    public async Task<ResponseModel<TokenDto>> Sign([FromBody] AuthenticationDto authenticationDto)
+        => ResponseModel<TokenDto>.ResultFromContent(await authService.SignByPassword(authenticationDto));
+    
+    [HttpPost]
+    public async Task<ResponseModel<TokenDto>> RefreshToken([FromBody]TokenDto tokenDto)
+        => ResponseModel<TokenDto>.ResultFromContent(await authService.RefreshTokenAsync(tokenDto));
     
     [HttpDelete]
-    public async Task<ResponseModel> LogOut([FromBody]TokenDto tokenDto)
-    {
-        return ResponseModel
-            .ResultFromContent(
-                await authService.DeleteTokenAsync(tokenDto));
-    }
+    public async Task<ResponseModel<bool>> LogOut([FromBody]TokenDto tokenDto)
+        => ResponseModel<bool>.ResultFromContent(await authService.DeleteTokenAsync(tokenDto));
 }

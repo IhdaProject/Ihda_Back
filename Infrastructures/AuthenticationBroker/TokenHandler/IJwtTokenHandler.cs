@@ -6,5 +6,5 @@ namespace AuthenticationBroker.TokenHandler;
 public interface IJwtTokenHandler
 {
     public (string refreshToken, DateTime expireDate) GenerateRefreshToken();
-    JwtSecurityToken GenerateAccessToken(User user);
+    (JwtSecurityToken token,string jti,DateTime expireDate) GenerateAccessToken(User user);
 }

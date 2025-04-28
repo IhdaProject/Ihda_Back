@@ -19,13 +19,24 @@ public class RoleService(
         var newStructure = new Structure
         {
             Name = structureForCreationDto.Name,
+            StructurePermissions = structureForCreationDto.PermissionIds.Select(p => new StructurePermission()
+            {
+                PermissionId = p
+            }).ToList()
         };
 
         var structureModel = await structureRepository.AddAsync(newStructure);
 
         return new StructureDto(
             structureModel.Id,
-            structureModel.Name);
+            structureModel.Name,
+            structureModel.StructurePermissions
+                .Select(p =>
+                    new PermissionDto(
+                        p.PermissionId,
+                        p.Permission.Code,
+                        p.Permission.Name))
+                .ToList());
     }
 
     public async Task<StructureDto> ModifyStructureAsync(
@@ -40,9 +51,15 @@ public class RoleService(
 
         return new StructureDto(
             changedStructure.Id,
-            changedStructure.Name);
+            changedStructure.Name,
+            changedStructure.StructurePermissions
+                .Select(p =>
+                    new PermissionDto(
+                        p.PermissionId,
+                        p.Permission.Code,
+                        p.Permission.Name))
+                .ToList());
     }
-
     public async Task<bool> RemoveStructureAsync(long structureId)
     {
         var deletedStructure = await structureRepository.RemoveAsync(new Structure()
@@ -52,36 +69,40 @@ public class RoleService(
 
         return true;
     }
-
-    public Task<List<StructureDto>> RetrieveStructureAsync(string name)
+    public async Task<List<StructureDto>> RetrieveStructureAsync(string name)
     {
-        throw new NotImplementedException();
-    }
+        var query = structureRepository
+            .GetAllAsQueryable();
+        
+        if(!string.IsNullOrEmpty(name))
+            query = query.Where(s => s.Name.Contains(name));
 
-    public async Task<IEnumerable<StructureDto>> RetrieveStructureAsync()
-    {
-        var newStructureList = structureRepository
-            .OrderBy(x => x.Id);
-
-        return await newStructureList.Select(structure =>
+        return await query.Select(s =>
             new StructureDto(
-                structure.Id,
-                structure.Name))
+                s.Id,
+                s.Name,
+                s.StructurePermissions
+                    .Select(p =>
+                        new PermissionDto(
+                            p.PermissionId,
+                            p.Permission.Code,
+                            p.Permission.Name))
+                    .ToList()))
             .ToListAsync();
     }
-    public async Task<Permission> ModifyPermissionAsync(Permission permission)
+    public async Task<PermissionDto> ModifyPermissionAsync(PermissionDto permissionDto)
     {
-        var newPermission = await permissionsRepository.GetByIdAsync(permission.Id)
+        var newPermission = await permissionsRepository.GetByIdAsync(permissionDto.Id)
             ?? throw new NotFoundException("Not found permission");
 
-        newPermission.Name = permission.Name;
+        newPermission.Name = permissionDto.Name;
 
         var changedPermission = await permissionsRepository.UpdateAsync(newPermission);
 
-        return changedPermission;
+        return permissionDto;
     }
 
-    public Task<List<Permission>> RetrievePermissionAsync(string name)
+    public Task<List<PermissionDto>> RetrievePermissionAsync(string name)
     {
         throw new NotImplementedException();
     }

@@ -3,20 +3,15 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace AuthService.Basic
+namespace WebCore.Filters
 {
-    public class BasicAuthenticationFilter : Attribute, IAuthorizationFilter
+    public class BasicAuthenticationFilter(string[] users) : Attribute, IAuthorizationFilter
     {
-        private string[] Users { get; }
+        private string[] Users { get; } = users;
 
-        public BasicAuthenticationFilter(string[] users)
-        {
-            Users = users;
-        }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
+            ArgumentNullException.ThrowIfNull(context);
 
             if (!context.HttpContext.Request.Headers.ContainsKey("Authorization"))
             {
@@ -32,13 +27,13 @@ namespace AuthService.Basic
                 return;
             }
 
-            string decodedAuthHeader = Encoding.UTF8.GetString(Convert.FromBase64String(authValue.Parameter ?? string.Empty));
-            string[] credentials = decodedAuthHeader.Split(':');
+            var decodedAuthHeader = Encoding.UTF8.GetString(Convert.FromBase64String(authValue.Parameter ?? string.Empty));
+            var credentials = decodedAuthHeader.Split(':');
 
             if (credentials.Length == 2)
             {
-                string userName = credentials[0];
-                string password = credentials[1];
+                var userName = credentials[0];
+                var password = credentials[1];
 
                 if (!IsUserValid(userName, password))
                 {

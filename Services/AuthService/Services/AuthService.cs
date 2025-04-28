@@ -20,7 +20,6 @@ public class AuthService(
     IStructureRepository structureRepository)
     : IAuthService
 {
-
     public async Task<bool> Register(UserRegisterDto userRegisterDto)
     {
         var hasStoredUser = await signMethodsRepository.OfType<DefaultSignMethod>()
@@ -28,25 +27,26 @@ public class AuthService(
         if (hasStoredUser)
             throw new AlreadyExistsException("User name or login already exists");
 
-        User newUser = new User()
+        var newUser = new User
         {
-            FirstName = userRegisterDto.FirstName,
-            LastName = userRegisterDto.LastName,
-            MiddleName = userRegisterDto.MiddleName,
+            FullName = userRegisterDto.FullName,
+            Gender = userRegisterDto.Gender,
+            BirthDate = userRegisterDto.BirthDate.ToDateTime(new TimeOnly(0,0,0)),
             SignMethods = new List<SignMethod>(),
             StructureId = (await structureRepository.FirstOrDefaultAsync(x => x.IsDefault))?.Id,
         };
 
         var storedUser = await userRepository.AddAsync(newUser);
+        var salt = Guid.NewGuid().ToString();
         await signMethodsRepository.AddAsync(new DefaultSignMethod()
         {
             Username = userRegisterDto.UserName,
-            PasswordHash = PasswordHelper.Encrypt(userRegisterDto.Password),
+            Salt = salt,
+            PasswordHash = PasswordHelper.Encrypt(userRegisterDto.Password, salt),
             UserId = storedUser.Id
         });
         return true;
     }
-
     public async Task<TokenDto> SignByPassword(AuthenticationDto authenticationDto)
     {
         var signMethod = await signMethodsRepository.OfType<DefaultSignMethod>()
@@ -55,38 +55,37 @@ public class AuthService(
         if (signMethod is null)
             throw new NotFoundException("That credentials not found");
 
-        if (!PasswordHelper.Verify(signMethod.PasswordHash, authenticationDto.Password))
+        if (!PasswordHelper.Verify(signMethod.PasswordHash, authenticationDto.Password, signMethod.Salt))
             throw new NotFoundException("User not found");
 
         var user = signMethod.User;
 
         var refreshToken = jwtTokenHandler.GenerateRefreshToken();
+        var accessToken = jwtTokenHandler.GenerateAccessToken(user);
 
-        var token = new TokenModel()
+        var token = new TokenModel
         {
             UserId = user.Id,
             TokenType = TokenTypes.Normal,
-            AccessToken = new JwtSecurityTokenHandler()
-                .WriteToken(jwtTokenHandler.GenerateAccessToken(user)),
-            RefreshToken = refreshToken.refreshToken,
+            AccessTokenId = accessToken.jti,
+            RefreshToken = refreshToken.refreshToken,// TODO : sha256 (id, refreshToken, expireDate)
             ExpireRefreshToken = refreshToken.expireDate
         };
 
         token = await tokenRepository.AddAsync(token);
 
         var tokenDto = new TokenDto(
-            token.AccessToken,
+            new JwtSecurityTokenHandler().WriteToken(accessToken.token),
             token.RefreshToken,
             token.ExpireRefreshToken);
 
         return tokenDto;
     }
-
     public async Task<TokenDto> RefreshTokenAsync(TokenDto tokenDto)
     {
         var token = await tokenRepository
             .GetAllAsQueryable()
-            .FirstOrDefaultAsync(t => t.AccessToken == tokenDto.AccessToken
+            .FirstOrDefaultAsync(t => t.AccessTokenId == tokenDto.AccessToken
                 && t.RefreshToken == tokenDto.RefreshToken)
             ?? throw new NotFoundException("Not Found Token");
 
@@ -98,25 +97,24 @@ public class AuthService(
 
         token.User = await userRepository.GetByIdAsync(token.UserId);
 
-        token.AccessToken = new JwtSecurityTokenHandler()
-            .WriteToken(jwtTokenHandler.GenerateAccessToken(token.User));
+        token.AccessTokenId = new JwtSecurityTokenHandler()
+            .WriteToken(jwtTokenHandler.GenerateAccessToken(token.User).token);
         token.UpdatedAt = DateTime.UtcNow;
 
         token = await tokenRepository.UpdateAsync(token);
 
         var newTokenDto = new TokenDto(
-            token.AccessToken,
+            token.AccessTokenId,
             token.RefreshToken,
             token.ExpireRefreshToken);
 
         return newTokenDto;
     }
-
     public async Task<bool> DeleteTokenAsync(TokenDto tokenDto)
     {
         var token = await tokenRepository
                         .GetAllAsQueryable()
-                        .FirstOrDefaultAsync(t => t.AccessToken == tokenDto.AccessToken
+                        .FirstOrDefaultAsync(t => t.AccessTokenId == tokenDto.AccessToken
                                                   && t.RefreshToken == tokenDto.RefreshToken)
                     ?? throw new NotFoundException("Not Found Token");
 

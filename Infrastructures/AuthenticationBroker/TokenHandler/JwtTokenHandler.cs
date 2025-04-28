@@ -9,14 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthenticationBroker.TokenHandler;
 
-public class JwtTokenHandler : IJwtTokenHandler
+public class JwtTokenHandler(IOptions<JwtOption> option) : IJwtTokenHandler
 {
-    private readonly JwtOption _jwtOption;
-
-    public JwtTokenHandler(IOptions<JwtOption> option)
-    {
-        this._jwtOption = option.Value;
-    }
+    private readonly JwtOption _jwtOption = option.Value;
 
     public (string refreshToken, DateTime expireDate) GenerateRefreshToken()
     {
@@ -29,34 +24,34 @@ public class JwtTokenHandler : IJwtTokenHandler
         return (Convert.ToBase64String(bytes), DateTime.UtcNow.AddMinutes(_jwtOption.ExpirationRefreshTokenInMinutes));
     }
 
-    public JwtSecurityToken GenerateAccessToken(User user)
+    public (JwtSecurityToken token,string jti,DateTime expireDate) GenerateAccessToken(User user)
     {
-        var claims = this.GetClaims(user);
+        var claims = GetClaims(user);
         var authSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(this._jwtOption.SecretKey));
+            Encoding.UTF8.GetBytes(_jwtOption.SecretKey));
+
+        var expire = DateTime.UtcNow.AddMinutes(_jwtOption.ExpirationInMinutes);
 
         var token = new JwtSecurityToken(
-            issuer: this._jwtOption.Issuer,
-            audience: this._jwtOption.Audience,
-            expires: DateTime.UtcNow.AddMinutes(this._jwtOption.ExpirationInMinutes),
+            issuer: _jwtOption.Issuer,
+            audience: _jwtOption.Audience,
+            expires: expire,
             claims: claims,
             signingCredentials: new SigningCredentials(
                 key: authSigningKey,
                 algorithm: SecurityAlgorithms.HmacSha256)
         );
 
-        return token;
+        return (token, claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)!.Value, expire);
     }
 
-    private IEnumerable<Claim> GetClaims(User user)
+    private List<Claim> GetClaims(User user)
     {
         var claims = new List<Claim>
         {
-            new Claim(CustomClaimNames.Structure, user.StructureId?.ToString() ?? ""),
-            new Claim(CustomClaimNames.RoleName, user.Structure?.Name.ToString()),
-            new Claim(CustomClaimNames.UserId, user.Id.ToString()),
-            new Claim(CustomClaimNames.Permissions,
-                string.Join(", ", user.Structure?.StructurePermissions.Select(x => x.Permission.Code) ?? Array.Empty<int>()))
+            new (CustomClaimNames.Structure, user.StructureId?.ToString() ?? ""),
+            new (CustomClaimNames.UserId, user.Id.ToString()),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
         return claims;

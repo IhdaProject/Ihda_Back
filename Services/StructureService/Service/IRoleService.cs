@@ -9,8 +9,8 @@ public interface IRoleService
     Task<StructureDto> ModifyStructureAsync(StructureDto structure);
     Task<bool> RemoveStructureAsync(long structureId);
     Task<List<StructureDto>> RetrieveStructureAsync(string name);
-    Task<Permission> ModifyPermissionAsync(Permission permission);
-    Task<List<Permission>> RetrievePermissionAsync(string name);
+    Task<PermissionDto> ModifyPermissionAsync(PermissionDto permissionDto);
+    Task<List<PermissionDto>> RetrievePermissionAsync(string name);
     Task<StructurePermissionDto> RemoveStructurePermissionAsync(StructurePermissionForCreationDto structurePermissionForCreationDto);
     Task<List<StructurePermissionDto>> RetrieveStructurePermissionByStructureIdAsync(long structureId);
 }

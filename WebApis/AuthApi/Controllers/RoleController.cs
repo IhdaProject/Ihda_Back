@@ -1,7 +1,6 @@
 using Entity.DataTransferObjects.Role;
 using Microsoft.AspNetCore.Mvc;
 using RoleService.Service;
-using Entity.Models.Auth;
 using WebCore.Controllers;
 using WebCore.Models;
 
@@ -41,11 +40,11 @@ public class RoleController(IRoleService structureService) : ApiControllerBase
 
     [HttpGet]
     //[PermissionAuthorize(UserPermissions.PermissionView)]
-    public async Task<ResponseModel<List<Permission>>> GetPermissions()
-        => ResponseModel<List<Permission>>.ResultFromContent(await structureService.RetrievePermissionAsync(""));
+    public async Task<ResponseModel<List<PermissionDto>>> GetPermissions()
+        => ResponseModel<List<PermissionDto>>.ResultFromContent(await structureService.RetrievePermissionAsync(""));
 
     [HttpPut]
     //[PermissionAuthorize(UserPermissions.PermissionNameEdit)]
-    public async Task<ResponseModel<Permission>> UpdatePermissionName(Permission permissionName)
-        => ResponseModel<Permission>.ResultFromContent(await structureService.ModifyPermissionAsync(permissionName));
+    public async Task<ResponseModel<PermissionDto>> UpdatePermissionName(PermissionDto permissionDto)
+        => ResponseModel<PermissionDto>.ResultFromContent(await structureService.ModifyPermissionAsync(permissionDto));
 }

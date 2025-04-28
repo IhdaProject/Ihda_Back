@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Entity.Enums;
 using Entity.Models.Auth;
 using Entity.Models.Common;
 
@@ -7,9 +8,9 @@ namespace Entity.Models;
 [Table("users", Schema = "auth")]
 public class User : AuditableModelBase<long>
 {
-    [Column("firstname")] public string FirstName { get; set; }
-    [Column("lastname")] public string LastName { get; set; }
-    [Column("middlename")] public string? MiddleName { get; set; }
+    [Column("full_name")] public string FullName { get; set; }
+    [Column("birth_date")] public DateTime? BirthDate { get; set; }
+    [Column("gender")] public Gender Gender { get; set; } = Gender.NoSelect;
     [NotMapped] public virtual IEnumerable<SignMethod> SignMethods { get; set; }
     [Column("structure_id"), ForeignKey("Structure")]
     public long? StructureId { get; set; }

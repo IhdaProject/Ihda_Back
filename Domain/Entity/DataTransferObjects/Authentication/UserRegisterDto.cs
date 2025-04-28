@@ -1,9 +1,10 @@
+using Entity.Enums;
+
 namespace Entity.DataTransferObjects.Authentication;
 
 public record UserRegisterDto(
-    string FirstName,
-    string LastName,
-    string? MiddleName,
+    string FullName,
+    DateOnly BirthDate,
+    Gender Gender,
     string UserName,
-    string Password
-);
+    string Password);

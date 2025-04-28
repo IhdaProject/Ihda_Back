@@ -18,7 +18,7 @@ public class PermissionRequirementFilter(int[] requiredPermissionsCodes) : IAsyn
             return Task.CompletedTask;
         }
 
-        var rawPermissionCodes = context.HttpContext.User.FindFirstValue(CustomClaimNames.Permissions);
+        var rawPermissionCodes = context.HttpContext.User.FindFirstValue(CustomClaimNames.Structure);
         if (rawPermissionCodes.IsNullOrEmpty())
             throw new UnauthorizedException("Unauthorized");
 
