@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Entity.Models.Common;
 
-namespace Entity.Models;
+namespace Entity.Models.Auth;
 
 [Table("structures", Schema = "auth")]
 public class Structure : AuditableModelBase<long>

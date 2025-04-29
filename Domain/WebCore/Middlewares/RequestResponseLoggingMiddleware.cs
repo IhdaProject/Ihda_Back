@@ -22,7 +22,6 @@ public class RequestResponseLoggingMiddleware : IMiddleware
 
         await responseBody.CopyToAsync(originalBodyStream);
     }
-
     private static async Task<string> FormatRequestAsync(HttpContext context)
     {
         context.Request.EnableBuffering();
@@ -56,7 +55,6 @@ public class RequestResponseLoggingMiddleware : IMiddleware
             WriteIndented = true
         });
     }
-
     private static async Task<string> FormatResponseAsync(HttpContext context)
     {
         context.Response.Body.Seek(0, SeekOrigin.Begin);

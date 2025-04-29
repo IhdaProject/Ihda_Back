@@ -8,5 +8,12 @@ namespace Entity.Enums;
 /// </summary>
 public enum UserPermissions
 {
-    All = 1
+    #region AuthApi project 10
+        #region Auth Controller 10
+            LogOut = 10100001,
+        #endregion
+
+        #region Role Controller 11
+        #endregion
+    #endregion
 }

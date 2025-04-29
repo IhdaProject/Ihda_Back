@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Entity.Enums;
 using Entity.Models.Common;
 
-namespace Entity.Models;
+namespace Entity.Models.Auth;
 
 [Table("tokens", Schema = "auth")]
 public class TokenModel : AuditableModelBase<long>

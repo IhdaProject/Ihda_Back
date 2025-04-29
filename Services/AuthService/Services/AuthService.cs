@@ -6,7 +6,6 @@ using Entity.Enums;
 using Entity.Exceptions;
 using Entity.Exeptions;
 using Entity.Helpers;
-using Entity.Models;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +30,7 @@ public class AuthService(
         {
             FullName = userRegisterDto.FullName,
             Gender = userRegisterDto.Gender,
+            Pinfl = userRegisterDto.Pinfl,
             BirthDate = userRegisterDto.BirthDate.ToDateTime(new TimeOnly(0,0,0)),
             SignMethods = new List<SignMethod>(),
             StructureId = (await structureRepository.FirstOrDefaultAsync(x => x.IsDefault))?.Id,
@@ -68,7 +68,7 @@ public class AuthService(
             UserId = user.Id,
             TokenType = TokenTypes.Normal,
             AccessTokenId = accessToken.jti,
-            RefreshToken = refreshToken.refreshToken,// TODO : sha256 (id, refreshToken, expireDate)
+            RefreshToken = refreshToken.refreshToken,
             ExpireRefreshToken = refreshToken.expireDate
         };
 
@@ -76,46 +76,51 @@ public class AuthService(
 
         var tokenDto = new TokenDto(
             new JwtSecurityTokenHandler().WriteToken(accessToken.token),
-            token.RefreshToken,
+            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,""),
             token.ExpireRefreshToken);
 
         return tokenDto;
     }
     public async Task<TokenDto> RefreshTokenAsync(TokenDto tokenDto)
     {
+        var tokenModel = EncryptionHelper.DecryptStringWithTime(tokenDto.RefreshToken, "");
+        
+        if(tokenModel.Timestamp < DateTime.UtcNow)
+            throw new AlreadyExistsException("Refresh token timed out");
+        
         var token = await tokenRepository
             .GetAllAsQueryable()
-            .FirstOrDefaultAsync(t => t.AccessTokenId == tokenDto.AccessToken
-                && t.RefreshToken == tokenDto.RefreshToken)
+            .FirstOrDefaultAsync(t => t.Id == tokenModel.Id
+                && t.RefreshToken == tokenModel.Token)
             ?? throw new NotFoundException("Not Found Token");
 
         if (token.ExpireRefreshToken < DateTime.UtcNow)
-        {
-            var deleteToken = await tokenRepository.RemoveAsync(token);
             throw new AlreadyExistsException("Refresh token timed out");
-        }
 
-        token.User = await userRepository.GetByIdAsync(token.UserId);
+        token.User = await userRepository.GetByIdAsync(token.UserId)
+            ?? throw new NotFoundException("Not Found User");
+        
+        var accessToken = jwtTokenHandler.GenerateAccessToken(token.User);
+        var refreshToken = jwtTokenHandler.GenerateRefreshToken();
 
-        token.AccessTokenId = new JwtSecurityTokenHandler()
-            .WriteToken(jwtTokenHandler.GenerateAccessToken(token.User).token);
-        token.UpdatedAt = DateTime.UtcNow;
+        token.AccessTokenId = accessToken.jti;
+        token.RefreshToken = refreshToken.refreshToken;
+        token.ExpireRefreshToken = refreshToken.expireDate;
 
         token = await tokenRepository.UpdateAsync(token);
 
         var newTokenDto = new TokenDto(
-            token.AccessTokenId,
-            token.RefreshToken,
+            new JwtSecurityTokenHandler().WriteToken(accessToken.token),
+            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,""),
             token.ExpireRefreshToken);
 
         return newTokenDto;
     }
-    public async Task<bool> DeleteTokenAsync(TokenDto tokenDto)
+    public async Task<bool> DeleteTokenAsync(string jti)
     {
         var token = await tokenRepository
                         .GetAllAsQueryable()
-                        .FirstOrDefaultAsync(t => t.AccessTokenId == tokenDto.AccessToken
-                                                  && t.RefreshToken == tokenDto.RefreshToken)
+                        .FirstOrDefaultAsync(t => t.AccessTokenId == jti)
                     ?? throw new NotFoundException("Not Found Token");
 
         var deleteToken = await tokenRepository.RemoveAsync(token);

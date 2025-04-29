@@ -1,6 +1,8 @@
 using AuthService.Services;
 using Entity.DataTransferObjects.Authentication;
+using Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
+using WebCore.Attributes;
 using WebCore.Controllers;
 using WebCore.Models;
 
@@ -21,6 +23,7 @@ public class AuthController(IAuthService authService) : ApiControllerBase
         => ResponseModel<TokenDto>.ResultFromContent(await authService.RefreshTokenAsync(tokenDto));
     
     [HttpDelete]
-    public async Task<ResponseModel<bool>> LogOut([FromBody]TokenDto tokenDto)
-        => ResponseModel<bool>.ResultFromContent(await authService.DeleteTokenAsync(tokenDto));
+    [PermissionAuthorize(UserPermissions.LogOut)]
+    public async Task<ResponseModel<bool>> LogOut()
+        => ResponseModel<bool>.ResultFromContent(await authService.DeleteTokenAsync(Jti));
 }

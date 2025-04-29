@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using AuthenticationBroker.Options;
 using Entity.Models;
+using Entity.Models.Auth;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

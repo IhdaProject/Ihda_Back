@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using Entity.Models;
+using Entity.Models.Auth;
 
 namespace AuthenticationBroker.TokenHandler;
 

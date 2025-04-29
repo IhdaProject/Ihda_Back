@@ -2,5 +2,5 @@
 
 public enum TokenTypes
 {
-    Normal,
+    Normal = 1
 }

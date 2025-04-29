@@ -9,4 +9,6 @@ public class District : ModelBase<long>
 {
     [Column("name")] public string Name { get; set; }
     [Column("code")] public int Code { get; set; }
+    [Column("region_id"),ForeignKey(nameof(Region))] public long RegionId { get; set; }
+    public virtual Region Region { get; set; }
 }

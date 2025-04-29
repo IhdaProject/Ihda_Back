@@ -8,4 +8,6 @@ public class Region : ModelBase<long>
 {
     [Column("name")] public string Name { get; set; }
     [Column("code")] public int Code { get; set; }
+    [Column("country_id"),ForeignKey(nameof(Country))] public long CountryId { get; set; }
+    public virtual Country Country { get; set; }
 }
