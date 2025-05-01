@@ -1,5 +1,5 @@
 using System.Text;
-using System.Text.Json;
+using Entity.Helpers;
 using Serilog;
 
 namespace WebCore.Middlewares;
@@ -50,10 +50,7 @@ public class RequestResponseLoggingMiddleware : IMiddleware
             Body = body
         };
 
-        return JsonSerializer.Serialize(requestInfo, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
+        return SerializerHelper.ToJsonString(requestInfo);
     }
     private static async Task<string> FormatResponseAsync(HttpContext context)
     {
@@ -68,9 +65,6 @@ public class RequestResponseLoggingMiddleware : IMiddleware
             Body = bodyText
         };
 
-        return JsonSerializer.Serialize(responseInfo, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
+        return SerializerHelper.ToJsonString(responseInfo);
     }
 }

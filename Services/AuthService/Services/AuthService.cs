@@ -76,7 +76,7 @@ public class AuthService(
 
         var tokenDto = new TokenDto(
             new JwtSecurityTokenHandler().WriteToken(accessToken.token),
-            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,""),
+            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,"", token.ExpireRefreshToken),
             token.ExpireRefreshToken);
 
         return tokenDto;
@@ -111,7 +111,7 @@ public class AuthService(
 
         var newTokenDto = new TokenDto(
             new JwtSecurityTokenHandler().WriteToken(accessToken.token),
-            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,""),
+            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,"", token.ExpireRefreshToken),
             token.ExpireRefreshToken);
 
         return newTokenDto;

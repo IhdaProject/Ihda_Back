@@ -1,7 +1,9 @@
+using DatabaseBroker.Extensions;
 using Entity.DataTransferObjects.Role;
 using Entity.Exeptions;
 using Entity.Models;
 using DatabaseBroker.Repositories.Auth;
+using Entity.Models.ApiModels;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +15,7 @@ public class RoleService(
     IStructurePermissionRepository structurePermissionsRepository)
     : IRoleService
 {
-    public async Task<StructureDto> CreateStructureAsync(
-        StructureForCreationDto structureForCreationDto)
+    public async Task<StructureDto> CreateStructureAsync(StructureForCreationDto structureForCreationDto)
     {
         var newStructure = new Structure
         {
@@ -38,9 +39,7 @@ public class RoleService(
                         p.Permission.Name))
                 .ToList());
     }
-
-    public async Task<StructureDto> ModifyStructureAsync(
-        StructureDto structure)
+    public async Task<StructureDto> ModifyStructureAsync(StructureDto structure)
     {
         var newStructure = await structureRepository.GetByIdAsync(structure.Id)
             ?? throw new NotFoundException("Not found structure");
@@ -69,13 +68,11 @@ public class RoleService(
 
         return true;
     }
-    public async Task<List<StructureDto>> RetrieveStructureAsync(string name)
+    public async Task<List<StructureDto>> RetrieveStructureAsync(MetaQueryModel metaQueryModel)
     {
         var query = structureRepository
-            .GetAllAsQueryable();
-        
-        if(!string.IsNullOrEmpty(name))
-            query = query.Where(s => s.Name.Contains(name));
+            .GetAllAsQueryable()
+            .FilterByExpressions(metaQueryModel);
 
         return await query.Select(s =>
             new StructureDto(
@@ -102,7 +99,7 @@ public class RoleService(
         return permissionDto;
     }
 
-    public Task<List<PermissionDto>> RetrievePermissionAsync(string name)
+    public Task<List<PermissionDto>> RetrievePermissionAsync(MetaQueryModel metaQueryModel)
     {
         throw new NotImplementedException();
     }
@@ -121,7 +118,7 @@ public class RoleService(
             newStructurePermission.StructureId,
             newStructurePermission.PermissionId);
     }
-    public Task<List<StructurePermissionDto>> RetrieveStructurePermissionByStructureIdAsync(long structureId)
+    public Task<List<StructurePermissionDto>> RetrieveStructurePermissionByStructureIdAsync(MetaQueryModel metaQueryModel)
     {
         throw new NotImplementedException();
     }

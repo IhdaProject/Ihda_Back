@@ -15,9 +15,4 @@ public class StructurePermission : AuditableModelBase<long>
     public long PermissionId { get; set; }
 
     public virtual Permission Permission { get; set; }
-
-    [Column("granted_by_id"), ForeignKey(nameof(GrantedBy))]
-    public long GrantedById { get; set; }
-
-    [NotMapped] public virtual User GrantedBy { get; set; }
 }

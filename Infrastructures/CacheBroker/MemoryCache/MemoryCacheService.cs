@@ -40,5 +40,5 @@ public class MemoryCacheService/*(IMemoryCache memoryCache) */: ICacheService
     }
 
     public Task<bool> HasKeyAsync(string key)
-        => throw new NotImplementedException(); //Task.FromResult(memoryCache.TryGetValue(key, out _));
+        => Task.FromResult(false);
 }

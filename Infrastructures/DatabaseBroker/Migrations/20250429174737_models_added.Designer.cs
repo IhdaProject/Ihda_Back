@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DatabaseBroker.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DatabaseBroker.Migrations
 {
     [DbContext(typeof(IhdaDataContext))]
-    partial class IhdaDataContextModelSnapshot : ModelSnapshot
+    [Migration("20250429174737_models_added")]
+    partial class models_added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,6 +150,10 @@ namespace DatabaseBroker.Migrations
                     b.Property<long>("CreatedBy")
                         .HasColumnType("bigint")
                         .HasColumnName("created_by");
+
+                    b.Property<long>("GrantedById")
+                        .HasColumnType("bigint")
+                        .HasColumnName("granted_by_id");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("boolean")

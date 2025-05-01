@@ -17,6 +17,7 @@ using NCrontab;
 using Serilog;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
+using WebCore.Constants;
 using WebCore.CronSchedulers;
 using WebCore.Filters;
 using WebCore.Middlewares;
@@ -260,6 +261,33 @@ public static class ConfigureApplication
                 dataContext.Permissions.RemoveRange(removedCodes);
                 await dataContext.SaveChangesAsync();
             }
+
+            #region default Structure data
+            if (!await dataContext.Structures.AnyAsync(s => s.IsDefault))
+            {
+                int[] defaultPermission = [(int)UserPermissions.LogOut];
+
+                await dataContext.Structures.AddAsync(new Structure()
+                {
+                    Id = 1,
+                    IsDefault = true,
+                    Name = "Default",
+                    StructurePermissions = dataContext.Permissions
+                        .Where(p => defaultPermission.Contains(p.Code))
+                        .Select(p => new StructurePermission()
+                            {
+                                PermissionId = p.Id
+                            })
+                        .ToList()
+                });
+            
+                await dataContext.SaveChangesAsync();
+            }
+            #endregion
+            
+            StaticCache.Permissions = await dataContext.Structures
+                .Select(s => new { s.Id, permissionCodes = s.StructurePermissions.Select(sp => sp.Permission.Code)})
+                .ToDictionaryAsync(s => s.Id, s => s.permissionCodes.ToList());;
 
             Log.Information("Permissions synchronization finished successfully.");
         }
