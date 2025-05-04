@@ -35,7 +35,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<ISignMethodsRepository, SignMethodsRepository>();
-        services.AddScoped<ICacheService, MemoryCacheService>();
 
         return services;
     }

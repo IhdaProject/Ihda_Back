@@ -3,6 +3,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using AuthenticationBroker.Options;
 using CacheBroker.Interfaces;
+using CacheBroker.MemoryCache;
+using CacheBroker.RedisCache;
 using DatabaseBroker.DataContext;
 using Entity.Enums;
 using Entity.Models.Auth;
@@ -191,7 +193,11 @@ public static class ConfigureApplication
                 };
             });
 
-
+        if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
+            builder.Services.AddScoped<ICacheService, RedisCacheService>();
+        else 
+            builder.Services.AddScoped<ICacheService, MemoryCacheService>();
+        
         builder.Services.AddScoped<RequestResponseLoggingMiddleware>();
         builder.Services.AddScoped<GlobalExceptionHandlerMiddleware>();
     }
@@ -204,15 +210,13 @@ public static class ConfigureApplication
             options.SwaggerEndpoint("/swagger/Client/swagger.json", "Client API");
             options.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API");
         });
-        using var scope = app.Services.CreateScope();
+        /*using var scope = app.Services.CreateScope();
         await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
         Log.Information("{0}", "Migrations applying...");
         await dataContext?.Database.MigrateAsync()!;
         Log.Information("{0}", "Migrations applied.");
         scope.Dispose();
 
-
-        app.UseCors();
         app.UseHealthChecks("/healths");
 
         app.UseMiddleware<RequestResponseLoggingMiddleware>();
@@ -220,7 +224,7 @@ public static class ConfigureApplication
 
         await app.SynchronizePermissions();
         
-        Log.Fatal("Application starting...");
+        Log.Fatal("Application starting...");*/
     }
 
     private static async Task SynchronizePermissions(this WebApplication app)

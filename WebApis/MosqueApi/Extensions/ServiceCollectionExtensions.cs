@@ -24,8 +24,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddScoped<IMosqueRepository, MosqueRepository>();
-        services.AddScoped<ICacheService, MemoryCacheService>();
-
+        services.AddScoped<IMosquePrayerTimeRepository, MosquePrayerTimeRepository>();
 
         return services;
     }
