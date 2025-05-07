@@ -210,21 +210,21 @@ public static class ConfigureApplication
             options.SwaggerEndpoint("/swagger/Client/swagger.json", "Client API");
             options.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API");
         });
-        /*using var scope = app.Services.CreateScope();
-        await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
+        //using var scope = app.Services.CreateScope();
+        //await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
         Log.Information("{0}", "Migrations applying...");
-        await dataContext?.Database.MigrateAsync()!;
+        //await dataContext?.Database.MigrateAsync()!;
         Log.Information("{0}", "Migrations applied.");
-        scope.Dispose();
+        //scope.Dispose();
 
         app.UseHealthChecks("/healths");
 
         app.UseMiddleware<RequestResponseLoggingMiddleware>();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
-        await app.SynchronizePermissions();
+        //await app.SynchronizePermissions();
         
-        Log.Fatal("Application starting...");*/
+        Log.Fatal("Application starting...");
     }
 
     private static async Task SynchronizePermissions(this WebApplication app)

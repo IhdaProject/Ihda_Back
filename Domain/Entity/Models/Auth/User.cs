@@ -3,7 +3,6 @@ using Entity.Enums;
 using Entity.Models.Common;
 
 namespace Entity.Models.Auth;
-
 [Table("users", Schema = "auth")]
 public class User : AuditableModelBase<long>
 {
