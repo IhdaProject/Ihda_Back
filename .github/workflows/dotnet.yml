@@ -47,3 +47,9 @@ jobs:
 
     - name: Build PrayerTimeApi
       run: dotnet build WebApis/PrayerTimeApi/PrayerTimeApi.csproj --no-restore
+
+    - name: Restore dependencies for QuranCourseApi
+      run: dotnet restore WebApis/QuranCourseApi/QuranCourseApi.csproj
+
+    - name: Build QuranCourseApi
+      run: dotnet build WebApis/QuranCourseApi/QuranCourseApi.csproj --no-restore
