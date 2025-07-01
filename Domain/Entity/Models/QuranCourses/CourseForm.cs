@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Entity.Enums;
 using Entity.Models.Common;
 
 namespace Entity.Models.QuranCourses;
@@ -9,6 +10,7 @@ public class CourseForm : ModelBase<long>
     [Column("description")]public string Description { get; set; }
     [Column("admission_quota")]public int AdmissionQuota { get; set; }
     [Column("duration")]public int Duration { get; set; }
+    [Column("for_gender")]public Gender ForGender { get; set; }
     [Column("working_hours", TypeName = "jsonb")]public WorkingHour TransitionTime { get; set; }
     [Column("training_center_id"),ForeignKey(nameof(TrainingCenter))] public long TrainingCenterId { get; set; }
     public virtual TrainingCenter TrainingCenter { get; set; }

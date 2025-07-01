@@ -10,4 +10,12 @@ public class QuranCourseService : IQuranCourseService
     {
         throw new NotImplementedException();
     }
+    public Task<ResponseModel<List<CourseFormDto>>> GetCoursesFormAsync(MetaQueryModel queryModel)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<ResponseModel<PetitionForQuranCourseDto>> CreatePetitionAsync(PetitionForQuranCourseDto petition)
+    {
+        throw new NotImplementedException();
+    }
 }

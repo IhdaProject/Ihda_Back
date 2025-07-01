@@ -1,6 +1,7 @@
 using Entity.DataTransferObjects.StaticFiles;
 using Microsoft.AspNetCore.Mvc;
 using StaticFileService.Service;
+using WebCore.Attributes;
 using WebCore.Models;
 
 namespace AssetApi.Controllers;
@@ -8,7 +9,7 @@ namespace AssetApi.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
 [RequestFormLimits(MultipartBodyLengthLimit = (long)1024 * 1024 * 1024 * 1024)]
-[ApiExplorerSettings(GroupName = "Client")]
+[ApiGroup("Client")]
 public class StaticFileController(IStaticFileService staticFileService) : ControllerBase
 {
     [HttpPost]

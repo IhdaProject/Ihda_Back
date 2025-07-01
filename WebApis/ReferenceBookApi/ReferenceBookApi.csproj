@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\WebCore\WebCore.csproj" />
+      <ProjectReference Include="..\..\Services\ReferenceBookService\ReferenceBookService.csproj" />
     </ItemGroup>
 
 </Project>

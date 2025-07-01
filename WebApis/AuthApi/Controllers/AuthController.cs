@@ -7,7 +7,7 @@ using WebCore.Controllers;
 using WebCore.Models;
 
 namespace AuthApi.Controllers;
-[ApiExplorerSettings(GroupName = "Client")]
+[ApiGroup("Client")]
 public class AuthController(IAuthService authService) : ApiControllerBase
 {
     [HttpPost]

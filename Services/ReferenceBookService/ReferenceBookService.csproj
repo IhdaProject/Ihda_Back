@@ -7,4 +7,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Domain\Entity\Entity.csproj" />
+      <ProjectReference Include="..\..\Domain\WebCore\WebCore.csproj" />
+    </ItemGroup>
+
 </Project>

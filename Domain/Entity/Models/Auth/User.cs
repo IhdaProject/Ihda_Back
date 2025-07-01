@@ -8,7 +8,7 @@ public class User : AuditableModelBase<long>
 {
     [Column("full_name")] public string FullName { get; set; }
     [Column("birth_date")] public DateTime? BirthDate { get; set; }
-    [Column("gender")] public Gender Gender { get; set; } = Gender.NoSelect;
+    [Column("gender")] public Gender Gender { get; set; }
     [Column("pinfl")] public string? Pinfl { get; set; }
     [NotMapped] public virtual IEnumerable<SignMethod> SignMethods { get; set; }
     [Column("structure_id"), ForeignKey("Structure")]

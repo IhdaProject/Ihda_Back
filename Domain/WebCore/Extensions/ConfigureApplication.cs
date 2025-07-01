@@ -19,6 +19,7 @@ using NCrontab;
 using Serilog;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
+using WebCore.Attributes;
 using WebCore.Constants;
 using WebCore.CronSchedulers;
 using WebCore.Filters;
@@ -120,6 +121,15 @@ public static class ConfigureApplication
             
             options
                 .SwaggerDoc("Admin",new OpenApiInfo{Title = AppDomain.CurrentDomain.FriendlyName});
+            
+            options.DocInclusionPredicate((docName, apiDesc) =>
+            {
+                var apiGroupAttribute = apiDesc.ActionDescriptor.EndpointMetadata
+                    .OfType<ApiGroupAttribute>()
+                    .FirstOrDefault();
+
+                return apiGroupAttribute != null && apiGroupAttribute.GroupNames.Contains(docName);
+            });
             
             options
                 .AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()

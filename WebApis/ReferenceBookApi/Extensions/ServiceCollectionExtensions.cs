@@ -1,3 +1,5 @@
+using ReferenceBookService.Services;
+
 namespace ReferenceBookApi.Extensions;
 
 public static class ServiceCollectionExtensions
@@ -9,6 +11,7 @@ public static class ServiceCollectionExtensions
     }
     public static IServiceCollection AddService(this IServiceCollection services)
     {
+        services.AddScoped<ILocationRbService, LocationRbService>();
         return services;
     }
 

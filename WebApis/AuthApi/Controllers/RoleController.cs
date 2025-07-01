@@ -2,11 +2,12 @@ using Entity.DataTransferObjects.Role;
 using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using RoleService.Service;
+using WebCore.Attributes;
 using WebCore.Controllers;
 using WebCore.Models;
 
 namespace AuthApi.Controllers;
-[ApiExplorerSettings(GroupName = "Client")]
+[ApiGroup("Client")]
 public class RoleController(IRoleService structureService) : ApiControllerBase
 {
     [HttpGet]

@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddService(this IServiceCollection services)
     {
         services.AddScoped<IQuranCourseService, QuranCourseService.Services.QuranCourseService>();
+        services.AddScoped<ITrainingCenterService, TrainingCenterService>();
         return services;
     }
 

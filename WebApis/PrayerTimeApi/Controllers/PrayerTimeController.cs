@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
+using WebCore.Attributes;
 using WebCore.Controllers;
 
 namespace PrayerTimeApi.Controllers;
 
-[ApiExplorerSettings(GroupName = "Client")]
+[ApiGroup("Client")]
 public class PrayerTimeController : ApiControllerBase
 {
     

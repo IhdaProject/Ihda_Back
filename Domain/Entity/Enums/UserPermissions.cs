@@ -16,4 +16,13 @@ public enum UserPermissions
         #region Role Controller 11
         #endregion
     #endregion
+
+    #region QuranCourse 60
+        #region TrainingCenter Controller 10
+            OnSaveTrainingCenter = 60100001,
+
+        #endregion
+    
+
+    #endregion
 }
