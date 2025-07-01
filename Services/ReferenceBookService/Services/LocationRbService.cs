@@ -25,4 +25,14 @@ public class LocationRbService : ILocationRbService
     {
         throw new NotImplementedException();
     }
+
+    public Task<ResponseModel<RegionDto>> OnSaveRegionAsync(RegionDto region)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ResponseModel<DistrictDto>> OnSaveDistrictAsync(DistrictDto district)
+    {
+        throw new NotImplementedException();
+    }
 }

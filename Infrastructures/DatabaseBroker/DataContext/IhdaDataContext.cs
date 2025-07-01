@@ -3,6 +3,7 @@ using Entity.Models;
 using Entity.Models.Auth;
 using Entity.Models.Common;
 using Entity.Models.Mosques;
+using Entity.Models.QuranCourses;
 using Entity.Models.ReferenceBook;
 using Entity.Models.StaticFiles;
 using Microsoft.EntityFrameworkCore;
@@ -134,5 +135,13 @@ public class IhdaDataContext : DbContext
     public DbSet<District> Districts { get; set; }
     public DbSet<PrayerTimeStyle> PrayerTimeStyles { get; set; }
     public DbSet<CalculatingCentury> CalculatingCenturies { get; set; }
+    #endregion
+
+    #region Quran Course
+    public DbSet<TrainingCenter> TrainingCenters { get; set; }
+    public DbSet<CourseForm> CourseForms { get; set; }
+    public DbSet<Course> Courses { get; set; }
+    public DbSet<CourseFormTeacher> CourseFormTeachers { get; set; }
+    public DbSet<PetitionForQuranCourse> PetitionForQuranCourses { get; set; }
     #endregion
 }
