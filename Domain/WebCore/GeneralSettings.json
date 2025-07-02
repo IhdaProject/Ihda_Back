@@ -1,4 +1,7 @@
 {
+  "ConnectionStrings": {
+    "DefaultConnectionString": "host=127.0.0.1;port=5432;database=ihda_db;Username=postgres;password=1234"
+  },
   "JwtOption": {
     "Issuer": "<ihda_back_nimadurlar>",
     "Audience": "ihda_back_nimadurlar",

@@ -7,25 +7,27 @@ using WebCore.Attributes;
 using WebCore.Controllers;
 using WebCore.Models;
 
-
 namespace QuranCourseApi.Controllers;
 
-[ApiGroup("Admin")]
 public class TrainingCenterController(ITrainingCenterService trainingCenterService) : ApiControllerBase
 {
     [HttpPost, PermissionAuthorize(UserPermissions.OnSaveTrainingCenter)]
+    [ApiGroup("Admin")]
     public async Task<ResponseModel<TrainingCenterDto>> OnSaveTrainingCenter([FromBody]TrainingCenterDto trainingCenter)
         => await trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);
     [HttpGet]
+    [ApiGroup("Admin", "Client")]
     public async Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCenter([FromQuery]MetaQueryModel metaQuery)
         => await trainingCenterService.GetTrainingCentersAsync(metaQuery);
     [HttpGet]
     public async Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterById([FromRoute]long id)
         => await trainingCenterService.GetTrainingCenterByIdAsync(id);
     [HttpPost]
+    [ApiGroup("Admin")]
     public async Task<ResponseModel<CourseFormDto>> OnSaveCourseForm([FromBody]CourseFormDto courseForm)
         => await trainingCenterService.OnSaveCourseFormAsync(courseForm);
     [HttpGet]
+    [ApiGroup("Admin", "Client")]
     public async Task<ResponseModel<List<CourseFormDto>>> GetCourseForm([FromQuery]MetaQueryModel metaQuery)
         => await trainingCenterService.GetCourseFormsAsync(metaQuery);
     [HttpGet]

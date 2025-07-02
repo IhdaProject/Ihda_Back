@@ -4,9 +4,9 @@ using Entity.Models.ReferenceBook;
 
 namespace Entity.MappingProfile;
 
-public class RegionMappingProfile : Profile
+public class TrainingCenterMappingProfile : Profile
 {
-    public RegionMappingProfile()
+    public TrainingCenterMappingProfile()
     {
         CreateMap<Region, RegionDto>();
         CreateMap<RegionDto, Region>();

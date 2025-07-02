@@ -1,3 +1,6 @@
 namespace Entity.DataTransferObjects.ReferenceBook;
 
-public record CountryDto();
+public record CountryDto(
+    long Id,
+    string Name,
+    int Code);
