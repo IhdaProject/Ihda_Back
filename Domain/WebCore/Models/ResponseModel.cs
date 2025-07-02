@@ -132,10 +132,11 @@ public class ResponseModel<T>
         StackTrace = exception?.StackTrace;
     }
 
-    public ResponseModel(T content, HttpStatusCode code = HttpStatusCode.OK)
+    public ResponseModel(T content, HttpStatusCode code = HttpStatusCode.OK, int? total = null)
     {
         Content = content;
         Code = code;
+        Total = total;
     }
 
     public ResponseModel(HttpStatusCode code)
@@ -159,8 +160,8 @@ public class ResponseModel<T>
         StackTrace = errorResponse.StackTrace;
     }
 
-    public static ResponseModel<T> ResultFromContent(T content, HttpStatusCode statusCode = HttpStatusCode.OK) =>
-        new(content, statusCode);
+    public static ResponseModel<T> ResultFromContent(T content, HttpStatusCode statusCode = HttpStatusCode.OK, int? total = null) =>
+        new(content, statusCode,  total);
 
     public static implicit operator ResponseModel<T>(Exception exception) =>
         new(exception);

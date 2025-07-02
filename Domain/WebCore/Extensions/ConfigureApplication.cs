@@ -6,6 +6,7 @@ using CacheBroker.Interfaces;
 using CacheBroker.MemoryCache;
 using CacheBroker.RedisCache;
 using DatabaseBroker.DataContext;
+using DatabaseBroker.Repositories;
 using Entity.Enums;
 using Entity.Models.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -79,6 +80,9 @@ public static class ConfigureApplication
                 optionsBuilder.UseLoggerFactory(new SerilogLoggerFactory(Log.Logger));
                 optionsBuilder.UseLazyLoadingProxies();
             });
+        
+        builder.Services.AddScoped(typeof(GenericRepository<,>));
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         
         builder.Services.AddMemoryCache();
 

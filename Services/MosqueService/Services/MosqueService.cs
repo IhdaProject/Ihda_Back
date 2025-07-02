@@ -1,4 +1,4 @@
-using DatabaseBroker.Repositories.Mosques;
+using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects.Mosques;
 using Entity.DataTransferObjects.PrayerTimes;
 using Entity.Exeptions;
@@ -9,12 +9,12 @@ using WebCore.Models;
 
 namespace MosqueService.Services;
 
-public class MosqueService(IMosqueRepository mosqueRepository,
-    IMosquePrayerTimeRepository prayerTimeRepository) : IMosqueService
+public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
+    GenericRepository<MosquePrayerTime, long> prayerTimeRepository) : IMosqueService
 {
     public async Task<ResponseModel<List<MosqueByListDto>>> GetListAsync(MetaQueryModel queryModel)
     {
-        var query = mosqueRepository.Where(m => !m.IsDelete);
+        var query = mosqueRepository.GetAllAsQueryable().Where(m => !m.IsDelete);
 
         return new ResponseModel<List<MosqueByListDto>>(await query.Skip(queryModel.Skip).Take(queryModel.Take)
             .Select(m => new MosqueByListDto(m.Id, m.Name, m.Latitude, m.Longitude)).ToListAsync())
@@ -40,7 +40,7 @@ public class MosqueService(IMosqueRepository mosqueRepository,
         Mosque mosque;
         if (mosqueDto.Id == 0)
         {
-            mosque = await mosqueRepository.AddAsync(new Mosque()
+            mosque = await mosqueRepository.AddWithSaveChangesAsync(new Mosque()
             {
                 Name = mosqueDto.Name,
                 Description = mosqueDto.Description,
@@ -70,7 +70,7 @@ public class MosqueService(IMosqueRepository mosqueRepository,
         MosquePrayerTime mosquePrayerTime;
         if (mosquePrayerTimeDto.Id == 0)
         {
-            mosquePrayerTime = await prayerTimeRepository.AddAsync(new MosquePrayerTime()
+            mosquePrayerTime = await prayerTimeRepository.AddWithSaveChangesAsync(new MosquePrayerTime()
             {
                 AdhamFajr = mosquePrayerTimeDto.AdhamFajr,
                 AdhamDhuhr = mosquePrayerTimeDto.AdhamDhuhr,

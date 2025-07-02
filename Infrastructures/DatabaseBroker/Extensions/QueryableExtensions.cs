@@ -68,6 +68,9 @@ public static class QueryableExtensions
     
     public static IQueryable<T> Sort<T>(this IQueryable<T> queryable, MetaQueryModel query)
     {
+        if (query.SortingExpressions is null)
+            return queryable;
+        
         var one = true;
         foreach (var sortData in query.SortingExpressions?.Where(sort => !string.IsNullOrEmpty(sort.SortFieldName)).Select(sort => new { PropertyName = sort.SortFieldName, sort.Direction })!)
         {
