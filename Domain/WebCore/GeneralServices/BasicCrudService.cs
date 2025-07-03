@@ -16,7 +16,7 @@ public class BasicCrudService<TIn, TOut, TId>(GenericRepository<TIn, TId> repasi
     where TIn : ModelBase<TId>
     where TOut : BaseDto<TId>
 {
-    public async Task<ResponseModel<TOut>> OnSaveAsync(TOut model)
+    public virtual async Task<ResponseModel<TOut>> OnSaveAsync(TOut model)
     {
         if (EqualityComparer<TId>.Default.Equals(model.Id, default))
             return ResponseModel<TOut>.ResultFromContent(
@@ -24,13 +24,13 @@ public class BasicCrudService<TIn, TOut, TId>(GenericRepository<TIn, TId> repasi
                     await repasitory.AddWithSaveChangesAsync(
                         mapper.Map<TIn>(model))),HttpStatusCode.Created);
 
-        var entity = await repasitory.GetByIdAsync(model.Id) ?? throw new NotFoundException($"Not found {nameof(TIn)}");
+        var entity = await repasitory.GetByIdAsync(model.Id) ?? throw new NotFoundException($"Not found {typeof(TIn).Name}");
         mapper.Map(model, entity);
         await repasitory.UpdateWithSaveChangesAsync(entity);
 
         return ResponseModel<TOut>.ResultFromContent(mapper.Map<TOut>(entity));
     }
-    public async Task<ResponseModel<List<TOut>>> GetAllAsync(MetaQueryModel metaQuery)
+    public virtual async Task<ResponseModel<List<TOut>>> GetAllAsync(MetaQueryModel metaQuery)
     {
         var query = repasitory.GetAllAsQueryable()
             .FilterByExpressions(metaQuery);
@@ -47,7 +47,7 @@ public class BasicCrudService<TIn, TOut, TId>(GenericRepository<TIn, TId> repasi
             items,
             total: totalCount);
     }
-    public async Task<ResponseModel<TOut>> GetByIdAsync(TId id)
+    public virtual async Task<ResponseModel<TOut>> GetByIdAsync(TId id)
         => ResponseModel<TOut>.ResultFromContent(
-            mapper.Map<TOut>(await repasitory.GetByIdAsync(id)));
+            mapper.Map<TOut>(await repasitory.GetByIdAsync(id))) ?? throw new NotFoundException($"Not found {typeof(TOut).Name}");
 }

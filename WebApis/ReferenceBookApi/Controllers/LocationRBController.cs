@@ -26,6 +26,10 @@ public class LocationRbController(ILocationRbService locationRbService,
     [ApiGroup("Client", "Admin")]
     public Task<ResponseModel<List<RegionDto>>> GetRegions([FromQuery]MetaQueryModel metaQuery)
         => regionService.GetAllAsync(metaQuery);
+    [HttpGet]
+    [ApiGroup("Client", "Admin")]
+    public Task<ResponseModel<RegionDto>> GetByIdRegion([FromRoute]long id)
+        => regionService.GetByIdAsync(id);
     [HttpPost]
     [ApiGroup("Admin")]
     public Task<ResponseModel<RegionDto>> OnSaveRegion([FromBody]RegionDto region)

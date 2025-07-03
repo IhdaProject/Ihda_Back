@@ -24,7 +24,7 @@ public class GenericCrudService<TIn, TOut, TId>(GenericRepository<TIn, TId> repa
                     await repasitory.AddWithSaveChangesAsync(
                         mapper.Map<TIn>(model))),HttpStatusCode.Created);
 
-        var entity = await repasitory.GetByIdAsync(model.Id) ?? throw new NotFoundException($"Not found {nameof(TIn)}");
+        var entity = await repasitory.GetByIdAsync(model.Id) ?? throw new NotFoundException($"Not found {typeof(TIn).Name}");
         mapper.Map(model, entity);
         await repasitory.UpdateWithSaveChangesAsync(entity);
 
