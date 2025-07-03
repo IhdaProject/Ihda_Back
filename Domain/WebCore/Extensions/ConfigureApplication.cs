@@ -24,6 +24,7 @@ using WebCore.Attributes;
 using WebCore.Constants;
 using WebCore.CronSchedulers;
 using WebCore.Filters;
+using WebCore.GeneralServices;
 using WebCore.Middlewares;
 using WebCore.Models;
 
@@ -82,6 +83,7 @@ public static class ConfigureApplication
             });
         
         builder.Services.AddScoped(typeof(GenericRepository<,>));
+        builder.Services.AddScoped(typeof(GenericCrudService<,,>));
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         
         builder.Services.AddMemoryCache();

@@ -13,4 +13,4 @@ public record TrainingCenterDto(
     WorkingHour WorkingHours,
     double Latitude,
     double Longitude,
-    long DistrictId);
+    long DistrictId) : BaseDto<long>(Id);

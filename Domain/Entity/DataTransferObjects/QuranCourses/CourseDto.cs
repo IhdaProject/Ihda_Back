@@ -1,3 +1,3 @@
 namespace Entity.DataTransferObjects.QuranCourses;
 
-public record CourseDto();
+public record CourseDto(long Id) : BaseDto<long>(Id);

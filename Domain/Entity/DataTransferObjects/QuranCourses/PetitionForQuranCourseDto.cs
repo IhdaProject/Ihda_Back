@@ -9,4 +9,4 @@ public record PetitionForQuranCourseDto(
     string Pinfl,
     string Passport,
     DateTime BirthDay,
-    Gender Gender);
+    Gender Gender) : BaseDto<long>(Id);

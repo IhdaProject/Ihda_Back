@@ -11,4 +11,4 @@ public record CourseFormDto(
     int Duration,
     Gender ForGender,
     WorkingHour TransitionTime,
-    long TrainingCenterId);
+    long TrainingCenterId) : BaseDto<long>(Id);

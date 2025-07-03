@@ -1,14 +1,14 @@
 using AutoMapper;
-using Entity.DataTransferObjects.ReferenceBook;
-using Entity.Models.ReferenceBook;
+using Entity.DataTransferObjects.QuranCourses;
+using Entity.Models.QuranCourses;
 
-namespace Entity.MappingProfile;
+namespace Entity.MappingProfile.QuranCourse;
 
 public class TrainingCenterMappingProfile : Profile
 {
     public TrainingCenterMappingProfile()
     {
-        CreateMap<Region, RegionDto>();
-        CreateMap<RegionDto, Region>();
+        CreateMap<TrainingCenter, TrainingCenterDto>();
+        CreateMap<TrainingCenterDto, TrainingCenter>();
     }
 }

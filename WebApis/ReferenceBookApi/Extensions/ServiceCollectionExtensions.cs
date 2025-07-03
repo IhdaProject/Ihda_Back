@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddService(this IServiceCollection services)
     {
         services.AddScoped<ILocationRbService, LocationRbService>();
+        services.AddScoped<ICountryService, CountryService>();
         return services;
     }
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
