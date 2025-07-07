@@ -4,7 +4,6 @@ using DatabaseBroker.Extensions;
 using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects;
 using Entity.Exeptions;
-using Entity.Models.ApiModels;
 using Entity.Models.Common;
 using Microsoft.EntityFrameworkCore;
 using WebCore.Models;
@@ -48,6 +47,19 @@ public class GenericCrudService<TIn, TOut, TId>(GenericRepository<TIn, TId> repa
             total: totalCount);
     }
     public async Task<ResponseModel<TOut>> GetByIdAsync(TId id)
-        => ResponseModel<TOut>.ResultFromContent(
-            mapper.Map<TOut>(await repasitory.GetByIdAsync(id)));
+    {
+        var item = await repasitory.GetByIdAsync(id) ??
+                   throw new NotFoundException($"Not found {typeof(TIn).Name}");
+        
+        return ResponseModel<TOut>.ResultFromContent(
+            mapper.Map<TOut>(item));
+    }
+    public async Task<ResponseModel<TOut>> DeleteByIdAsync(TId id)
+    {
+        var item = await repasitory.RemoveWithSaveChangesAsync(id) ??
+                   throw new NotFoundException($"Not found {typeof(TIn).Name}");
+        
+        return ResponseModel<TOut>.ResultFromContent(
+            mapper.Map<TOut>(item));
+    }
 }

@@ -48,6 +48,19 @@ public class BasicCrudService<TIn, TOut, TId>(GenericRepository<TIn, TId> repasi
             total: totalCount);
     }
     public virtual async Task<ResponseModel<TOut>> GetByIdAsync(TId id)
-        => ResponseModel<TOut>.ResultFromContent(
-            mapper.Map<TOut>(await repasitory.GetByIdAsync(id))) ?? throw new NotFoundException($"Not found {typeof(TOut).Name}");
+    {
+        var item = await repasitory.GetByIdAsync(id) ??
+                throw new NotFoundException($"Not found {typeof(TIn).Name}");
+        
+        return ResponseModel<TOut>.ResultFromContent(
+            mapper.Map<TOut>(item));
+    }
+    public async Task<ResponseModel<TOut>> DeleteByIdAsync(TId id)
+    {
+        var item = await repasitory.RemoveWithSaveChangesAsync(id) ??
+                   throw new NotFoundException($"Not found {typeof(TIn).Name}");
+        
+        return ResponseModel<TOut>.ResultFromContent(
+            mapper.Map<TOut>(item));
+    }
 }

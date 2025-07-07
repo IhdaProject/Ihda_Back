@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Linq.Expressions;
-using Entity.Models;
 using Entity.Models.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,8 +33,7 @@ public class RepositoryBase<T, TId>(DbContext dbContext) : IRepositoryBase<T, TI
 
     public async Task<T?> GetByIdAsync(TId id, bool asNoTracking = false,bool deleted = false)
     {
-        return await this.GetAllAsQueryable(asNoTracking)
-            .Where(e => e.IsDelete == deleted)
+        return await GetAllAsQueryable(asNoTracking, deleted)
             .FirstOrDefaultAsync(x => x.Id!.Equals(id));
     }
 
