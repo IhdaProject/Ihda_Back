@@ -43,8 +43,7 @@ public class GenericRepository<T, TId>(IhdaDataContext dbContext)
     }
     public async Task<T?> GetByIdAsync(TId id, bool asNoTracking = false,bool deleted = false)
     {
-        return await this.GetAllAsQueryable(asNoTracking)
-            .Where(e => e.IsDelete == deleted)
+        return await GetAllAsQueryable(asNoTracking, deleted)
             .FirstOrDefaultAsync(x => x.Id!.Equals(id));
     }
     public async Task AddRangeAsync(params T[] entities)
@@ -74,12 +73,12 @@ public class GenericRepository<T, TId>(IhdaDataContext dbContext)
             .Set<T>()
             .UpdateRange(entities);
     }
-    public async Task<T> RemoveWithSaveChangesAsync(T entity)
+    public async Task<T> RemoveWithSaveChangesAsync(TId id)
     {
         var existingEntity =
             await dbContext
             .Set<T>()
-            .FindAsync(entity.Id);
+            .FindAsync(id);
 
         if (existingEntity == null) return existingEntity;
         existingEntity.IsDelete = true;
