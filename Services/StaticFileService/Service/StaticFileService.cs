@@ -1,6 +1,6 @@
 using DatabaseBroker.Repositories.StaticFiles;
 using Entity.DataTransferObjects.StaticFiles;
-using Entity.Exeptions;
+using Entity.Exceptions;
 using Entity.Models.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 

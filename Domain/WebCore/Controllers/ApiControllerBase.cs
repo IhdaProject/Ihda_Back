@@ -10,6 +10,6 @@ namespace WebCore.Controllers;
 public abstract class ApiControllerBase : ControllerBase
 {
     protected long UserId => long.TryParse(User.FindFirstValue(CustomClaimNames.UserId), out var userId) ? userId : 0;
-    protected long StructureId => long.TryParse(User.FindFirstValue(CustomClaimNames.Structure), out var structureId) ? structureId : 0;
+    protected long StructureId => long.TryParse(User.FindFirstValue(CustomClaimNames.Structures), out var structureId) ? structureId : 0;
     protected string Jti => User.FindFirstValue(JwtRegisteredClaimNames.Jti) ?? string.Empty;
 }

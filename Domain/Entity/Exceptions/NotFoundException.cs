@@ -1,7 +1,7 @@
 ﻿using Entity.Enums;
 using Entity.Exceptions.Common;
 
-namespace Entity.Exeptions;
+namespace Entity.Exceptions;
 
 public sealed class NotFoundException : ApiExceptionBase
 {

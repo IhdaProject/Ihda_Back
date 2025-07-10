@@ -3,7 +3,7 @@ using AutoMapper;
 using DatabaseBroker.Extensions;
 using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects.ReferenceBook;
-using Entity.Exeptions;
+using Entity.Exceptions;
 using Entity.Models.ApiModels;
 using Entity.Models.ReferenceBook;
 using Microsoft.EntityFrameworkCore;

@@ -81,8 +81,6 @@ public class IhdaDataContext : DbContext
         TrackActionsAt();
         return base.SaveChangesAsync(cancellationToken);
     }
-
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

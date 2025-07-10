@@ -4,10 +4,10 @@ using DatabaseBroker.Repositories.Auth;
 using Entity.DataTransferObjects.Authentication;
 using Entity.Enums;
 using Entity.Exceptions;
-using Entity.Exeptions;
 using Entity.Helpers;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
+using WebCore.Constants;
 
 namespace AuthService.Services;
 
@@ -19,7 +19,7 @@ public class AuthService(
     IStructureRepository structureRepository)
     : IAuthService
 {
-    public async Task<bool> Register(UserRegisterDto userRegisterDto)
+    public async Task<bool> RegisterAsync(UserRegisterDto userRegisterDto)
     {
         var hasStoredUser = await signMethodsRepository.OfType<DefaultSignMethod>()
             .AnyAsync(x => x.Username == userRegisterDto.UserName);
@@ -33,7 +33,12 @@ public class AuthService(
             Pinfl = userRegisterDto.Pinfl,
             BirthDate = userRegisterDto.BirthDate.ToDateTime(new TimeOnly(0,0,0)),
             SignMethods = new List<SignMethod>(),
-            StructureId = (await structureRepository.FirstOrDefaultAsync(x => x.IsDefault))?.Id,
+            Structures = [
+                new UserStructure
+                {
+                    Structure = await structureRepository.FirstOrDefaultAsync(x => x.Type == 1)
+                }
+            ],
         };
 
         var storedUser = await userRepository.AddAsync(newUser);
@@ -47,7 +52,7 @@ public class AuthService(
         });
         return true;
     }
-    public async Task<TokenDto> SignByPassword(AuthenticationDto authenticationDto)
+    public async Task<TokenDto> SignByPasswordAsync(AuthenticationDto authenticationDto)
     {
         var signMethod = await signMethodsRepository.OfType<DefaultSignMethod>()
             .FirstOrDefaultAsync(x => x.Username == authenticationDto.UserName);
@@ -68,6 +73,7 @@ public class AuthService(
             UserId = user.Id,
             TokenType = TokenTypes.Normal,
             AccessTokenId = accessToken.jti,
+            ExpireToken = accessToken.expireDate,
             RefreshToken = refreshToken.refreshToken,
             ExpireRefreshToken = refreshToken.expireDate
         };
@@ -76,14 +82,14 @@ public class AuthService(
 
         var tokenDto = new TokenDto(
             new JwtSecurityTokenHandler().WriteToken(accessToken.token),
-            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,"", token.ExpireRefreshToken),
+            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,StaticCache.SymmetricKey, token.ExpireRefreshToken),
             token.ExpireRefreshToken);
 
         return tokenDto;
     }
     public async Task<TokenDto> RefreshTokenAsync(TokenDto tokenDto)
     {
-        var tokenModel = EncryptionHelper.DecryptStringWithTime(tokenDto.RefreshToken, "");
+        var tokenModel = EncryptionHelper.DecryptStringWithTime(tokenDto.RefreshToken, StaticCache.SymmetricKey);
         
         if(tokenModel.Timestamp < DateTime.UtcNow)
             throw new AlreadyExistsException("Refresh token timed out");
@@ -104,6 +110,7 @@ public class AuthService(
         var refreshToken = jwtTokenHandler.GenerateRefreshToken();
 
         token.AccessTokenId = accessToken.jti;
+        token.ExpireToken = accessToken.expireDate;
         token.RefreshToken = refreshToken.refreshToken;
         token.ExpireRefreshToken = refreshToken.expireDate;
 
@@ -111,7 +118,7 @@ public class AuthService(
 
         var newTokenDto = new TokenDto(
             new JwtSecurityTokenHandler().WriteToken(accessToken.token),
-            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,"", token.ExpireRefreshToken),
+            EncryptionHelper.EncryptStringWithTime(token.RefreshToken, token.Id,StaticCache.SymmetricKey, token.ExpireRefreshToken),
             token.ExpireRefreshToken);
 
         return newTokenDto;

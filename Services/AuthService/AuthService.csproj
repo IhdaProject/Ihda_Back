@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\Entity\Entity.csproj" />
+      <ProjectReference Include="..\..\Domain\WebCore\WebCore.csproj" />
       <ProjectReference Include="..\..\Infrastructures\AuthenticationBroker\AuthenticationBroker.csproj" />
       <ProjectReference Include="..\..\Infrastructures\DatabaseBroker\DatabaseBroker.csproj" />
     </ItemGroup>
