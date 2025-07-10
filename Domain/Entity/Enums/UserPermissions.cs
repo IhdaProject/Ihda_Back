@@ -11,6 +11,7 @@ public enum UserPermissions
     #region AuthApi project 10
         #region Auth Controller 10
             LogOut = 10100001,
+            ViewMyPermissions = 10100002,
             #endregion
 
         #region Role Controller 11

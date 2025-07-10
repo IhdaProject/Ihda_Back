@@ -8,4 +8,5 @@ public interface IAuthService
     Task<TokenDto> SignByPasswordAsync(AuthenticationDto authenticationDto);
     Task<TokenDto> RefreshTokenAsync(TokenDto tokenDto);
     Task<bool> DeleteTokenAsync(string jti);
+    Task<List<int>> GetUserPermissionsAsync(long userId);
 }

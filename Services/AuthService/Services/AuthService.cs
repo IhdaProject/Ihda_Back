@@ -134,4 +134,16 @@ public class AuthService(
 
         return deleteToken.Id == token.Id;
     }
+    public Task<List<int>> GetUserPermissionsAsync(long userId)
+    {
+        return userRepository.GetAllAsQueryable()
+            .Where(u => u.Id == userId)
+            .SelectMany(u =>
+                u.Structures
+                    .SelectMany(s =>
+                        s.Structure.StructurePermissions
+                            .Select(sp => sp.Permission.Code))
+                    .ToList())
+            .ToListAsync();
+    }
 }

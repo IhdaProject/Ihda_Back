@@ -8,5 +8,6 @@ public record PetitionForQuranCourseDto(
     string FullName,
     string Pinfl,
     string Passport,
+    string PhoneNumber,
     DateTime BirthDay,
     Gender Gender) : BaseDto<long>(Id);
