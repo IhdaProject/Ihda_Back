@@ -11,18 +11,22 @@ public class PermissionRequirementFilter(int[] requiredPermissionsCodes) : IAsyn
 {
     public Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
-        var rawStructureId = context.HttpContext.User.FindFirstValue(CustomClaimNames.Structure);
+        var rawStructuresId = context.HttpContext.User.FindFirstValue(CustomClaimNames.Structures)
+                              ?? throw new UnauthorizedException("Unauthorized");
 
-        if (rawStructureId.IsNullOrEmpty() ||
-            !int.TryParse(rawStructureId, out var structureId) ||
-            structureId == 0 ||
-            !StaticCache.Permissions.TryGetValue(structureId, out var permissions) ||
-            !(permissions.Count > 0))
+        if (rawStructuresId.IsNullOrEmpty())
             throw new UnauthorizedException("Unauthorized");
 
-        var anyNotMatched = requiredPermissionsCodes.Any(x => permissions.All(pc => pc != x));
+        var permissions = rawStructuresId!.Split(',').SelectMany(x =>
+            {
+                if (int.TryParse(x, out var structureId) &&
+                    StaticCache.Permissions.TryGetValue(structureId, out var permissions) &&
+                    permissions is {Count: > 0})
+                    return permissions;
+                throw new UnauthorizedException("Unauthorized");
+            }).ToList();
 
-        if (anyNotMatched)
+        if (requiredPermissionsCodes.Any(x => permissions.All(pc => pc != x)))
             throw new AlreadyExistsException("Forbidden");
 
         return Task.CompletedTask;

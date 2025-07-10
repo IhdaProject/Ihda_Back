@@ -72,6 +72,8 @@ public static class ConfigureApplication
 
         builder.Services.Configure<JwtOption>(builder.Configuration
             .GetSection("JwtOption"));
+
+        StaticCache.SymmetricKey = builder.Configuration.GetConnectionString("SymmetricKey") ?? "";
         
         builder
             .Services
@@ -226,19 +228,19 @@ public static class ConfigureApplication
             options.SwaggerEndpoint("/swagger/Client/swagger.json", "Client API");
             options.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API");
         });
-        //using var scope = app.Services.CreateScope();
-        //await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
+        using var scope = app.Services.CreateScope();
+        await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
         Log.Information("{0}", "Migrations applying...");
-        //await dataContext?.Database.MigrateAsync()!;
+        await dataContext?.Database.MigrateAsync()!;
         Log.Information("{0}", "Migrations applied.");
-        //scope.Dispose();
+        scope.Dispose();
 
         app.UseHealthChecks("/healths");
 
         app.UseMiddleware<RequestResponseLoggingMiddleware>();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
-        //await app.SynchronizePermissions();
+        await app.SynchronizePermissions();
         
         Log.Fatal("Application starting...");
     }
@@ -283,14 +285,14 @@ public static class ConfigureApplication
             }
 
             #region default Structure data
-            if (!await dataContext.Structures.AnyAsync(s => s.IsDefault))
+            if (!await dataContext.Structures.AnyAsync(s => s.Type == 1))
             {
-                int[] defaultPermission = [(int)UserPermissions.LogOut];
+                int[] defaultPermission = [(int)UserPermissions.LogOut, (int)UserPermissions.ViewProfile];
 
                 await dataContext.Structures.AddAsync(new Structure()
                 {
                     Id = 1,
-                    IsDefault = true,
+                    Type = 1,
                     Name = "Default",
                     StructurePermissions = dataContext.Permissions
                         .Where(p => defaultPermission.Contains(p.Code))
@@ -298,6 +300,26 @@ public static class ConfigureApplication
                             {
                                 PermissionId = p.Id
                             })
+                        .ToList()
+                });
+            
+                await dataContext.SaveChangesAsync();
+            }
+            #endregion
+            
+            #region Super Admin Structure data
+            if (!await dataContext.Structures.AnyAsync(s => s.Type == 2))
+            {
+                await dataContext.Structures.AddAsync(new Structure()
+                {
+                    Id = 2,
+                    Type = 2,
+                    Name = "Super Admin",
+                    StructurePermissions = dataContext.Permissions
+                        .Select(p => new StructurePermission()
+                        {
+                            PermissionId = p.Id
+                        })
                         .ToList()
                 });
             

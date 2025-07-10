@@ -1,7 +1,7 @@
 using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects.Mosques;
 using Entity.DataTransferObjects.PrayerTimes;
-using Entity.Exeptions;
+using Entity.Exceptions;
 using Entity.Models.ApiModels;
 using Entity.Models.Mosques;
 using Microsoft.EntityFrameworkCore;

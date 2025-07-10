@@ -11,9 +11,26 @@ public enum UserPermissions
     #region AuthApi project 10
         #region Auth Controller 10
             LogOut = 10100001,
-        #endregion
+            #endregion
 
         #region Role Controller 11
+            ViewPermissions = 10110001,
+            UpdatePermission = 10110002,
+            ViewStructures = 10110003,
+            ViewStructure = 10110004,
+            CreateStructure = 10110005,
+            UpdateStructure = 10110006,
+            AddPermissionStructure = 10110007,
+            RemovePermissionStructure = 10110008,
+            RemoveStructure = 10110009,
+        #endregion
+
+        #region User Controller 12
+            ViewUsers = 10120001,
+            ViewUser = 10120002,
+            ViewProfile = 10120003,
+            AddUserStructure = 10120004,
+            RemoveUserStructure = 10120005,
         #endregion
     #endregion
 
@@ -25,4 +42,6 @@ public enum UserPermissions
     
 
     #endregion
+
+    
 }

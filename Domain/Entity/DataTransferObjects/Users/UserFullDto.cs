@@ -1,6 +1,7 @@
 ﻿namespace Entity.DataTransferObjects.Users;
 
-public record UserDto(
+public record UserFullDto(
     long Id,
     string FullName,
-    List<long> StructuresId);
+    List<long> StructuresId
+);

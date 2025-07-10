@@ -3,7 +3,7 @@ using AutoMapper;
 using DatabaseBroker.Extensions;
 using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects;
-using Entity.Exeptions;
+using Entity.Exceptions;
 using Entity.Models.Common;
 using Microsoft.EntityFrameworkCore;
 using WebCore.Models;

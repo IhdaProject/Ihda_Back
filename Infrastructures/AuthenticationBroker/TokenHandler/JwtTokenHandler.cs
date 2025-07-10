@@ -13,7 +13,6 @@ namespace AuthenticationBroker.TokenHandler;
 public class JwtTokenHandler(IOptions<JwtOption> option) : IJwtTokenHandler
 {
     private readonly JwtOption _jwtOption = option.Value;
-
     public (string refreshToken, DateTime expireDate) GenerateRefreshToken()
     {
         var bytes = new byte[64];
@@ -46,11 +45,11 @@ public class JwtTokenHandler(IOptions<JwtOption> option) : IJwtTokenHandler
         return (token, claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)!.Value, expire);
     }
 
-    private List<Claim> GetClaims(User user)
+    private static List<Claim> GetClaims(User user)
     {
         var claims = new List<Claim>
         {
-            new (CustomClaimNames.Structure, user.StructureId?.ToString() ?? ""),
+            new (CustomClaimNames.Structures, string.Join(',',user.Structures.Select(s => s.StructureId).ToList())),
             new (CustomClaimNames.UserId, user.Id.ToString()),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };

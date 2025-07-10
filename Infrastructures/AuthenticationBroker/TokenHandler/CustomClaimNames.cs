@@ -1,7 +1,7 @@
 ﻿namespace AuthenticationBroker.TokenHandler;
 
-public class CustomClaimNames
+public abstract class CustomClaimNames
 {
     public const string UserId = "user-id";
-    public const string Structure = "structure";
+    public const string Structures = "structures";
 }

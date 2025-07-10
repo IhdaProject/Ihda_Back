@@ -11,7 +11,5 @@ public class User : AuditableModelBase<long>
     [Column("gender")] public Gender Gender { get; set; }
     [Column("pinfl")] public string? Pinfl { get; set; }
     [NotMapped] public virtual IEnumerable<SignMethod> SignMethods { get; set; }
-    [Column("structure_id"), ForeignKey("Structure")]
-    public long? StructureId { get; set; }
-    public virtual Structure? Structure { get; set; }
+    public virtual ICollection<UserStructure> Structures { get; set; }
 }
