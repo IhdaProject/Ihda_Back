@@ -26,4 +26,8 @@ public class AuthController(IAuthService authService) : ApiControllerBase
     [PermissionAuthorize(UserPermissions.LogOut)]
     public async Task<ResponseModel<bool>> LogOut()
         => ResponseModel<bool>.ResultFromContent(await authService.DeleteTokenAsync(Jti));
+    [HttpGet]
+    [PermissionAuthorize(UserPermissions.ViewMyPermissions)]
+    public async Task<ResponseModel<List<int>>> MyPermissions()
+        => ResponseModel<List<int>>.ResultFromContent(await authService.GetUserPermissionsAsync(UserId));
 }

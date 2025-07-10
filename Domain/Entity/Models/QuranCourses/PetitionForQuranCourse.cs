@@ -12,8 +12,9 @@ public class PetitionForQuranCourse : ModelBase<long>
     [Column("user_id"),ForeignKey(nameof(User))] public long? userId { get; set; }
     public virtual User? User { get; set; }
     [Column("pinfl")]public string Pinfl { get; set; }
-    //[Column("status")] public QuranCoursePetitionStatus Status { get; set; } = QuranCoursePetitionStatus.New;
+    [Column("status")] public QuranCoursePetitionStatus Status { get; set; } = QuranCoursePetitionStatus.New;
     [Column("passport")]public string Passport { get; set; }
+    [Column("phone_number")]public string PhoneNumber { get; set; }
     [Column("birthday")]public DateTime BirthDay { get; set; }
     [Column("full_name")]public string FullName { get; set; }
     [Column("duration")]public Gender Gender { get; set; }

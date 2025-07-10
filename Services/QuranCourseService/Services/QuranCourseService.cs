@@ -17,7 +17,6 @@ public class QuranCourseService(GenericRepository<PetitionForQuranCourse, long> 
     {
         if (await petitionForQuranCourseRepository.GetAllAsQueryable()
                 .Where(p => p.Pinfl == petition.Pinfl)
-               // .Where(p => p.Status == QuranCoursePetitionStatus.New)
                 .AnyAsync())
             throw new AlreadyExistsException("There is already an application.");
         

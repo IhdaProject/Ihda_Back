@@ -1,5 +1,4 @@
 using Entity.DataTransferObjects.QuranCourses;
-using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using QuranCourseService.Services;
 using WebCore.Attributes;
