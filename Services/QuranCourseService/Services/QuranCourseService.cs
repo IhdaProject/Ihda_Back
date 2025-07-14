@@ -1,5 +1,6 @@
 using System.Net;
 using AutoMapper;
+using DatabaseBroker.Extensions;
 using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects.QuranCourses;
 using Entity.Exceptions;
@@ -37,5 +38,24 @@ public class QuranCourseService(GenericRepository<PetitionForQuranCourse, long> 
             mapper.Map<PetitionForQuranCourseDto>(
                 await petitionForQuranCourseRepository.AddWithSaveChangesAsync(
                     mapper.Map<PetitionForQuranCourse>(petition))),HttpStatusCode.Created);
+    }
+
+    public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetAllPetitionsAsync(MetaQueryModel metaQueryModel)
+    {
+        var query = petitionForQuranCourseRepository.GetAllAsQueryable()
+            .FilterByExpressions(metaQueryModel);
+        
+        return ResponseModel<List<PetitionForQuranCourseByListDto>>.ResultFromContent(
+            await query
+                .Sort(metaQueryModel)
+                .Paging(metaQueryModel)
+                .Select(p => mapper.Map<PetitionForQuranCourseByListDto>(p))
+                .ToListAsync(),
+            total: await query.CountAsync());
+    }
+
+    public Task<ResponseModel<PetitionInfosForQuranCourseDto>> GetPetitionInfoWithTimeAsync(GetPetitionInfoDto petitionInfoDto)
+    {
+        throw new NotImplementedException();
     }
 }

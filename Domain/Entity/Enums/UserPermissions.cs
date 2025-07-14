@@ -38,11 +38,21 @@ public enum UserPermissions
     #region QuranCourse 60
         #region TrainingCenter Controller 10
             OnSaveTrainingCenter = 60100001,
+            ViewTrainingCenters = 60100002,
+            ViewTrainingCenter = 60100003,
+            OnSaveCourseForm = 60100004,
+            ViewCourseForms = 60100005,
+            ViewCourseForm = 60100006,
+        #endregion
+
+        #region Quran Course Controller 20
+            ViewPetitionQuranCourses = 60200001
+
+        
 
         #endregion
     
 
     #endregion
 
-    
 }
