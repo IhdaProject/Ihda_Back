@@ -111,6 +111,7 @@ public class IhdaDataContext : DbContext
 
     #region Mosques Schema
     public DbSet<Mosque> Mosques { get; set; }
+    public DbSet<FavoriteMosque> FavoriteMosques { get; set; }
     public DbSet<MosquePrayerTime> MosquePrayerTimes { get; set; }
     #endregion
 

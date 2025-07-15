@@ -15,22 +15,24 @@ public class TrainingCenterController(ITrainingCenterService trainingCenterServi
     [ApiGroup("Admin")]
     public async Task<ResponseModel<TrainingCenterDto>> OnSaveTrainingCenter([FromBody]TrainingCenterDto trainingCenter)
         => await trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);
-    [HttpGet]
+    [HttpGet, PermissionAuthorize(UserPermissions.ViewTrainingCenters)]
     [ApiGroup("Admin", "Client")]
     public async Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCenter([FromQuery]MetaQueryModel metaQuery)
         => await trainingCenterService.GetTrainingCentersAsync(metaQuery);
-    [HttpGet]
+    [HttpGet, PermissionAuthorize(UserPermissions.ViewTrainingCenter)]
+    [ApiGroup("Admin", "Client")]
     public async Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterById([FromRoute]long id)
         => await trainingCenterService.GetTrainingCenterByIdAsync(id);
-    [HttpPost]
+    [HttpPost,PermissionAuthorize(UserPermissions.OnSaveCourseForm)]
     [ApiGroup("Admin")]
     public async Task<ResponseModel<CourseFormDto>> OnSaveCourseForm([FromBody]CourseFormDto courseForm)
         => await trainingCenterService.OnSaveCourseFormAsync(courseForm);
-    [HttpGet]
+    [HttpGet, PermissionAuthorize(UserPermissions.ViewCourseForms)]
     [ApiGroup("Admin", "Client")]
     public async Task<ResponseModel<List<CourseFormDto>>> GetCourseForm([FromQuery]MetaQueryModel metaQuery)
         => await trainingCenterService.GetCourseFormsAsync(metaQuery);
-    [HttpGet]
+    [HttpGet, PermissionAuthorize(UserPermissions.ViewCourseForm)]
+    [ApiGroup("Admin", "Client")]
     public async Task<ResponseModel<CourseFormDto>> GetCourseFormById([FromRoute]long id)
         => await trainingCenterService.GetCourseFormByIdAsync(id);
 }

@@ -17,6 +17,10 @@ public class CourseFormTeacher : ModelBase<long>
     /// <summary>
     /// aynan qaysi foydalanuvchiligi
     /// </summary>
-    [Column("user_id"),ForeignKey(nameof(User))] public long userId { get; set; }
+    [Column("user_id"),ForeignKey(nameof(User))] public long UserId { get; set; }
     public virtual User User { get; set; }
+    /// <summary>
+    /// Shu o'qituvchi qaysi kurslarda dars bergani va berayotgani
+    /// </summary>
+    public virtual ICollection<Course> Courses { get; set; }
 }

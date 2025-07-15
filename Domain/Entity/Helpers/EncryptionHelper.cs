@@ -61,7 +61,7 @@ public static class EncryptionHelper
 
         return Convert.ToBase64String(msEncrypt.ToArray());
     }
-    public static (int Id, int UserId, DateTime Timestamp) Decrypt(string encrypted, string key)
+    public static (long Id, long UserId, DateTime Timestamp) Decrypt(string encrypted, string key)
     {
         var fullCipher = Convert.FromBase64String(encrypted);
         using var aesAlg = Aes.Create();
@@ -81,13 +81,13 @@ public static class EncryptionHelper
         var parts = decrypted.Split(':');
         if (parts.Length != 3) return default;
 
-        var id = int.Parse(parts[0]);
-        var userId = int.Parse(parts[1]);
+        var id = long.Parse(parts[0]);
+        var userId = long.Parse(parts[1]);
         var timestamp = new DateTime(long.Parse(parts[2]));
 
         return (id, userId, timestamp);
     }
-    public static (string url, int UserId) DecryptString(string encrypted, string key)
+    public static (string url, long UserId) DecryptString(string encrypted, string key)
     {
         var fullCipher = Convert.FromBase64String(encrypted);
         using var aesAlg = Aes.Create();
@@ -108,11 +108,11 @@ public static class EncryptionHelper
         if (parts.Length != 2) return default;
 
         var url = parts[0];
-        var userId = int.Parse(parts[1]);
+        var userId = long.Parse(parts[1]);
 
         return (url, userId);
     }
-    public static (int Id, string Token, DateTime Timestamp) DecryptStringWithTime(string encrypted, string key)
+    public static (long Id, string Token, DateTime Timestamp) DecryptStringWithTime(string encrypted, string key)
     {
         var fullCipher = Convert.FromBase64String(encrypted);
         using var aesAlg = Aes.Create();
@@ -132,7 +132,7 @@ public static class EncryptionHelper
         var parts = decrypted.Split(':');
         if (parts.Length != 3) return default;
 
-        var id = int.Parse(parts[0]);
+        var id = long.Parse(parts[0]);
         var token = parts[1];
         var timestamp = new DateTime(long.Parse(parts[2]));
 

@@ -1,15 +1,17 @@
+using DatabaseBroker.Extensions;
 using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects.Mosques;
 using Entity.DataTransferObjects.PrayerTimes;
 using Entity.Exceptions;
-using Entity.Models.ApiModels;
 using Entity.Models.Mosques;
 using Microsoft.EntityFrameworkCore;
+using WebCore.Extensions;
 using WebCore.Models;
 
 namespace MosqueService.Services;
 
 public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
+    GenericRepository<FavoriteMosque,long> favoriteMosqueRepository,
     GenericRepository<MosquePrayerTime, long> prayerTimeRepository) : IMosqueService
 {
     public async Task<ResponseModel<List<MosqueByListDto>>> GetListAsync(MetaQueryModel queryModel)
@@ -17,16 +19,25 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
         var query = mosqueRepository.GetAllAsQueryable().Where(m => !m.IsDelete);
 
         return new ResponseModel<List<MosqueByListDto>>(await query.Skip(queryModel.Skip).Take(queryModel.Take)
-            .Select(m => new MosqueByListDto(m.Id, m.Name, m.Latitude, m.Longitude)).ToListAsync())
+            .Select(m => new MosqueByListDto(m.Id, "",m.Name, m.Latitude, m.Longitude)).ToListAsync())
             {
                 Total = await query.CountAsync()
             };
     }
-    public Task<ResponseModel<List<MosqueByListDto>>> GetFavoriteListAsync(MetaQueryModel queryModel, long userId)
+    public async Task<ResponseModel<List<MosqueByListDto>>> GetFavoriteListAsync(MetaQueryModel queryModel, long userId)
     {
-        throw new NotImplementedException();
+        var query = favoriteMosqueRepository.GetAllAsQueryable()
+            .Where(m => m.UserId == userId)
+            .FilterByExpressions(queryModel);
+        
+        var items = await query
+            .Sort(queryModel)
+            .Paging(queryModel)
+            .Select(fm => new MosqueByListDto(fm.MosqueId, "", fm.Mosque.Name, fm.Mosque.Latitude, fm.Mosque.Longitude))
+            .ToListAsync();
+        
+        return ResponseModel<List<MosqueByListDto>>.ResultFromContent(items, total: await query.CountAsync());
     }
-
     public async Task<ResponseModel<MosqueWithTimeDto>> GetByIdAsync(long id)
     {
         var mosque = await mosqueRepository.GetByIdAsync(id) ?? throw new NotFoundException($"Not found Mosque by Id: {id}");
@@ -34,8 +45,7 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
         return new ResponseModel<MosqueWithTimeDto>(new MosqueWithTimeDto(mosque.Id, mosque.Name, mosque.Description, mosque.PhotoUrls,
             mosque.Latitude, mosque.Longitude, null));
     }
-
-    public async Task<ResponseModel<MosqueDto>> OnSaveMosqueAsync(MosqueDto mosqueDto, long userId)
+    public async Task<ResponseModel<MosqueDto>> OnSaveMosqueAsync(MosqueDto mosqueDto, long id, long userId)
     {
         Mosque mosque;
         if (mosqueDto.Id == 0)
@@ -51,6 +61,9 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
         }
         else
         {
+            if (id != mosqueDto.Id)
+                throw new AlreadyExistsException("No Access");
+            
             mosque = await mosqueRepository.GetByIdAsync(mosqueDto.Id) ?? throw new NotFoundException($"Not found Mosque by Id: {mosqueDto.Id}");
             
             mosque.Name = mosqueDto.Name;
@@ -64,8 +77,7 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
         
         return new ResponseModel<MosqueDto>(new MosqueDto(mosque.Id, mosque.Name, mosque.Description, mosque.PhotoUrls,mosque.Latitude, mosque.Longitude));
     }
-
-    public async Task<ResponseModel<MosquePrayerTimeDto>> OnSavePrayerTimeAsync(MosquePrayerTimeDto mosquePrayerTimeDto, long userId)
+    public async Task<ResponseModel<MosquePrayerTimeDto>> OnSavePrayerTimeAsync(MosquePrayerTimeDto mosquePrayerTimeDto,long id ,long userId)
     {
         MosquePrayerTime mosquePrayerTime;
         if (mosquePrayerTimeDto.Id == 0)
@@ -87,6 +99,9 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
         }
         else
         {
+            if (id != mosquePrayerTimeDto.Id)
+                throw new AlreadyExistsException("No Access");
+            
             mosquePrayerTime = await prayerTimeRepository.GetByIdAsync(mosquePrayerTimeDto.Id) ?? throw new NotFoundException($"Not found Mosque by Id: {mosquePrayerTimeDto.Id}");
             
             mosquePrayerTime.AdhamFajr = mosquePrayerTimeDto.AdhamFajr;
@@ -105,9 +120,53 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
         
         return new ResponseModel<MosquePrayerTimeDto>(mosquePrayerTimeDto with { Id = mosquePrayerTime.Id, MosqueId = mosquePrayerTime.MosqueId });
     }
-
-    public Task<ResponseModel<bool>> ToggleFavoriteAsync(long id, long userId)
+    public async Task<ResponseModel<bool>> ToggleFavoriteAsync(long id, long userId)
     {
-        throw new NotImplementedException();
+        var favorite = await favoriteMosqueRepository.GetAllAsQueryable(true)
+            .Where(fm => fm.Id == id)
+            .Where(fm => fm.UserId == userId)
+            .FirstOrDefaultAsync();
+
+        if (favorite != null)
+            favorite.IsDelete = true;
+        else
+        {
+            await favoriteMosqueRepository.AddAsync(new FavoriteMosque()
+            {
+                UserId = userId,
+                MosqueId = id
+            });
+        }
+
+        return ResponseModel<bool>.ResultFromContent(await favoriteMosqueRepository.SaveChangesAsync() > 0);
+    }
+    public async Task<ResponseModel<List<MosqueByListDto>>> GetMyListAsync(MetaQueryModel metaQuery, long userId)
+    {
+        var query = mosqueRepository.GetAllAsQueryable().Where(m => m.MosqueAdmins.Any(ma => ma.UserId == userId));
+
+        return new ResponseModel<List<MosqueByListDto>>(await query.Skip(metaQuery.Skip).Take(metaQuery.Take)
+            .Select(m => new MosqueByListDto(m.Id, m.Id.EncryptId(userId),m.Name, m.Latitude, m.Longitude)).ToListAsync())
+        {
+            Total = await query.CountAsync()
+        };
+    }
+    public async Task<ResponseModel<bool>> AddMosqueAdminAsync(long mosqueId, long adminUserId, long userId)
+    {
+        var mosque = await mosqueRepository.GetAllAsQueryable(true)
+            .Where(m => m.Id == mosqueId)
+            .Include(m => m.MosqueAdmins)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException("Not found Mosque");
+
+        if (mosque.MosqueAdmins.Any(ma => ma.UserId == userId))
+            throw new AlreadyExistsException("Already exists this admin");
+
+        mosque.MosqueAdmins.Add(new MosqueAdmin()
+        {
+            MosqueId = mosque.Id,
+            UserId = adminUserId,
+            CreatedBy = userId
+        });
+
+        return await mosqueRepository.SaveChangesAsync() > 0;
     }
 }

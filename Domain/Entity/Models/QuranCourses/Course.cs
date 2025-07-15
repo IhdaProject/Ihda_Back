@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Entity.Enums;
 using Entity.Models.Auth;
 using Entity.Models.Common;
 
@@ -9,6 +10,13 @@ namespace Entity.Models.QuranCourses;
 [Table("courses", Schema = "quran_courses")]
 public class Course : ModelBase<long>
 {
+    /// <summary>
+    /// Kursning holati
+    /// </summary>
+    public CourseStatus Status { get; set; }
+    /// <summary>
+    /// Kursning boshlangan sanasi
+    /// </summary>
     [Column("start_date")]public DateTime StartDate { get; set; }
     /// <summary>
     /// Kurs formasini belgilaydi
@@ -19,5 +27,6 @@ public class Course : ModelBase<long>
     /// Kurs o'qituvchisini belgilaydi
     /// </summary>
     [Column("teacher_id"),ForeignKey(nameof(Teacher))] public long TeacherId { get; set; }
-    public virtual User Teacher { get; set; }
+    public virtual CourseFormTeacher Teacher { get; set; }
+    
 }
