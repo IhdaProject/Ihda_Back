@@ -10,7 +10,8 @@ public interface IMosqueService
     Task<ResponseModel<List<MosqueByListDto>>> GetListAsync(MetaQueryModel queryModel);
     Task<ResponseModel<List<MosqueByListDto>>> GetFavoriteListAsync(MetaQueryModel queryModel, long userId);
     Task<ResponseModel<MosqueWithTimeDto>> GetByIdAsync(long id);
-    Task<ResponseModel<MosqueDto>> OnSaveMosqueAsync(MosqueDto mosqueDto, long userId);
-    Task<ResponseModel<MosquePrayerTimeDto>> OnSavePrayerTimeAsync(MosquePrayerTimeDto mosqueDto, long userId);
+    Task<ResponseModel<MosqueDto>> OnSaveMosqueAsync(MosqueDto mosqueDto, long id, long userId);
+    Task<ResponseModel<MosquePrayerTimeDto>> OnSavePrayerTimeAsync(MosquePrayerTimeDto mosqueDto,long d, long userId);
     Task<ResponseModel<bool>> ToggleFavoriteAsync(long id, long userId);
+    Task<ResponseModel<List<MosqueByListDto>>> GetMyListAsync(MetaQueryModel metaQuery, long userId);
 }

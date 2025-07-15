@@ -55,4 +55,12 @@ public enum UserPermissions
 
     #endregion
 
+    ,
+    OnSaveMosque,
+    OnSavePreyerTime,
+    ViewMosques,
+    ViewMosque,
+    ViewFavoritesMosque,
+    ToggleFavoriteMosque,
+    ViewMyMosques
 }
