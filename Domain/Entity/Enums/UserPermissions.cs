@@ -32,6 +32,26 @@ public enum UserPermissions
             RemoveUserStructure = 10120005,
         #endregion
     #endregion
+
+    #region ReferenceBookApi 30
+
+        #region CountryController 10
+            ViewAllCountries = 30100001,
+            ViewByIdCountry = 30100002,
+            AddCountry = 30100003,
+            RemoveCountry = 30100004,
+        #endregion
+    
+        #region DistrictController 11
+
+        #endregion
+        
+        #region RegionController 12
+
+        #endregion
+
+    #endregion
+    
     #region MosqueApi 40
         #region Mosques Controller 10
             OnSaveMosque = 40100001,
@@ -57,4 +77,5 @@ public enum UserPermissions
             ViewPetitionQuranCourses = 60200001,
         #endregion
     #endregion
+    
 }
