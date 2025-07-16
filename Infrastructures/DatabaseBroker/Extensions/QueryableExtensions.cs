@@ -111,9 +111,8 @@ public static class QueryableExtensions
 
     public static IQueryable<T> Paging<T>(this IQueryable<T> queryable, MetaQueryModel query)
     {
-        var pagingData = new { query.Skip, query.Take };
         return queryable
-            .Skip(pagingData.Skip)
-            .Take(pagingData.Take);
+            .Skip(query.Skip)
+            .Take(query.Take);
     }
 }

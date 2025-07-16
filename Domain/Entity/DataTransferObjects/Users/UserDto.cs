@@ -2,8 +2,5 @@
 
 public record UserDto(
     long Id,
-    string FirstName,
-    string MiddleName,
-    string LastName,
-    long? StructureId
-);
+    string FullName,
+    List<long> StructuresId);

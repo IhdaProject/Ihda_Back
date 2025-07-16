@@ -106,10 +106,6 @@ namespace DatabaseBroker.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("created_by");
 
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_default");
-
                     b.Property<bool>("IsDelete")
                         .HasColumnType("boolean")
                         .HasColumnName("is_delete");
@@ -118,6 +114,10 @@ namespace DatabaseBroker.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnName("type");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone")
@@ -204,6 +204,10 @@ namespace DatabaseBroker.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("expire_refresh_token");
 
+                    b.Property<DateTime>("ExpireToken")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("expire_token");
+
                     b.Property<bool>("IsDelete")
                         .HasColumnType("boolean")
                         .HasColumnName("is_delete");
@@ -272,7 +276,41 @@ namespace DatabaseBroker.Migrations
                         .HasColumnType("text")
                         .HasColumnName("pinfl");
 
-                    b.Property<long?>("StructureId")
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<long>("UpdatedBy")
+                        .HasColumnType("bigint")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("users", "auth");
+                });
+
+            modelBuilder.Entity("Entity.Models.Auth.UserStructure", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint")
+                        .HasColumnName("created_by");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_delete");
+
+                    b.Property<long>("StructureId")
                         .HasColumnType("bigint")
                         .HasColumnName("structure_id");
 
@@ -284,11 +322,63 @@ namespace DatabaseBroker.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("updated_by");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StructureId");
 
-                    b.ToTable("users", "auth");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("user_structures", "auth");
+                });
+
+            modelBuilder.Entity("Entity.Models.Mosques.FavoriteMosque", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint")
+                        .HasColumnName("created_by");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_delete");
+
+                    b.Property<long>("MosqueId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("mosque_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<long>("UpdatedBy")
+                        .HasColumnType("bigint")
+                        .HasColumnName("updated_by");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MosqueId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("favorite_mosques", "prayerful");
                 });
 
             modelBuilder.Entity("Entity.Models.Mosques.Mosque", b =>
@@ -346,6 +436,52 @@ namespace DatabaseBroker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("mosques", "prayerful");
+                });
+
+            modelBuilder.Entity("Entity.Models.Mosques.MosqueAdmin", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint")
+                        .HasColumnName("created_by");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_delete");
+
+                    b.Property<long>("MosqueId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("course_form_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<long>("UpdatedBy")
+                        .HasColumnType("bigint")
+                        .HasColumnName("updated_by");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MosqueId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MosqueAdmin");
                 });
 
             modelBuilder.Entity("Entity.Models.Mosques.MosquePrayerTime", b =>
@@ -449,6 +585,9 @@ namespace DatabaseBroker.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<long>("TeacherId")
                         .HasColumnType("bigint")
                         .HasColumnName("teacher_id");
@@ -484,13 +623,21 @@ namespace DatabaseBroker.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("duration");
 
-                    b.Property<int>("ForGender")
+                    b.Property<int?>("ForGender")
                         .HasColumnType("integer")
                         .HasColumnName("for_gender");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("boolean")
                         .HasColumnName("is_delete");
+
+                    b.Property<int?>("MaxYearsOld")
+                        .HasColumnType("integer")
+                        .HasColumnName("max_years_old");
+
+                    b.Property<int?>("MinYearsOld")
+                        .HasColumnType("integer")
+                        .HasColumnName("min_years_old");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -530,7 +677,7 @@ namespace DatabaseBroker.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_delete");
 
-                    b.Property<long>("userId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint")
                         .HasColumnName("user_id");
 
@@ -538,7 +685,7 @@ namespace DatabaseBroker.Migrations
 
                     b.HasIndex("CourseFormId");
 
-                    b.HasIndex("userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("course_form_teachers", "quran_courses");
                 });
@@ -551,6 +698,11 @@ namespace DatabaseBroker.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("address");
 
                     b.Property<DateTime>("BirthDay")
                         .HasColumnType("timestamp without time zone")
@@ -578,10 +730,23 @@ namespace DatabaseBroker.Migrations
                         .HasColumnType("text")
                         .HasColumnName("passport");
 
+                    b.Property<DateTime>("PassportExpireDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("passport_expire_date");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("phone_number");
+
                     b.Property<string>("Pinfl")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("pinfl");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
 
                     b.Property<long?>("userId")
                         .HasColumnType("bigint")
@@ -939,13 +1104,61 @@ namespace DatabaseBroker.Migrations
                     b.Navigation("Structure");
                 });
 
-            modelBuilder.Entity("Entity.Models.Auth.User", b =>
+            modelBuilder.Entity("Entity.Models.Auth.UserStructure", b =>
                 {
                     b.HasOne("Entity.Models.Auth.Structure", "Structure")
                         .WithMany()
-                        .HasForeignKey("StructureId");
+                        .HasForeignKey("StructureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Models.Auth.User", "User")
+                        .WithMany("Structures")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Structure");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entity.Models.Mosques.FavoriteMosque", b =>
+                {
+                    b.HasOne("Entity.Models.Mosques.Mosque", "Mosque")
+                        .WithMany()
+                        .HasForeignKey("MosqueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Models.Auth.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mosque");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entity.Models.Mosques.MosqueAdmin", b =>
+                {
+                    b.HasOne("Entity.Models.Mosques.Mosque", "Mosque")
+                        .WithMany("MosqueAdmins")
+                        .HasForeignKey("MosqueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Models.Auth.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mosque");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entity.Models.Mosques.MosquePrayerTime", b =>
@@ -967,8 +1180,8 @@ namespace DatabaseBroker.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entity.Models.Auth.User", "Teacher")
-                        .WithMany()
+                    b.HasOne("Entity.Models.QuranCourses.CourseFormTeacher", "Teacher")
+                        .WithMany("Courses")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -999,7 +1212,7 @@ namespace DatabaseBroker.Migrations
 
                     b.HasOne("Entity.Models.Auth.User", "User")
                         .WithMany()
-                        .HasForeignKey("userId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1066,11 +1279,23 @@ namespace DatabaseBroker.Migrations
             modelBuilder.Entity("Entity.Models.Auth.User", b =>
                 {
                     b.Navigation("SignMethods");
+
+                    b.Navigation("Structures");
+                });
+
+            modelBuilder.Entity("Entity.Models.Mosques.Mosque", b =>
+                {
+                    b.Navigation("MosqueAdmins");
                 });
 
             modelBuilder.Entity("Entity.Models.QuranCourses.CourseForm", b =>
                 {
                     b.Navigation("Teachers");
+                });
+
+            modelBuilder.Entity("Entity.Models.QuranCourses.CourseFormTeacher", b =>
+                {
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

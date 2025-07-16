@@ -1,11 +1,10 @@
 using DatabaseBroker.Extensions;
 using Entity.DataTransferObjects.Role;
-using Entity.Exeptions;
-using Entity.Models;
 using DatabaseBroker.Repositories.Auth;
-using Entity.Models.ApiModels;
+using Entity.Exceptions;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
+using WebCore.Models;
 
 namespace RoleService.Service;
 
@@ -15,7 +14,7 @@ public class RoleService(
     IStructurePermissionRepository structurePermissionsRepository)
     : IRoleService
 {
-    public async Task<StructureDto> CreateStructureAsync(StructureForCreationDto structureForCreationDto)
+    public async Task<ResponseModel<StructureDto>> CreateStructureAsync(StructureForCreationDto structureForCreationDto)
     {
         var newStructure = new Structure
         {
@@ -30,16 +29,9 @@ public class RoleService(
 
         return new StructureDto(
             structureModel.Id,
-            structureModel.Name,
-            structureModel.StructurePermissions
-                .Select(p =>
-                    new PermissionDto(
-                        p.PermissionId,
-                        p.Permission.Code,
-                        p.Permission.Name))
-                .ToList());
+            structureModel.Name);
     }
-    public async Task<StructureDto> ModifyStructureAsync(StructureDto structure)
+    public async Task<ResponseModel<StructureDto>> ModifyStructureAsync(StructureDto structure)
     {
         var newStructure = await structureRepository.GetByIdAsync(structure.Id)
             ?? throw new NotFoundException("Not found structure");
@@ -50,16 +42,9 @@ public class RoleService(
 
         return new StructureDto(
             changedStructure.Id,
-            changedStructure.Name,
-            changedStructure.StructurePermissions
-                .Select(p =>
-                    new PermissionDto(
-                        p.PermissionId,
-                        p.Permission.Code,
-                        p.Permission.Name))
-                .ToList());
+            changedStructure.Name);
     }
-    public async Task<bool> RemoveStructureAsync(long structureId)
+    public async Task<ResponseModel<bool>> RemoveStructureAsync(long structureId)
     {
         var deletedStructure = await structureRepository.RemoveAsync(new Structure()
                                {
@@ -68,26 +53,22 @@ public class RoleService(
 
         return true;
     }
-    public async Task<List<StructureDto>> RetrieveStructureAsync(MetaQueryModel metaQueryModel)
+    public async Task<ResponseModel<List<StructureDto>>> RetrieveStructureAsync(MetaQueryModel metaQueryModel)
     {
         var query = structureRepository
             .GetAllAsQueryable()
             .FilterByExpressions(metaQueryModel);
 
-        return await query.Select(s =>
-            new StructureDto(
-                s.Id,
-                s.Name,
-                s.StructurePermissions
-                    .Select(p =>
-                        new PermissionDto(
-                            p.PermissionId,
-                            p.Permission.Code,
-                            p.Permission.Name))
-                    .ToList()))
-            .ToListAsync();
+        return ResponseModel<List<StructureDto>>.ResultFromContent(await query
+            .Sort(metaQueryModel)
+            .Paging(metaQueryModel)
+            .Select(s =>
+                new StructureDto(
+                    s.Id,
+                    s.Name))
+                .ToListAsync(), total: await query.CountAsync());
     }
-    public async Task<PermissionDto> ModifyPermissionAsync(PermissionDto permissionDto)
+    public async Task<ResponseModel<PermissionDto>> ModifyPermissionAsync(PermissionDto permissionDto)
     {
         var newPermission = await permissionsRepository.GetByIdAsync(permissionDto.Id)
             ?? throw new NotFoundException("Not found permission");
@@ -98,12 +79,17 @@ public class RoleService(
 
         return permissionDto;
     }
-
-    public Task<List<PermissionDto>> RetrievePermissionAsync(MetaQueryModel metaQueryModel)
+    public async Task<ResponseModel<List<PermissionDto>>> RetrievePermissionAsync(MetaQueryModel metaQueryModel)
     {
-        throw new NotImplementedException();
+        var query = permissionsRepository.GetAllAsQueryable()
+            .FilterByExpressions(metaQueryModel);
+        
+        return ResponseModel<List<PermissionDto>>.ResultFromContent(await query
+            .Select(p => new PermissionDto(p.Id, p.Code, p.Name))
+            .Paging(metaQueryModel)
+            .ToListAsync(), total: await query.CountAsync());
     }
-    public async Task<StructurePermissionDto> RemoveStructurePermissionAsync(
+    public async Task<ResponseModel<StructurePermissionDto>> RemovePermissionStructureAsync(
         StructurePermissionForCreationDto structurePermissionForCreationDto)
     {
         var structurePermission = await structurePermissionsRepository.GetAllAsQueryable()
@@ -118,8 +104,38 @@ public class RoleService(
             newStructurePermission.StructureId,
             newStructurePermission.PermissionId);
     }
-    public Task<List<StructurePermissionDto>> RetrieveStructurePermissionByStructureIdAsync(MetaQueryModel metaQueryModel)
+
+    public async Task<ResponseModel<StructurePermissionDto>> AddPermissionStructureAsync(StructurePermissionForCreationDto structurePermissionForCreationDto)
     {
-        throw new NotImplementedException();
+        var structurePermission = await structureRepository.GetByIdAsync(structurePermissionForCreationDto.StructureId)
+                                  ?? throw new NotFoundException("Not found Structure");
+
+        var newStructurePermission = await structurePermissionsRepository.AddAsync(new StructurePermission()
+        {
+            PermissionId = structurePermissionForCreationDto.PermissionId,
+            StructureId = structurePermissionForCreationDto.StructureId
+        });
+
+        return new StructurePermissionDto(
+            newStructurePermission.Id,
+            newStructurePermission.StructureId,
+            newStructurePermission.PermissionId);
+    }
+
+    public async Task<ResponseModel<List<PermissionDto>>> RetrieveStructurePermissionByStructureIdAsync(MetaQueryModel metaQueryModel)
+    {
+        var query = structurePermissionsRepository.GetAllAsQueryable()
+            .FilterByExpressions(metaQueryModel);
+
+        var items = await query
+            .Sort(metaQueryModel)
+            .Paging(metaQueryModel)
+            .Select(sp => new PermissionDto(sp.PermissionId,
+                sp.Permission.Code, sp.Permission.Name))
+            .ToListAsync();
+        
+        var count = await query.CountAsync();
+        
+        return ResponseModel<List<PermissionDto>>.ResultFromContent(items,total: count);
     }
 }

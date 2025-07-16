@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
         services.AddCronJob<TemplateCroneJob>("* * * * *");
         services.AddScoped<HttpClient, HttpClient>();
         services.AddScoped<IAuthService, AuthService.Services.AuthService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoleService, RoleService.Service.RoleService>();
 
         return services;

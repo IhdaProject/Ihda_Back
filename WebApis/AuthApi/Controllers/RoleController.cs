@@ -1,4 +1,5 @@
 using Entity.DataTransferObjects.Role;
+using Entity.Enums;
 using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using RoleService.Service;
@@ -7,31 +8,43 @@ using WebCore.Controllers;
 using WebCore.Models;
 
 namespace AuthApi.Controllers;
-[ApiGroup("Client")]
+[ApiGroup("Admin")]
 public class RoleController(IRoleService structureService) : ApiControllerBase
 {
     [HttpGet]
+    [PermissionAuthorize(UserPermissions.ViewStructures)]
     public async Task<ResponseModel<List<StructureDto>>> GetAllStructures([FromQuery]MetaQueryModel metaQueryModel)
-        => ResponseModel<List<StructureDto>>.ResultFromContent(await structureService.RetrieveStructureAsync(metaQueryModel));
+        => await structureService.RetrieveStructureAsync(metaQueryModel);
     [HttpGet]
-    public async Task<ResponseModel<List<StructurePermissionDto>>> GetStructureById([FromQuery]MetaQueryModel metaQueryModel)
-        => ResponseModel<List<StructurePermissionDto>>.ResultFromContent(await structureService.RetrieveStructurePermissionByStructureIdAsync(metaQueryModel));
+    [PermissionAuthorize(UserPermissions.ViewStructure)]
+    public async Task<ResponseModel<List<PermissionDto>>> GetStructureById([FromQuery]MetaQueryModel metaQueryModel)
+        => await structureService.RetrieveStructurePermissionByStructureIdAsync(metaQueryModel);
     [HttpPost]
+    [PermissionAuthorize(UserPermissions.CreateStructure)]
     public async Task<ResponseModel<StructureDto>> CreateStructure(StructureForCreationDto structureDto)
-        => ResponseModel<StructureDto>.ResultFromContent(await structureService.CreateStructureAsync(structureDto));
+        => await structureService.CreateStructureAsync(structureDto);
     [HttpPut]
+    [PermissionAuthorize(UserPermissions.UpdateStructure)]
     public async Task<ResponseModel<StructureDto>> EditStructure(StructureDto structure)
-        => ResponseModel<StructureDto>.ResultFromContent(await structureService.ModifyStructureAsync(structure));
+        => await structureService.ModifyStructureAsync(structure);
+    [HttpPost]
+    [PermissionAuthorize(UserPermissions.AddPermissionStructure)]
+    public async Task<ResponseModel<StructurePermissionDto>> AddPermissionStructure(StructurePermissionForCreationDto structurePermission)
+        => await structureService.RemovePermissionStructureAsync(structurePermission);
     [HttpDelete]
-    public async Task<ResponseModel<StructurePermissionDto>> DeleteStructurePermission(StructurePermissionForCreationDto structurePermission)
-        => ResponseModel<StructurePermissionDto>.ResultFromContent(await structureService.RemoveStructurePermissionAsync(structurePermission));
+    [PermissionAuthorize(UserPermissions.RemovePermissionStructure)]
+    public async Task<ResponseModel<StructurePermissionDto>> DeletePermissionStructure(StructurePermissionForCreationDto structurePermission)
+        => await structureService.RemovePermissionStructureAsync(structurePermission);
     [HttpDelete]
+    [PermissionAuthorize(UserPermissions.RemoveStructure)]
     public async Task<ResponseModel<bool>> DeleteStructure(long structureId)
-        => ResponseModel<bool>.ResultFromContent(await structureService.RemoveStructureAsync(structureId));
+        => await structureService.RemoveStructureAsync(structureId);
     [HttpGet]
+    [PermissionAuthorize(UserPermissions.ViewPermissions)]
     public async Task<ResponseModel<List<PermissionDto>>> GetPermissions([FromQuery]MetaQueryModel metaQueryModel)
-        => ResponseModel<List<PermissionDto>>.ResultFromContent(await structureService.RetrievePermissionAsync(metaQueryModel));
+        => await structureService.RetrievePermissionAsync(metaQueryModel);
     [HttpPut]
+    [PermissionAuthorize(UserPermissions.UpdatePermission)]
     public async Task<ResponseModel<PermissionDto>> UpdatePermissionName(PermissionDto permissionDto)
-        => ResponseModel<PermissionDto>.ResultFromContent(await structureService.ModifyPermissionAsync(permissionDto));
+        => await structureService.ModifyPermissionAsync(permissionDto);
 }

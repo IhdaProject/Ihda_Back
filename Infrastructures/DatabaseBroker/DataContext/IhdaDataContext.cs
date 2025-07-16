@@ -81,8 +81,6 @@ public class IhdaDataContext : DbContext
         TrackActionsAt();
         return base.SaveChangesAsync(cancellationToken);
     }
-
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -113,6 +111,7 @@ public class IhdaDataContext : DbContext
 
     #region Mosques Schema
     public DbSet<Mosque> Mosques { get; set; }
+    public DbSet<FavoriteMosque> FavoriteMosques { get; set; }
     public DbSet<MosquePrayerTime> MosquePrayerTimes { get; set; }
     #endregion
 

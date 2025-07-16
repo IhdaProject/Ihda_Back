@@ -8,5 +8,8 @@ public class Structure : AuditableModelBase<long>
 {
     [Column("name")] public string Name { get; set; }
     public virtual ICollection<StructurePermission> StructurePermissions { get; set; }
-    [Column("is_default")] public bool IsDefault { get; set; }
+    /// <summary>
+    /// 1 default, 2 superAdmin
+    /// </summary>
+    [Column("type")] public int Type { get; set; }
 }

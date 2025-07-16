@@ -10,4 +10,5 @@ public class Mosque : AuditableModelBase<long>
     [Column("photo_urls")] public List<string> PhotoUrls { get; set; }
     [Column("latitude")] public double Latitude { get; set; }
     [Column("longitude")] public double Longitude { get; set; }
+    public virtual ICollection<MosqueAdmin> MosqueAdmins { get; set; }
 }

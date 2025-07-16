@@ -5,6 +5,8 @@ using WebCore.Controllers;
 using WebCore.GeneralServices;
 using WebCore.Models;
 
+namespace ReferenceBookApi.Controllers;
+
 public class DistrictController(GenericCrudService<District, DistrictDto, long> crudService) : ApiControllerBase
 {
     [HttpGet]
