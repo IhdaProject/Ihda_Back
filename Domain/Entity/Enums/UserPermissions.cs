@@ -43,11 +43,17 @@ public enum UserPermissions
         #endregion
     
         #region DistrictController 11
-
+            ViewAllDistrict = 30110001,
+            ViewByIdDistrict = 30110002,
+            AddDistrict = 30110003,
+            RemoveDistrict = 30110004,
         #endregion
         
         #region RegionController 12
-
+            ViewAllRegions = 30120001,
+            ViewByIdRegion = 30120002,
+            AddRegion = 30120003,
+            RemoveRegion = 30120004,
         #endregion
 
     #endregion
