@@ -12,7 +12,7 @@ services:
 
     build:
       context: .
-      dockerfile: GatewayApi/Dockerfile
+      dockerfile: WebApis/GatewayApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
@@ -31,7 +31,7 @@ services:
 
     build:
       context: .
-      dockerfile: AuthApi/Dockerfile
+      dockerfile: WebApis/AuthApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
@@ -51,7 +51,7 @@ services:
 
     build:
       context: .
-      dockerfile: AssetApi/Dockerfile
+      dockerfile: WebApis/AssetApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
@@ -70,7 +70,7 @@ services:
 
     build:
       context: .
-      dockerfile: ReferenceBookApi/Dockerfile
+      dockerfile: WebApis/ReferenceBookApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
@@ -90,7 +90,7 @@ services:
     
     build:
       context: .
-      dockerfile: MosqueApi/Dockerfile
+      dockerfile: WebApis/MosqueApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
@@ -109,7 +109,7 @@ services:
     
     build:
       context: .
-      dockerfile: PrayerTimeApi/Dockerfile
+      dockerfile: WebApis/PrayerTimeApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
@@ -128,7 +128,7 @@ services:
     
     build:
       context: .
-      dockerfile: QuranCourseApi/Dockerfile
+      dockerfile: WebApis/QuranCourseApi/
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
