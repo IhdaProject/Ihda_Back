@@ -128,7 +128,7 @@ services:
     
     build:
       context: .
-      dockerfile: WebApis/QuranCourseApi/
+      dockerfile: WebApis/QuranCourseApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
@@ -157,7 +157,3 @@ services:
 
 volumes:
   postgres-data:
-
-networks:
-  sanoat_net:
-    driver: bridge
