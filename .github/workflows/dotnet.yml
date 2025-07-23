@@ -66,4 +66,4 @@ jobs:
             git reset --hard
             git pull origin master
             docker compose down
-            docker compose up -d --build
+            docker-compose --env-file .env.prod up -d
