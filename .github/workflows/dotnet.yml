@@ -62,7 +62,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /home/youruser/project-dir
+            cd /home/projects/Ihda_Back
             git reset --hard
             git pull origin main
             docker compose down
