@@ -34,15 +34,19 @@ public static class ConfigureApplication
 {
     public static void ConfigureDefault(this WebApplicationBuilder builder)
     {
+        var externalConfigPath = Environment.GetEnvironmentVariable("EXTERNAL_CONFIG_PATH");
+
         builder.Configuration
-            .AddJsonFile(Path.Combine(Path.Combine(Directory.GetParent(builder.Environment.ContentRootPath)!.Parent!.FullName,
-                "Domain", "WebCore"), "GeneralSettings.json"), optional: false, reloadOnChange: true)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+            .AddJsonFile(Path.Combine(Directory.GetParent(builder.Environment.ContentRootPath)?.Parent?.FullName ?? builder.Environment.ContentRootPath,
+                "Domain", "WebCore", "GeneralSettings.json"), optional: false, reloadOnChange: true)
+            .AddJsonFile(Path.Combine(externalConfigPath ?? string.Empty, "GeneralSettings.json"), optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile(Path.Combine(externalConfigPath ?? string.Empty, builder.Environment.ApplicationName ,$"appsettings.{builder.Environment.EnvironmentName}.json"), optional: true, reloadOnChange: true)
             .AddEnvironmentVariables();
-        
+
         builder.WebHost.UseUrls(builder.Configuration.GetConnectionString("Port")!);
-        
+
         builder.Services.Configure<TelegramBotCredential>(builder.Configuration
             .GetSection("TelegramBotCredential"));
         
@@ -228,19 +232,19 @@ public static class ConfigureApplication
             options.SwaggerEndpoint("/swagger/Client/swagger.json", "Client API");
             options.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API");
         });
-        //using var scope = app.Services.CreateScope();
-        //await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
+        using var scope = app.Services.CreateScope();
+        await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
         Log.Information("{0}", "Migrations applying...");
-        //await dataContext?.Database.MigrateAsync()!;
+        await dataContext?.Database.MigrateAsync()!;
         Log.Information("{0}", "Migrations applied.");
-        //scope.Dispose();
+        scope.Dispose();
 
         app.UseHealthChecks("/healths");
 
         app.UseMiddleware<RequestResponseLoggingMiddleware>();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
-       // await app.SynchronizePermissions();
+        await app.SynchronizePermissions();
         
         Log.Fatal("Application starting...");
     }
