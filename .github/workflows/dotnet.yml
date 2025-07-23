@@ -1,0 +1,69 @@
+name: Build and Deploy .NET Project
+
+on:
+  push:
+    branches: [ "dev", "master" ]
+  pull_request:
+    branches: [ "dev", "master" ]
+
+jobs:
+  build:
+    name: Build .NET Projects
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore & Build GatewayApi
+        run: |
+          dotnet restore WebApis/GatewayApi/GatewayApi.csproj
+          dotnet build WebApis/GatewayApi/GatewayApi.csproj --no-restore
+
+      - name: Restore & Build AuthApi
+        run: |
+          dotnet restore WebApis/AuthApi/AuthApi.csproj
+          dotnet build WebApis/AuthApi/AuthApi.csproj --no-restore
+
+      - name: Restore & Build AssetApi
+        run: |
+          dotnet restore WebApis/AssetApi/AssetApi.csproj
+          dotnet build WebApis/AssetApi/AssetApi.csproj --no-restore
+
+      - name: Restore & Build ReferenceBookApi
+        run: |
+          dotnet restore WebApis/ReferenceBookApi/ReferenceBookApi.csproj
+          dotnet build WebApis/ReferenceBookApi/ReferenceBookApi.csproj --no-restore
+
+      - name: Restore & Build PrayerTimeApi
+        run: |
+          dotnet restore WebApis/PrayerTimeApi/PrayerTimeApi.csproj
+          dotnet build WebApis/PrayerTimeApi/PrayerTimeApi.csproj --no-restore
+
+      - name: Restore & Build QuranCourseApi
+        run: |
+          dotnet restore WebApis/QuranCourseApi/QuranCourseApi.csproj
+          dotnet build WebApis/QuranCourseApi/QuranCourseApi.csproj --no-restore
+
+  deploy:
+    name: Deploy to Production Server
+    needs: build
+    if: github.ref_name == 'master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/projects/Ihda_Back
+            git reset --hard
+            git pull origin main
+            docker compose down
+            docker compose up -d --build
