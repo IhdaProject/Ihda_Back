@@ -2,156 +2,148 @@ version: '3.4'
 
 services:
   GatewayApi:
-    image: ihda_back/master:gatewayapi
-    labels:
-      NAME: "Gateway Api"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/mnt/project_logs/ihda_back/gateway:/app/logs"
-
+    image: ihda_back/${IMAGE_BRANCH:-master}:gatewayapi
     build:
       context: .
       dockerfile: WebApis/GatewayApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-
-    restart: always
-    ports:
-      - "5000:5000"
-
-  AuthApi:
-    image: ihda_back/master:authapi
-    labels:
-      NAME: "Auth Api"
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - EXTERNAL_CONFIG_PATH=${EXTERNAL_CONFIG_PATH}
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "/mnt/project_logs/ihda_back/auth:/app/logs"
+      - "${LOG_PATH}/gateway:/app/logs"
+      - "${EXTERNAL_CONFIG_PATH}:${EXTERNAL_CONFIG_PATH}"
+      - ./Domain/WebCore/GeneralSettings.json:/app/Domain/WebCore/GeneralSettings.json:ro
+    ports:
+      - "${GATEWAY_PORT}:5000"
+    restart: always
 
+  AuthApi:
+    image: ihda_back/${IMAGE_BRANCH:-master}:authapi
     build:
       context: .
       dockerfile: WebApis/AuthApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-
-    restart: always
-    ports:
-      - "5001:5001"
-
-  AssetApi:
-    image: ihda_back/master:assetapi
-    labels:
-      NAME: "Asset Api"
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - EXTERNAL_CONFIG_PATH=${EXTERNAL_CONFIG_PATH}
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "/mnt/ihda/AssetApi/wwwroot:/app/wwwroot"
-      - "/mnt/project_logs/ihda_back/asset:/app/logs" 
+      - "${LOG_PATH}/auth:/app/logs"
+      - "${EXTERNAL_CONFIG_PATH}:${EXTERNAL_CONFIG_PATH}"
+      - ./Domain/WebCore/GeneralSettings.json:/app/Domain/WebCore/GeneralSettings.json:ro
+    ports:
+      - "${AUTH_PORT}:5001"
+    restart: always
 
+  AssetApi:
+    image: ihda_back/${IMAGE_BRANCH:-master}:assetapi
     build:
       context: .
       dockerfile: WebApis/AssetApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-
-    restart: always
-    ports:
-      - "5002:5002"
-
-  ReferenceBookApi:
-    image: ihda_back/master:referencebookapi
-    labels:
-      NAME: "Reference Book Api"
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - EXTERNAL_CONFIG_PATH=${EXTERNAL_CONFIG_PATH}
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "/mnt/project_logs/ihda_back/referencebook:/app/logs" 
+      - "${ASSET_WWWROOT_PATH}:/app/wwwroot"
+      - "${LOG_PATH}/asset:/app/logs"
+      - "${EXTERNAL_CONFIG_PATH}:${EXTERNAL_CONFIG_PATH}"
+      - ./Domain/WebCore/GeneralSettings.json:/app/Domain/WebCore/GeneralSettings.json:ro
+    ports:
+      - "${ASSET_PORT}:5002"
+    restart: always
 
+  ReferenceBookApi:
+    image: ihda_back/${IMAGE_BRANCH:-master}:referencebookapi
     build:
       context: .
       dockerfile: WebApis/ReferenceBookApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-
-    restart: always
-    ports:
-      - "5003:5003"
-        
-  
-  MosqueApi:
-    image: ihda_back/master:mosqueapi
-    labels:
-      NAME: "Mosque Api"
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - EXTERNAL_CONFIG_PATH=${EXTERNAL_CONFIG_PATH}
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "/mnt/project_logs/ihda_back/mosque:/app/logs"
-    
+      - "${LOG_PATH}/referencebook:/app/logs"
+      - "${EXTERNAL_CONFIG_PATH}:${EXTERNAL_CONFIG_PATH}"
+      - ./Domain/WebCore/GeneralSettings.json:/app/Domain/WebCore/GeneralSettings.json:ro
+    ports:
+      - "${REFERENCEBOOK_PORT}:5003"
+    restart: always
+
+  MosqueApi:
+    image: ihda_back/${IMAGE_BRANCH:-master}:mosqueapi
     build:
       context: .
       dockerfile: WebApis/MosqueApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-
-    restart: always
-    ports:
-      - "5004:5004"
-  
-  PrayerTimeApi:
-    image: ihda_back/master:prayertimeApi
-    labels:
-      NAME: "Prayer Time Api"
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - EXTERNAL_CONFIG_PATH=${EXTERNAL_CONFIG_PATH}
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "/mnt/project_logs/ihda_back/prayertime:/app/logs"
-    
+      - "${LOG_PATH}/mosque:/app/logs"
+      - "${EXTERNAL_CONFIG_PATH}:${EXTERNAL_CONFIG_PATH}"
+      - ./Domain/WebCore/GeneralSettings.json:/app/Domain/WebCore/GeneralSettings.json:ro
+    ports:
+      - "${MOSQUE_PORT}:5004"
+    restart: always
+
+  PrayerTimeApi:
+    image: ihda_back/${IMAGE_BRANCH:-master}:prayertimeapi
     build:
       context: .
       dockerfile: WebApis/PrayerTimeApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-
-    restart: always
-    ports:
-      - "5005:5005"
-  
-  QuranCourseApi:
-    image: ihda_back/master:qurancourseapi
-    labels:
-      NAME: "Quran Course Api"
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - EXTERNAL_CONFIG_PATH=${EXTERNAL_CONFIG_PATH}
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "/mnt/project_logs/ihda_back/qurancourse:/app/logs"
-    
+      - "${LOG_PATH}/prayertime:/app/logs"
+      - "${EXTERNAL_CONFIG_PATH}:${EXTERNAL_CONFIG_PATH}"
+      - ./Domain/WebCore/GeneralSettings.json:/app/Domain/WebCore/GeneralSettings.json:ro
+    ports:
+      - "${PRAYERTIME_PORT}:5005"
+    restart: always
+
+  QuranCourseApi:
+    image: ihda_back/${IMAGE_BRANCH:-master}:qurancourseapi
     build:
       context: .
       dockerfile: WebApis/QuranCourseApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-
-    restart: always
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - EXTERNAL_CONFIG_PATH=${EXTERNAL_CONFIG_PATH}
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "${LOG_PATH}/qurancourse:/app/logs"
+      - "${EXTERNAL_CONFIG_PATH}:${EXTERNAL_CONFIG_PATH}"
+      - ./Domain/WebCore/GeneralSettings.json:/app/Domain/WebCore/GeneralSettings.json:ro
     ports:
-      - "5006:5006"
-  
+      - "${QURANCOURSE_PORT}:5006"
+    restart: always
+
   RedisCache:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-    
+      - "${REDIS_PORT}:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+
   postgres:
     image: postgres:15
     container_name: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: ihda_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
 

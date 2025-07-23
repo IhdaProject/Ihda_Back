@@ -7,6 +7,7 @@
 *.rsuser
 *.suo
 *.user
+.env.prod
 *.userosscache
 *.sln.docstates
 

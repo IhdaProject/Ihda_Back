@@ -34,15 +34,19 @@ public static class ConfigureApplication
 {
     public static void ConfigureDefault(this WebApplicationBuilder builder)
     {
+        var externalConfigPath = Environment.GetEnvironmentVariable("EXTERNAL_CONFIG_PATH");
+
         builder.Configuration
-            .AddJsonFile(Path.Combine(Path.Combine(Directory.GetParent(builder.Environment.ContentRootPath)!.Parent!.FullName,
-                "Domain", "WebCore"), "GeneralSettings.json"), optional: false, reloadOnChange: true)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+            .AddJsonFile(Path.Combine(Directory.GetParent(builder.Environment.ContentRootPath)?.Parent?.FullName ?? builder.Environment.ContentRootPath,
+                "Domain", "WebCore", "GeneralSettings.json"), optional: false, reloadOnChange: true)
+            .AddJsonFile(Path.Combine(externalConfigPath ?? string.Empty, "GeneralSettings.json"), optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile(Path.Combine(externalConfigPath ?? string.Empty, builder.Environment.ApplicationName ,$"appsettings.{builder.Environment.EnvironmentName}.json"), optional: true, reloadOnChange: true)
             .AddEnvironmentVariables();
-        
+
         builder.WebHost.UseUrls(builder.Configuration.GetConnectionString("Port")!);
-        
+
         builder.Services.Configure<TelegramBotCredential>(builder.Configuration
             .GetSection("TelegramBotCredential"));
         

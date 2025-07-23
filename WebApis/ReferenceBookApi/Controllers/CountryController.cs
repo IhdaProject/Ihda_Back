@@ -13,21 +13,25 @@ public class CountryController(GenericCrudService<Country, CountryDto, long> cru
 
 {
     [HttpGet]
+    [ApiGroup("Admin", "Client")]
     [PermissionAuthorize(UserPermissions.ViewAllCountries)]
-    public Task<ResponseModel<List<CountryDto>>> GetAllDistricts([FromQuery] MetaQueryModel metaQueryModel)
+    public Task<ResponseModel<List<CountryDto>>> GetAll([FromQuery] MetaQueryModel metaQueryModel)
         => crudService.GetAllAsync(metaQueryModel);
     
     [HttpGet]
+    [ApiGroup("Admin", "Client")]
     [PermissionAuthorize(UserPermissions.ViewByIdCountry)]
     public Task<ResponseModel<CountryDto>> GetById([FromRoute]long id)
         => crudService.GetByIdAsync(id);
     
     [HttpPost]
+    [ApiGroup("Admin")]
     [PermissionAuthorize(UserPermissions.AddCountry)]
     public Task<ResponseModel<CountryDto>> OnSave([FromBody] CountryDto dto)
         => crudService.OnSaveAsync(dto);
     
     [HttpPost]
+    [ApiGroup("Admin")]
     [PermissionAuthorize(UserPermissions.RemoveCountry)]
     public Task<ResponseModel<CountryDto>> Delete([FromBody] long id)
         => crudService.DeleteByIdAsync(id);
