@@ -1,55 +1,69 @@
-name: Build and Test .NET Project
+name: Build and Deploy .NET Project
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "dev", "main" ]
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "dev", "main" ]
 
 jobs:
-  build-dotnet:
-    name: Build and Test .NET Projects
+  build:
+    name: Build .NET Projects
     runs-on: windows-2022
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Restore dependencies for GatewayApi
-      run: dotnet restore WebApis/GatewayApi/GatewayApi.csproj
-      
-    - name: Build GatewayApi
-      run: dotnet build WebApis/GatewayApi/GatewayApi.csproj --no-restore
-      
-    - name: Restore dependencies for AuthApi
-      run: dotnet restore WebApis/AuthApi/AuthApi.csproj
+      - name: Restore & Build GatewayApi
+        run: |
+          dotnet restore WebApis/GatewayApi/GatewayApi.csproj
+          dotnet build WebApis/GatewayApi/GatewayApi.csproj --no-restore
 
-    - name: Build AuthApi
-      run: dotnet build WebApis/AuthApi/AuthApi.csproj --no-restore
-      
-    - name: Restore dependencies for AssetApi
-      run: dotnet restore WebApis/AssetApi/AssetApi.csproj
+      - name: Restore & Build AuthApi
+        run: |
+          dotnet restore WebApis/AuthApi/AuthApi.csproj
+          dotnet build WebApis/AuthApi/AuthApi.csproj --no-restore
 
-    - name: Build AssetApi
-      run: dotnet build WebApis/AssetApi/AssetApi.csproj --no-restore
+      - name: Restore & Build AssetApi
+        run: |
+          dotnet restore WebApis/AssetApi/AssetApi.csproj
+          dotnet build WebApis/AssetApi/AssetApi.csproj --no-restore
 
-    - name: Restore dependencies for ReferenceBookApi
-      run: dotnet restore WebApis/ReferenceBookApi/ReferenceBookApi.csproj
+      - name: Restore & Build ReferenceBookApi
+        run: |
+          dotnet restore WebApis/ReferenceBookApi/ReferenceBookApi.csproj
+          dotnet build WebApis/ReferenceBookApi/ReferenceBookApi.csproj --no-restore
 
-    - name: Build ReferenceBookApi
-      run: dotnet build WebApis/ReferenceBookApi/ReferenceBookApi.csproj --no-restore
+      - name: Restore & Build PrayerTimeApi
+        run: |
+          dotnet restore WebApis/PrayerTimeApi/PrayerTimeApi.csproj
+          dotnet build WebApis/PrayerTimeApi/PrayerTimeApi.csproj --no-restore
 
-    - name: Restore dependencies for PrayerTimeApi
-      run: dotnet restore WebApis/PrayerTimeApi/PrayerTimeApi.csproj
+      - name: Restore & Build QuranCourseApi
+        run: |
+          dotnet restore WebApis/QuranCourseApi/QuranCourseApi.csproj
+          dotnet build WebApis/QuranCourseApi/QuranCourseApi.csproj --no-restore
 
-    - name: Build PrayerTimeApi
-      run: dotnet build WebApis/PrayerTimeApi/PrayerTimeApi.csproj --no-restore
+  deploy:
+    name: Deploy to Production Server
+    needs: build
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
 
-    - name: Restore dependencies for QuranCourseApi
-      run: dotnet restore WebApis/QuranCourseApi/QuranCourseApi.csproj
-
-    - name: Build QuranCourseApi
-      run: dotnet build WebApis/QuranCourseApi/QuranCourseApi.csproj --no-restore
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/youruser/project-dir
+            git reset --hard
+            git pull origin main
+            docker compose down
+            docker compose up -d --build
