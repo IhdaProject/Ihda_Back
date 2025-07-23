@@ -2,9 +2,9 @@ name: Build and Deploy .NET Project
 
 on:
   push:
-    branches: [ "dev", "main" ]
+    branches: [ "dev", "master" ]
   pull_request:
-    branches: [ "dev", "main" ]
+    branches: [ "dev", "master" ]
 
 jobs:
   build:
@@ -51,7 +51,7 @@ jobs:
   deploy:
     name: Deploy to Production Server
     needs: build
-    if: github.ref_name == 'main'
+    if: github.ref_name == 'master'
     runs-on: ubuntu-latest
 
     steps:
