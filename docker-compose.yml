@@ -2,13 +2,13 @@ version: '3.4'
 
 services:
   GatewayApi:
-    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:gatewayapi
+    image: ihda_back/master:gatewayapi
     labels:
       NAME: "Gateway Api"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-    ##  - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+      - "/mnt/project_logs/ihda_back/gateway:/app/logs"
 
     build:
       context: .
@@ -18,16 +18,16 @@ services:
 
     restart: always
     ports:
-      - "1000:1000"
-        
+      - "5000:5000"
+
   AuthApi:
-    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:authapi
+    image: ihda_back/master:authapi
     labels:
       NAME: "Auth Api"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-    ## - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+      - "/mnt/project_logs/ihda_back/auth:/app/logs"
 
     build:
       context: .
@@ -37,36 +37,17 @@ services:
 
     restart: always
     ports:
-      - "1001:1001"
-        
-  EImzoApi:
-    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:eimzoapi
-    labels:
-      NAME: "EImzo Api"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    ##  - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
-
-    build:
-      context: .
-      dockerfile: EimzoApi/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-
-    restart: always
-    ports:
-      - "1020:1020"
+      - "5001:5001"
 
   AssetApi:
-    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:assetapi
+    image: ihda_back/master:assetapi
     labels:
       NAME: "Asset Api"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "/study_portal/AssetApi/wwwroot:/app/wwwroot"
-    ##  - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+      - "/mnt/ihda/AssetApi/wwwroot:/app/wwwroot"
+      - "/mnt/project_logs/ihda_back/asset:/app/logs" 
 
     build:
       context: .
@@ -74,36 +55,105 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
-    #restart: always
+    restart: always
     ports:
-      - "1003:1003"
-      
-      
-  LearningApi:
-    image: gitlab.cooperation.uz:5050/business_learning/business_study_back/dev:learningapi
+      - "5002:5002"
+
+  ReferenceBookApi:
+    image: ihda_back/master:referencebookapi
     labels:
-      NAME: "Learning Api"
+      NAME: "Reference Book Api"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-    ##  - "/mnt/project_logs/industrial_portal/gateway:/app/logs" 
+      - "/mnt/project_logs/ihda_back/referencebook:/app/logs" 
 
     build:
       context: .
-      dockerfile: LearningApi/Dockerfile
+      dockerfile: ReferenceBookApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
-    #restart: always
+    restart: always
     ports:
-      - "1006:1006"
+      - "5003:5003"
         
-  #RedisCache:
-  #  image: redis:6.2-alpine
-  #  restart: always
-  #  ports:
-  #    - '36379:6379'
-  #  command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+  
+  MosqueApi:
+    image: ihda_back/master:mosqueapi
+    labels:
+      NAME: "Mosque Api"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/mnt/project_logs/ihda_back/mosque:/app/logs"
+    
+    build:
+      context: .
+      dockerfile: MosqueApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+    restart: always
+    ports:
+      - "5004:5004"
+  
+  PrayerTimeApi:
+    image: ihda_back/master:prayertimeApi
+    labels:
+      NAME: "Prayer Time Api"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/mnt/project_logs/ihda_back/prayertime:/app/logs"
+    
+    build:
+      context: .
+      dockerfile: PrayerTimeApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+    restart: always
+    ports:
+      - "5005:5005"
+  
+  QuranCourseApi:
+    image: ihda_back/master:qurancourseapi
+    labels:
+      NAME: "Quran Course Api"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/mnt/project_logs/ihda_back/qurancourse:/app/logs"
+    
+    build:
+      context: .
+      dockerfile: QuranCourseApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+    restart: always
+    ports:
+      - "5003:5003"
+  
+  RedisCache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '36379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: ihda_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
 networks:
   sanoat_net:

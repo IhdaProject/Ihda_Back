@@ -1,17 +1,19 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY . .
-RUN dotnet nuget add source http://192.168.122.25:2000/v3/index.json -n LocalBaget
-RUN dotnet restore "AssetApi/AssetApi.csproj"
+RUN dotnet restore "WebApis/AssetApi/AssetApi.csproj"
 COPY . .
-WORKDIR "/src/AssetApi"
-RUN dotnet build "AssetApi.csproj" -c Release -o /app/build
+WORKDIR "/src/WebApis/AssetApi"
+RUN dotnet build "./AssetApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "AssetApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./AssetApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
