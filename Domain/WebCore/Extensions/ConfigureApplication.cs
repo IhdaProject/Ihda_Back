@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json.Serialization;
 using AuthenticationBroker.Options;
@@ -204,12 +203,9 @@ public static class ConfigureApplication
                         
                         if(!cache.HasKeyAsync($"tokenId:{tokenId}").Result) return Task.CompletedTask;
                         
-                        context.NoResult();
-                        context.Response.StatusCode = 401;
-                        return context.Response.WriteAsJsonAsync(new
-                        {
-                            message = "This token is blacklisted"
-                        });
+                        context.Fail("Token is blacklisted");
+                        
+                        return Task.CompletedTask;
                     },
                     OnAuthenticationFailed = _ => Task.CompletedTask
                 };*/
