@@ -20,5 +20,11 @@
     "Domain": "https://api.telegram.org",
     "Token": "8151546353:AAGWwK2T8doiFpOqKlo6euPahBmodkfrm_U",
     "ChatId": "-1002565339091"
+  },
+  "Swagger": {
+    "Docs": [
+      "Client",
+      "Admin"
+    ]
   }
 }

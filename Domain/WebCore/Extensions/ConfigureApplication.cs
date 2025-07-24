@@ -128,12 +128,12 @@ public static class ConfigureApplication
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
         {
-            options
-                .SwaggerDoc("Client",new OpenApiInfo{Title = AppDomain.CurrentDomain.FriendlyName});
+            var docNames = builder.Configuration.GetSection("Swagger:Docs").Get<List<string>>();
             
-            options
-                .SwaggerDoc("Admin",new OpenApiInfo{Title = AppDomain.CurrentDomain.FriendlyName});
-            
+            foreach (var docName in docNames)
+                options
+                    .SwaggerDoc(docName,new OpenApiInfo{Title = AppDomain.CurrentDomain.FriendlyName});
+
             options.DocInclusionPredicate((docName, apiDesc) =>
             {
                 var apiGroupAttribute = apiDesc.ActionDescriptor.EndpointMetadata
@@ -193,7 +193,7 @@ public static class ConfigureApplication
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
-                options.Events = new JwtBearerEvents()
+                /*options.Events = new JwtBearerEvents()
                 {
                     OnTokenValidated = context =>
                     {
@@ -212,7 +212,7 @@ public static class ConfigureApplication
                         });
                     },
                     OnAuthenticationFailed = _ => Task.CompletedTask
-                };
+                };*/
             });
 
         if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
@@ -229,8 +229,10 @@ public static class ConfigureApplication
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("/swagger/Client/swagger.json", "Client API");
-            options.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API");
+            var docNames = app.Configuration.GetSection("Swagger:Docs").Get<List<string>>();
+            
+            foreach (var docName in docNames)
+                options.SwaggerEndpoint($"/swagger/{docName}/swagger.json", $"{docName} API");
         });
         using var scope = app.Services.CreateScope();
         await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
