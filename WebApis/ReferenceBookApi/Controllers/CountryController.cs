@@ -14,13 +14,13 @@ public class CountryController(GenericCrudService<Country, CountryDto, long> cru
 {
     [HttpGet]
     [ApiGroup("Admin", "Client")]
-    [PermissionAuthorize(UserPermissions.ViewAllCountries)]
+    //[PermissionAuthorize(UserPermissions.ViewAllCountries)]
     public Task<ResponseModel<List<CountryDto>>> GetAll([FromQuery] MetaQueryModel metaQueryModel)
         => crudService.GetAllAsync(metaQueryModel);
     
     [HttpGet]
     [ApiGroup("Admin", "Client")]
-    [PermissionAuthorize(UserPermissions.ViewByIdCountry)]
+    //[PermissionAuthorize(UserPermissions.ViewByIdCountry)]
     public Task<ResponseModel<CountryDto>> GetById([FromRoute]long id)
         => crudService.GetByIdAsync(id);
     
