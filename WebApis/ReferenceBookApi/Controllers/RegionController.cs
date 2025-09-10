@@ -13,13 +13,13 @@ public class RegionController(GenericCrudService<Region, RegionDto, long> crudSe
 {
     [HttpGet]
     [ApiGroup("Admin", "Client")]
-    [PermissionAuthorize(UserPermissions.ViewAllRegions)]
+    //[PermissionAuthorize(UserPermissions.ViewAllRegions)]
     public Task<ResponseModel<List<RegionDto>>> GetAll([FromQuery] MetaQueryModel metaQuery)
         => crudService.GetAllAsync(metaQuery);
 
     [HttpGet]
     [ApiGroup("Admin", "Client")]
-    [PermissionAuthorize(UserPermissions.ViewByIdRegion)]
+    //[PermissionAuthorize(UserPermissions.ViewByIdRegion)]
     public Task<ResponseModel<RegionDto>> GetById([FromRoute] long id)
         => crudService.GetByIdAsync(id);
     

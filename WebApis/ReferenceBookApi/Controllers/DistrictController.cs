@@ -13,13 +13,13 @@ public class DistrictController(GenericCrudService<District, DistrictDto, long> 
 {
     [HttpGet]
     [ApiGroup("Admin", "Client")]
-    [PermissionAuthorize(UserPermissions.ViewAllDistrict)]
+    //[PermissionAuthorize(UserPermissions.ViewAllDistrict)]
     public Task<ResponseModel<List<DistrictDto>>> GetAll([FromQuery] MetaQueryModel metaQueryModel)
         => crudService.GetAllAsync(metaQueryModel);
     
     [HttpGet]
     [ApiGroup("Admin", "Client")]
-    [PermissionAuthorize(UserPermissions.ViewByIdDistrict)]
+    //PermissionAuthorize(UserPermissions.ViewByIdDistrict)]
     public Task<ResponseModel<DistrictDto>> GetById([FromRoute]long id)
         => crudService.GetByIdAsync(id);
     
