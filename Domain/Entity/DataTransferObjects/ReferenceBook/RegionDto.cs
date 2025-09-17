@@ -4,4 +4,5 @@ public record RegionDto(
     long Id,
     string Name,
     int Code,
-    long CountryId) : BaseDto<long>(Id);
+    long CountryId,
+    string CountryName) : BaseDto<long>(Id);
