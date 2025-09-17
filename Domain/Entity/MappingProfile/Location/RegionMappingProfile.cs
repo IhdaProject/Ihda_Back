@@ -8,7 +8,7 @@ public class RegionMappingProfile : Profile
 {
     public RegionMappingProfile()
     {
-        CreateMap<Region, RegionDto>();
+        CreateMap<Region, RegionDto>().ForMember(x => x.CountryName, y => y.MapFrom(x => x.Country.Name));
         CreateMap<RegionDto, Region>();
     }
 }
