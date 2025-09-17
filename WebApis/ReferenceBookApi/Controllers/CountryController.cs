@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Entity.DataTransferObjects.ReferenceBook;
 using Entity.Enums;
 using Entity.Models.ReferenceBook;
@@ -9,6 +10,7 @@ using WebCore.Models;
 
 
 namespace ReferenceBookApi.Controllers;
+[Route("api/[controller]")]
 public class CountryController(GenericCrudService<Country, CountryDto, long> crudService) : ApiControllerBase
 
 {
@@ -18,21 +20,27 @@ public class CountryController(GenericCrudService<Country, CountryDto, long> cru
     public Task<ResponseModel<List<CountryDto>>> GetAll([FromQuery] MetaQueryModel metaQueryModel)
         => crudService.GetAllAsync(metaQueryModel);
     
-    [HttpGet]
+    [HttpGet("{id:long}")]
     [ApiGroup("Admin", "Client")]
     //[PermissionAuthorize(UserPermissions.ViewByIdCountry)]
     public Task<ResponseModel<CountryDto>> GetById([FromRoute]long id)
         => crudService.GetByIdAsync(id);
+
+    [HttpPut("{id:long}")]
+    [ApiGroup("Admin")]
+    [PermissionAuthorize(UserPermissions.UpdateCountry)]
+    public Task<ResponseModel<CountryDto>> Update([FromBody] CountryDto dto, [FromRoute] long id)
+        => dto.Id != id ? throw new ValidationException("Not valid id") : crudService.OnSaveAsync(dto);
     
     [HttpPost]
     [ApiGroup("Admin")]
     [PermissionAuthorize(UserPermissions.AddCountry)]
-    public Task<ResponseModel<CountryDto>> OnSave([FromBody] CountryDto dto)
+    public Task<ResponseModel<CountryDto>> Create([FromBody] CountryDto dto)
         => crudService.OnSaveAsync(dto);
     
-    [HttpPost]
+    [HttpDelete("{id:long}")]
     [ApiGroup("Admin")]
     [PermissionAuthorize(UserPermissions.RemoveCountry)]
-    public Task<ResponseModel<CountryDto>> Delete([FromBody] long id)
+    public Task<ResponseModel<CountryDto>> Delete([FromRoute] long id)
         => crudService.DeleteByIdAsync(id);
 }

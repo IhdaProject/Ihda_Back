@@ -8,7 +8,7 @@ public class DistrictMappingProfile : Profile
 {
     public DistrictMappingProfile()
     {
-        CreateMap<District, DistrictDto>();
+        CreateMap<District, DistrictDto>().ForMember(x => x.RegionName, y => y.MapFrom(x => x.Region.Name));
         CreateMap<DistrictDto, District>();
     }
 }

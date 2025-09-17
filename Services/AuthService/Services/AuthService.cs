@@ -143,6 +143,7 @@ public class AuthService(
                     .SelectMany(s =>
                         s.Structure.StructurePermissions
                             .Select(sp => sp.Permission.Code))
+                    .Distinct()
                     .ToList())
             .ToListAsync();
     }

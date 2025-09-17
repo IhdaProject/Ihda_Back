@@ -40,6 +40,7 @@ public enum UserPermissions
             ViewByIdCountry = 30100002,
             AddCountry = 30100003,
             RemoveCountry = 30100004,
+            UpdateCountry = 30100005,
         #endregion
     
         #region DistrictController 11
@@ -47,6 +48,7 @@ public enum UserPermissions
             ViewByIdDistrict = 30110002,
             AddDistrict = 30110003,
             RemoveDistrict = 30110004,
+            UpdateDistrict = 30110005,
         #endregion
         
         #region RegionController 12
@@ -54,6 +56,7 @@ public enum UserPermissions
             ViewByIdRegion = 30120002,
             AddRegion = 30120003,
             RemoveRegion = 30120004,
+            UpdateRegion = 30120005,
         #endregion
 
     #endregion
@@ -72,12 +75,14 @@ public enum UserPermissions
     #endregion
     #region QuranCourse 60
         #region TrainingCenter Controller 10
-            OnSaveTrainingCenter = 60100001,
+            CreateTrainingCenter = 60100001,
             ViewTrainingCenters = 60100002,
             ViewTrainingCenter = 60100003,
-            OnSaveCourseForm = 60100004,
+            CreateCourseForm = 60100004,
             ViewCourseForms = 60100005,
             ViewCourseForm = 60100006,
+            UpdateTrainingCenter = 60100007,
+            UpdateCourseForm = 60100008,
         #endregion
         #region Quran Course Controller 20
             ViewPetitionQuranCourses = 60200001,

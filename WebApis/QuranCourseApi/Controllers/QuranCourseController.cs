@@ -20,6 +20,6 @@ public class QuranCourseController(IQuranCourseService quranCourseService) : Api
         => await quranCourseService.GetPetitionInfoWithTimeAsync(petitionInfoDto);
     [ApiGroup("Admin")]
     [HttpGet, PermissionAuthorize(UserPermissions.ViewPetitionQuranCourses)]
-    public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetAllPetitions(MetaQueryModel metaQueryModel)
+    public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetAllPetitions([FromQuery]MetaQueryModel metaQueryModel)
         => await quranCourseService.GetAllPetitionsAsync(metaQueryModel);
 }
