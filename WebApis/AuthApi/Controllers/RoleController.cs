@@ -1,5 +1,6 @@
 using Entity.DataTransferObjects.Role;
 using Entity.Enums;
+using Entity.Exceptions;
 using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using RoleService.Service;
@@ -43,8 +44,8 @@ public class RoleController(IRoleService structureService) : ApiControllerBase
     [PermissionAuthorize(UserPermissions.ViewPermissions)]
     public async Task<ResponseModel<List<PermissionDto>>> GetPermissions([FromQuery]MetaQueryModel metaQueryModel)
         => await structureService.RetrievePermissionAsync(metaQueryModel);
-    [HttpPut]
+    [HttpPut("{id:long}")]
     [PermissionAuthorize(UserPermissions.UpdatePermission)]
-    public async Task<ResponseModel<PermissionDto>> UpdatePermissionName(PermissionDto permissionDto)
-        => await structureService.ModifyPermissionAsync(permissionDto);
+    public async Task<ResponseModel<PermissionDto>> UpdatePermissionName(PermissionDto permissionDto, [FromRoute] long id)
+        => permissionDto.Id != id ? throw new ValidationException("Not valid id"): await structureService.ModifyPermissionAsync(permissionDto);
 }
