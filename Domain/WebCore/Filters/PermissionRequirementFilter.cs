@@ -23,7 +23,7 @@ public class PermissionRequirementFilter(int[] requiredPermissionsCodes) : IAsyn
                     StaticCache.Permissions.TryGetValue(structureId, out var permissions) &&
                     permissions is {Count: > 0})
                     return permissions;
-                throw new UnauthorizedException("Unauthorized");
+                return [];
             }).ToList();
 
         if (requiredPermissionsCodes.Any(x => permissions.All(pc => pc != x)))

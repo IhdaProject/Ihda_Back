@@ -9,7 +9,7 @@ using WebCore.GeneralServices;
 using WebCore.Models;
 
 namespace ReferenceBookApi.Controllers;
-
+[Route("api/[controller]")]
 public class DistrictController(GenericCrudService<District, DistrictDto, long> crudService) : ApiControllerBase
 {
     [HttpGet]
