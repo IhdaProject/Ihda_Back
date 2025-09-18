@@ -5,4 +5,4 @@ public record DistrictDto(
     string Name,
     int Code,
     long RegionId,
-    string RegionName) : BaseDto<long>(Id);
+    string? RegionName) : BaseDto<long>(Id);
