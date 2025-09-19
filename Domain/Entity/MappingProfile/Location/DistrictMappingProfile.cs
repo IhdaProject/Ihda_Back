@@ -8,8 +8,7 @@ public class DistrictMappingProfile : Profile
 {
     public DistrictMappingProfile()
     {
-        CreateMap<District, DistrictDto>()
-            .ForCtorParam("RegionName", y => y.MapFrom(x => x.Region.Name));
+        CreateMap<District, DistrictDto>();
         CreateMap<DistrictDto, District>();
     }
 }
