@@ -8,8 +8,7 @@ public class RegionMappingProfile : Profile
 {
     public RegionMappingProfile()
     {
-        CreateMap<Region, RegionDto>()
-            .ForCtorParam("CountryName", opt => opt.MapFrom(src => src.Country.Name));
+        CreateMap<Region, RegionDto>();
         CreateMap<RegionDto, Region>();
     }
 }
