@@ -20,8 +20,6 @@ public enum UserPermissions
             ViewStructure = 10110004,
             CreateStructure = 10110005,
             UpdateStructure = 10110006,
-            AddPermissionStructure = 10110007,
-            RemovePermissionStructure = 10110008,
             RemoveStructure = 10110009,
         #endregion
         #region User Controller 12

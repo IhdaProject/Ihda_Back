@@ -1,7 +1,6 @@
 using Entity.DataTransferObjects.Role;
 using Entity.Enums;
 using Entity.Exceptions;
-using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using RoleService.Service;
 using WebCore.Attributes;
@@ -24,18 +23,10 @@ public class RoleController(IRoleService structureService) : ApiControllerBase
     [PermissionAuthorize(UserPermissions.CreateStructure)]
     public async Task<ResponseModel<StructureDto>> CreateStructure(StructureForCreationDto structureDto)
         => await structureService.CreateStructureAsync(structureDto);
-    [HttpPut]
+    [HttpPut("{id:long}")]
     [PermissionAuthorize(UserPermissions.UpdateStructure)]
-    public async Task<ResponseModel<StructureDto>> EditStructure(StructureDto structure)
-        => await structureService.ModifyStructureAsync(structure);
-    [HttpPost]
-    [PermissionAuthorize(UserPermissions.AddPermissionStructure)]
-    public async Task<ResponseModel<StructurePermissionDto>> AddPermissionStructure(StructurePermissionForCreationDto structurePermission)
-        => await structureService.RemovePermissionStructureAsync(structurePermission);
-    [HttpDelete]
-    [PermissionAuthorize(UserPermissions.RemovePermissionStructure)]
-    public async Task<ResponseModel<StructurePermissionDto>> DeletePermissionStructure(StructurePermissionForCreationDto structurePermission)
-        => await structureService.RemovePermissionStructureAsync(structurePermission);
+    public async Task<ResponseModel<StructureDto>> EditStructure(StructureForModificationDto structure, long id)
+        => id != structure.Id ? throw new ValidationException("Not Valid id") : await structureService.ModifyStructureAsync(structure);
     [HttpDelete]
     [PermissionAuthorize(UserPermissions.RemoveStructure)]
     public async Task<ResponseModel<bool>> DeleteStructure(long structureId)
