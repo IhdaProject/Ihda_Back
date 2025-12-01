@@ -31,12 +31,29 @@ public class RoleService(
             structureModel.Id,
             structureModel.Name);
     }
-    public async Task<ResponseModel<StructureDto>> ModifyStructureAsync(StructureDto structure)
+    public async Task<ResponseModel<StructureDto>> ModifyStructureAsync(StructureForModificationDto structure)
     {
-        var newStructure = await structureRepository.GetByIdAsync(structure.Id)
+        var newStructure = await structureRepository.GetAllAsQueryable()
+                .Where(s => s.Id == structure.Id)
+                .Include(s => 
+                    s.StructurePermissions.Where(sp => !sp.Permission.IsDelete))
+                .FirstOrDefaultAsync()
             ?? throw new NotFoundException("Not found structure");
 
         newStructure.Name = structure.Name;
+
+        newStructure.StructurePermissions = [..newStructure.StructurePermissions.Select(sp =>
+        {
+            sp.IsDelete = !structure.PermissionIds.Contains(sp.PermissionId);
+            return sp;
+        })];
+            
+        await structurePermissionsRepository.AddRangeAsync([..structure.PermissionIds.Where(p => newStructure.StructurePermissions.All(sp => sp.PermissionId != p))
+            .Select(p => new StructurePermission()
+            {
+                PermissionId = p,
+                StructureId = newStructure.Id
+            })]);
 
         var changedStructure = await structureRepository.UpdateAsync(newStructure);
 
@@ -89,39 +106,6 @@ public class RoleService(
             .Paging(metaQueryModel)
             .ToListAsync(), total: await query.CountAsync());
     }
-    public async Task<ResponseModel<StructurePermissionDto>> RemovePermissionStructureAsync(
-        StructurePermissionForCreationDto structurePermissionForCreationDto)
-    {
-        var structurePermission = await structurePermissionsRepository.GetAllAsQueryable()
-            .Where(sp => sp.StructureId == structurePermissionForCreationDto.StructureId &&
-                         sp.PermissionId == structurePermissionForCreationDto.PermissionId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException("Not found permission");
-
-        var newStructurePermission = await structurePermissionsRepository.RemoveAsync(structurePermission);
-
-        return new StructurePermissionDto(
-            newStructurePermission.Id,
-            newStructurePermission.StructureId,
-            newStructurePermission.PermissionId);
-    }
-
-    public async Task<ResponseModel<StructurePermissionDto>> AddPermissionStructureAsync(StructurePermissionForCreationDto structurePermissionForCreationDto)
-    {
-        var structurePermission = await structureRepository.GetByIdAsync(structurePermissionForCreationDto.StructureId)
-                                  ?? throw new NotFoundException("Not found Structure");
-
-        var newStructurePermission = await structurePermissionsRepository.AddAsync(new StructurePermission()
-        {
-            PermissionId = structurePermissionForCreationDto.PermissionId,
-            StructureId = structurePermissionForCreationDto.StructureId
-        });
-
-        return new StructurePermissionDto(
-            newStructurePermission.Id,
-            newStructurePermission.StructureId,
-            newStructurePermission.PermissionId);
-    }
-
     public async Task<ResponseModel<List<PermissionDto>>> RetrieveStructurePermissionByStructureIdAsync(MetaQueryModel metaQueryModel)
     {
         var query = structurePermissionsRepository.GetAllAsQueryable()

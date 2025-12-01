@@ -45,34 +45,12 @@ public static class ConfigureApplication
             .AddEnvironmentVariables();
 
         builder.WebHost.UseUrls(builder.Configuration.GetConnectionString("Port")!);
-
-        builder.Services.Configure<TelegramBotCredential>(builder.Configuration
-            .GetSection("TelegramBotCredential"));
         
-        var loggerConfig = new LoggerConfiguration()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            .Enrich.FromLogContext()
-            .WriteTo.File(
-                $"Logs/mylog-.log",
-                rollingInterval: RollingInterval.Day,
-                rollOnFileSizeLimit: true,
-                fileSizeLimitBytes: 5 * 1024 * 1024);
+        builder.Host.UseSerilog((context, services, configuration) => configuration
+            .ReadFrom.Configuration(context.Configuration));
         
         var environment = builder.Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT");
-
-        if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
-            loggerConfig = loggerConfig.Enrich.FromLogContext()
-                .WriteTo.Api(
-                    builder.Services.BuildServiceProvider().GetService<IOptions<TelegramBotCredential>>(),
-                    LogEventLevel.Fatal);
-
-        Log.Logger = loggerConfig.CreateLogger();
-
-        builder
-            .Configuration
-            .AddEnvironmentVariables()
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true);
-
+        
         builder.Services.Configure<JwtOption>(builder.Configuration
             .GetSection("JwtOption"));
 
@@ -230,19 +208,19 @@ public static class ConfigureApplication
             foreach (var docName in docNames)
                 options.SwaggerEndpoint($"/swagger/{docName}/swagger.json", $"{docName} API");
         });
-        using var scope = app.Services.CreateScope();
-        await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
-        Log.Information("{0}", "Migrations applying...");
-        await dataContext?.Database.MigrateAsync()!;
-        Log.Information("{0}", "Migrations applied.");
-        scope.Dispose();
+        // using var scope = app.Services.CreateScope();
+        // await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
+        // Log.Information("{0}", "Migrations applying...");
+        // await dataContext?.Database.MigrateAsync()!;
+        // Log.Information("{0}", "Migrations applied.");
+        // scope.Dispose();
 
         app.UseHealthChecks("/healths");
 
         app.UseMiddleware<RequestResponseLoggingMiddleware>();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
-        await app.SynchronizePermissions();
+        // await app.SynchronizePermissions();
         
         Log.Fatal("Application starting...");
     }

@@ -2,4 +2,5 @@ namespace Entity.DataTransferObjects.Role;
 
 public record StructureForModificationDto(
     long Id,
-    string Name);
+    string Name,
+    List<long> PermissionIds);
