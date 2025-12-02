@@ -170,23 +170,6 @@ public static class ConfigureApplication
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
-                /*options.Events = new JwtBearerEvents()
-                {
-                    OnTokenValidated = context =>
-                    {
-                        if(context.SecurityToken is not JwtSecurityToken securityToken) return Task.CompletedTask;
-
-                        var tokenId = securityToken.Id;
-                        var cache = context.HttpContext.RequestServices.GetRequiredService<ICacheService>();
-                        
-                        if(!cache.HasKeyAsync($"tokenId:{tokenId}").Result) return Task.CompletedTask;
-                        
-                        context.Fail("Token is blacklisted");
-                        
-                        return Task.CompletedTask;
-                    },
-                    OnAuthenticationFailed = _ => Task.CompletedTask
-                };*/
             });
 
         if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
@@ -222,7 +205,7 @@ public static class ConfigureApplication
 
         // await app.SynchronizePermissions();
         
-        Log.Fatal("Application starting...");
+        Log.Fatal($"#{app.Environment.ApplicationName} \nApplication starting...");
     }
 
     private static async Task SynchronizePermissions(this WebApplication app)

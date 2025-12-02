@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
     }
     public static IServiceCollection AddService(this IServiceCollection services)
     {
-        services.AddCronJob<TemplateCroneJob>("* * * * *");
+        //services.AddCronJob<TemplateCroneJob>("* * * * *");
         services.AddScoped<HttpClient, HttpClient>();
         services.AddScoped<IAuthService, AuthService.Services.AuthService>();
         services.AddScoped<IUserService, UserService>();
