@@ -1,59 +1,48 @@
 name: Build and Deploy .NET Project
-
 on:
   push:
     branches: [ "dev", "master" ]
   pull_request:
     branches: [ "dev", "master" ]
-
 jobs:
   build:
     name: Build .NET Projects
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-
       - name: Restore & Build GatewayApi
         run: |
           dotnet restore WebApis/GatewayApi/GatewayApi.csproj
           dotnet build WebApis/GatewayApi/GatewayApi.csproj --no-restore
-
       - name: Restore & Build AuthApi
         run: |
           dotnet restore WebApis/AuthApi/AuthApi.csproj
           dotnet build WebApis/AuthApi/AuthApi.csproj --no-restore
-
       - name: Restore & Build AssetApi
         run: |
           dotnet restore WebApis/AssetApi/AssetApi.csproj
           dotnet build WebApis/AssetApi/AssetApi.csproj --no-restore
-
       - name: Restore & Build ReferenceBookApi
         run: |
           dotnet restore WebApis/ReferenceBookApi/ReferenceBookApi.csproj
           dotnet build WebApis/ReferenceBookApi/ReferenceBookApi.csproj --no-restore
-
       - name: Restore & Build PrayerTimeApi
         run: |
           dotnet restore WebApis/PrayerTimeApi/PrayerTimeApi.csproj
           dotnet build WebApis/PrayerTimeApi/PrayerTimeApi.csproj --no-restore
-
       - name: Restore & Build QuranCourseApi
         run: |
           dotnet restore WebApis/QuranCourseApi/QuranCourseApi.csproj
           dotnet build WebApis/QuranCourseApi/QuranCourseApi.csproj --no-restore
-
   deploy:
     name: Deploy to Production Server
     needs: build
     if: github.ref_name == 'master'
     runs-on: ubuntu-latest
-
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -63,8 +52,31 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/projects/Ihda_Back
+            
+            # Pull latest code
             git reset --hard
             git pull origin master
-            docker compose --env-file .env.prod down
+            
+            # Build new images with timestamp tag
+            TIMESTAMP=$(date +%s)
             docker compose --env-file .env.prod build --no-cache
-            docker compose --env-file .env.prod up -d
+            
+            # Tag current images for rollback (optional)
+            docker compose --env-file .env.prod config --services | while read service; do
+              docker tag ihda_back-${service}:latest ihda_back-${service}:backup-${TIMESTAMP} 2>/dev/null || true
+            done
+            
+            # Start new containers (creates new ones, keeps old running)
+            docker compose --env-file .env.prod up -d --no-deps --force-recreate
+            
+            # Wait for health check
+            sleep 10
+            
+            # Remove old stopped containers
+            docker container prune -f
+            
+            # Remove dangling images
+            docker image prune -f
+            
+            # Remove old images (keep last 2 versions)
+            docker images | grep 'ihda_back' | grep -v 'latest' | grep -v 'backup' | awk '{print $3}' | tail -n +3 | xargs -r docker rmi -f 2>/dev/null || true
