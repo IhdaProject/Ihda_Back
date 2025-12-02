@@ -36,7 +36,7 @@
           "rollingInterval": "Day",
           "rollOnFileSizeLimit": true,
           "fileSizeLimitBytes": 5242880,
-          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+          "outputTemplate": "{ProjectName} {Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
         }
       },
       {
@@ -46,8 +46,7 @@
           "chatId": "-1002565339091",
           "restrictedToMinimumLevel": "Fatal",
           "formatter": "Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Sinks.TelegramBot",
-          "messageFormatter": "Serilog.Formatting.Display.MessageTemplateTextFormatter, Serilog",
-          "outputTemplate": "💣 FATAL ERROR 💣\n\n⏰ Vaqt: {Timestamp:yyyy-MM-dd HH:mm:ss}\n❌ Xato: {Message:lj}\n\n📄 Tafsilot: {Exception}"
+          "messageFormatter": "Serilog.Formatting.Display.MessageTemplateTextFormatter, Serilog"
         }
       }
     ]

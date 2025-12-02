@@ -48,7 +48,6 @@ jobs:
     needs: build
     if: github.ref_name == 'master'
     runs-on: ubuntu-latest
-
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -56,10 +55,26 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          command_timeout: 30m
           script: |
             cd /home/projects/Ihda_Back
+            
+            echo "📥 Pulling latest code..."
             git reset --hard
             git pull origin master
-            docker compose --env-file .env.prod down
+            
+            echo "🔨 Building Docker images..."
             docker compose --env-file .env.prod build --no-cache
-            docker compose --env-file .env.prod up -d
+            
+            echo "🚀 Starting new containers..."
+            docker compose --env-file .env.prod up -d --force-recreate
+            
+            echo "⏳ Waiting for services to start..."
+            sleep 15
+            
+            echo "🧹 Cleaning up old resources..."
+            docker container prune -f
+            docker image prune -f
+            
+            echo "✅ Deployment completed!"
+            docker compose --env-file .env.prod ps
