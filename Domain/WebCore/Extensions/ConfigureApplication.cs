@@ -258,7 +258,7 @@ public static class ConfigureApplication
                 .Where(x => codes.All(pc => pc != x.Code))
                 .ToListAsync();
 
-            if (!removedCodes.IsNullOrEmpty())
+            if (!(removedCodes?.Count > 0))
             {
                 dataContext.Permissions.RemoveRange(removedCodes);
                 await dataContext.SaveChangesAsync();
