@@ -50,33 +50,32 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          command_timeout: 30m
           script: |
             cd /home/projects/Ihda_Back
             
             # Pull latest code
+            echo "📥 Pulling latest code..."
             git reset --hard
             git pull origin master
             
-            # Build new images with timestamp tag
-            TIMESTAMP=$(date +%s)
+            # Build new images
+            echo "🔨 Building Docker images..."
             docker compose --env-file .env.prod build --no-cache
             
-            # Tag current images for rollback (optional)
-            docker compose --env-file .env.prod config --services | while read service; do
-              docker tag ihda_back-${service}:latest ihda_back-${service}:backup-${TIMESTAMP} 2>/dev/null || true
-            done
+            # Start new containers
+            echo "🚀 Starting new containers..."
+            docker compose --env-file .env.prod up -d --force-recreate
             
-            # Start new containers (creates new ones, keeps old running)
-            docker compose --env-file .env.prod up -d --no-deps --force-recreate
+            # Wait for services to be healthy
+            echo "⏳ Waiting for services to start..."
+            sleep 15
             
-            # Wait for health check
-            sleep 10
-            
-            # Remove old stopped containers
+            # Cleanup
+            echo "🧹 Cleaning up old resources..."
             docker container prune -f
-            
-            # Remove dangling images
             docker image prune -f
             
-            # Remove old images (keep last 2 versions)
-            docker images | grep 'ihda_back' | grep -v 'latest' | grep -v 'backup' | awk '{print $3}' | tail -n +3 | xargs -r docker rmi -f 2>/dev/null || true
+            # Show running containers
+            echo "✅ Deployment completed!"
+            docker compose --env-file .env.prod ps
