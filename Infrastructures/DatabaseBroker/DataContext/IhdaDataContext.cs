@@ -1,11 +1,9 @@
 using Entity.Enums;
-using Entity.Models;
 using Entity.Models.Auth;
 using Entity.Models.Common;
 using Entity.Models.Mosques;
 using Entity.Models.QuranCourses;
 using Entity.Models.ReferenceBook;
-using Entity.Models.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseBroker.DataContext;
@@ -123,11 +121,7 @@ public class IhdaDataContext : DbContext
     public DbSet<SignMethod> UserSignMethods { get; set; }
     public DbSet<TokenModel> Tokens { get; set; }
     #endregion
-
-    #region Static file schema
-    public DbSet<StaticFile> StaticFiles { get; set; }
-    #endregion
-
+    
     #region Reference Book schema
     public DbSet<Country> Countries { get; set; }
     public DbSet<Region> Regions { get; set; }

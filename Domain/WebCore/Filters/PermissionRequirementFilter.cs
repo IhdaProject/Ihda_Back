@@ -2,7 +2,6 @@ using System.Security.Claims;
 using AuthenticationBroker.TokenHandler;
 using Entity.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.IdentityModel.Tokens;
 using WebCore.Constants;
 
 namespace WebCore.Filters;
@@ -14,7 +13,7 @@ public class PermissionRequirementFilter(int[] requiredPermissionsCodes) : IAsyn
         var rawStructuresId = context.HttpContext.User.FindFirstValue(CustomClaimNames.Structures)
                               ?? throw new UnauthorizedException("Unauthorized");
 
-        if (rawStructuresId.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(rawStructuresId))
             throw new UnauthorizedException("Unauthorized");
 
         var permissions = rawStructuresId!.Split(',').SelectMany(x =>
