@@ -203,7 +203,7 @@ public static class ConfigureApplication
         app.UseMiddleware<RequestResponseLoggingMiddleware>();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
-        // await app.SynchronizePermissions();
+        await app.SynchronizePermissions();
         
         Log.Fatal($"#{app.Environment.ApplicationName} \nApplication starting...");
     }

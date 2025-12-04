@@ -17,7 +17,7 @@
     ]
   },
   "Serilog": {
-    "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File", "Serilog.Sinks.TelegramBot" ],
+    "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File" ],
     "MinimumLevel": {
       "Default": "Information",
       "Override": {
@@ -37,16 +37,6 @@
           "rollOnFileSizeLimit": true,
           "fileSizeLimitBytes": 5242880,
           "outputTemplate": "{ProjectName} {Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
-        }
-      },
-      {
-        "Name": "TelegramBot",
-        "Args": {
-          "token": "8151546353:AAFND-H0j8J6HjokmBDkPAG7psBDNnU23JM",
-          "chatId": "-1002565339091",
-          "restrictedToMinimumLevel": "Fatal",
-          "formatter": "Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Sinks.TelegramBot",
-          "messageFormatter": "Serilog.Formatting.Display.MessageTemplateTextFormatter, Serilog"
         }
       }
     ]

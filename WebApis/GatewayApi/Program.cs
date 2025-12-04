@@ -22,7 +22,7 @@ builder
 
 builder.Services.AddOcelot(builder.Configuration);
 var app = builder.Build();
-Log.Fatal("Application starting...");
+Log.Fatal($"#{app.Environment.ApplicationName}" + " Application starting...");
 app.UseHttpsRedirection();
 app.UseOcelot().Wait();
 app.Run();
