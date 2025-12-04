@@ -27,7 +27,7 @@ public class RoleController(IRoleService structureService) : ApiControllerBase
     [PermissionAuthorize(UserPermissions.UpdateStructure)]
     public async Task<ResponseModel<StructureDto>> EditStructure(StructureForModificationDto structure, long id)
         => id != structure.Id ? throw new ValidationException("Not Valid id") : await structureService.ModifyStructureAsync(structure);
-    [HttpDelete]
+    [HttpDelete("{structureId:long}")]
     [PermissionAuthorize(UserPermissions.RemoveStructure)]
     public async Task<ResponseModel<bool>> DeleteStructure(long structureId)
         => await structureService.RemoveStructureAsync(structureId);
