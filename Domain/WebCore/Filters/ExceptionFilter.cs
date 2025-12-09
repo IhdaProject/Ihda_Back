@@ -1,9 +1,9 @@
 using System.Net;
 using Entity.Exceptions.Common;
+using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
-using WebCore.Models;
 
 namespace WebCore.Filters;
 

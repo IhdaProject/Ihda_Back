@@ -1,18 +1,21 @@
 using DatabaseBroker.Extensions;
 using DatabaseBroker.Repositories;
+using Entity.DataTransferObjects.Files;
 using Entity.DataTransferObjects.Mosques;
 using Entity.DataTransferObjects.PrayerTimes;
 using Entity.Exceptions;
+using Entity.Models.ApiModels;
 using Entity.Models.Mosques;
 using Microsoft.EntityFrameworkCore;
+using MinIoBroker.Services;
 using WebCore.Extensions;
-using WebCore.Models;
 
 namespace MosqueService.Services;
 
 public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
     GenericRepository<FavoriteMosque,long> favoriteMosqueRepository,
-    GenericRepository<MosquePrayerTime, long> prayerTimeRepository) : IMosqueService
+    GenericRepository<MosquePrayerTime, long> prayerTimeRepository,
+    IMinioService minioService) : IMosqueService
 {
     public async Task<ResponseModel<List<MosqueByListDto>>> GetListAsync(MetaQueryModel queryModel)
     {
@@ -42,7 +45,7 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
     {
         var mosque = await mosqueRepository.GetByIdAsync(id) ?? throw new NotFoundException($"Not found Mosque by Id: {id}");
         
-        return new ResponseModel<MosqueWithTimeDto>(new MosqueWithTimeDto(mosque.Id, mosque.Name, mosque.Description, mosque.PhotoUrls,
+        return new ResponseModel<MosqueWithTimeDto>(new MosqueWithTimeDto(mosque.Id, mosque.Name, mosque.Description, [..mosque.PhotoUrls.Select(pl => new FileItemDto(null,pl,minioService.GetPresignedUrlAsync(pl).Result))],
             mosque.Latitude, mosque.Longitude, null));
     }
     public async Task<ResponseModel<MosqueDto>> OnSaveMosqueAsync(MosqueDto mosqueDto, long id, long userId)
@@ -54,7 +57,7 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
             {
                 Name = mosqueDto.Name,
                 Description = mosqueDto.Description,
-                PhotoUrls = mosqueDto.PhotoUrls,
+                //PhotoUrls = mosqueDto.PhotoUrls,
                 Latitude = mosqueDto.Latitude,
                 Longitude = mosqueDto.Longitude
             });
@@ -68,14 +71,14 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
             
             mosque.Name = mosqueDto.Name;
             mosque.Description = mosqueDto.Description;
-            mosque.PhotoUrls = mosqueDto.PhotoUrls;
+            //mosque.PhotoUrls = mosqueDto.PhotoUrls;
             mosque.Latitude = mosqueDto.Latitude;
             mosque.Longitude = mosqueDto.Longitude;
 
             await mosqueRepository.UpdateAsync(mosque);
         }
         
-        return new ResponseModel<MosqueDto>(new MosqueDto(mosque.Id, mosque.Name, mosque.Description, mosque.PhotoUrls,mosque.Latitude, mosque.Longitude));
+        return new ResponseModel<MosqueDto>(new MosqueDto(mosque.Id, mosque.Name, mosque.Description, [..mosque.PhotoUrls.Select(pl => new FileItemDto(null,pl,minioService.GetPresignedUrlAsync(pl).Result))],mosque.Latitude, mosque.Longitude));
     }
     public async Task<ResponseModel<MosquePrayerTimeDto>> OnSavePrayerTimeAsync(MosquePrayerTimeDto mosquePrayerTimeDto,long id ,long userId)
     {

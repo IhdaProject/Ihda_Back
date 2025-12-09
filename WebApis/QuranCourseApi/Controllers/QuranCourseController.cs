@@ -1,10 +1,10 @@
 using Entity.DataTransferObjects.QuranCourses;
 using Entity.Enums;
+using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using QuranCourseService.Services;
 using WebCore.Attributes;
 using WebCore.Controllers;
-using WebCore.Models;
 
 namespace QuranCourseApi.Controllers;
 

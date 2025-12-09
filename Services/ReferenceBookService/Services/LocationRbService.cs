@@ -7,7 +7,6 @@ using Entity.Exceptions;
 using Entity.Models.ApiModels;
 using Entity.Models.ReferenceBook;
 using Microsoft.EntityFrameworkCore;
-using WebCore.Models;
 
 namespace ReferenceBookService.Services;
 

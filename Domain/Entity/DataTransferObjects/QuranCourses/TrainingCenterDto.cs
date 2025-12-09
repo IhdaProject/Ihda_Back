@@ -1,3 +1,4 @@
+using Entity.DataTransferObjects.Files;
 using Entity.Models.QuranCourses;
 
 namespace Entity.DataTransferObjects.QuranCourses;
@@ -9,7 +10,7 @@ public record TrainingCenterDto(
     string Address,
     string Landmark,
     string PhoneNumber,
-    string[] PhotosLink,
+    List<FileItemDto>? PhotosLink,
     WorkingHour WorkingHours,
     double Latitude,
     double Longitude,

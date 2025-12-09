@@ -1,4 +1,4 @@
-using WebCore.Models;
+using Entity.Models.Configurations;
 
 namespace WebCore.CronSchedulers;
 

@@ -4,9 +4,9 @@ using DatabaseBroker.Extensions;
 using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects;
 using Entity.Exceptions;
+using Entity.Models.ApiModels;
 using Entity.Models.Common;
 using Microsoft.EntityFrameworkCore;
-using WebCore.Models;
 
 namespace WebCore.GeneralServices;
 

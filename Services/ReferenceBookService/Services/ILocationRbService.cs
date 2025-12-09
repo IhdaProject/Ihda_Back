@@ -1,6 +1,5 @@
 using Entity.DataTransferObjects.ReferenceBook;
 using Entity.Models.ApiModels;
-using WebCore.Models;
 
 namespace ReferenceBookService.Services;
 

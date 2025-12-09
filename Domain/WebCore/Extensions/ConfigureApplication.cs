@@ -8,6 +8,7 @@ using DatabaseBroker.DataContext;
 using DatabaseBroker.Repositories;
 using Entity.Enums;
 using Entity.Models.Auth;
+using Entity.Models.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MinIoBroker.Services;
 using NCrontab;
 using Serilog;
 using Serilog.Events;
@@ -25,13 +27,12 @@ using WebCore.CronSchedulers;
 using WebCore.Filters;
 using WebCore.GeneralServices;
 using WebCore.Middlewares;
-using WebCore.Models;
 
 namespace WebCore.Extensions;
 
 public static class ConfigureApplication
 {
-    public static void ConfigureDefault(this WebApplicationBuilder builder)
+    public static void AddConfigurationJson(this WebApplicationBuilder builder)
     {
         var externalConfigPath = Environment.GetEnvironmentVariable("EXTERNAL_CONFIG_PATH");
 
@@ -43,13 +44,53 @@ public static class ConfigureApplication
             .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
             .AddJsonFile(Path.Combine(externalConfigPath ?? string.Empty, builder.Environment.ApplicationName ,$"appsettings.{builder.Environment.EnvironmentName}.json"), optional: true, reloadOnChange: true)
             .AddEnvironmentVariables();
-
+    }
+    public static void RunPort(this WebApplicationBuilder builder)
+    {
         builder.WebHost.UseUrls(builder.Configuration.GetConnectionString("Port")!);
-        
+    }
+    public static void AddSerilog(this WebApplicationBuilder builder)
+    {
         builder.Host.UseSerilog((context, services, configuration) => configuration
             .ReadFrom.Configuration(context.Configuration));
+    }
+    public static void AddUseCors(this WebApplicationBuilder builder)
+    {
+        builder
+            .Services
+            .AddCors(options =>
+            {
+                options
+                    .AddDefaultPolicy(policyBuilder =>
+                    {
+                        policyBuilder
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+    }
+    public static void AddMinIoService(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<MinIoConfiguration>(builder.Configuration
+            .GetSection("Minio"));
         
-        var environment = builder.Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT");
+        builder.Services.AddSingleton<IMinioService,MinioService>(sp =>
+        {
+            var options = sp.GetRequiredService<IOptions<MinIoConfiguration>>().Value;
+            var bucketName = builder.Environment.ApplicationName.ToLower();
+
+            return new MinioService(
+                options,
+                bucketName);
+        });
+    }
+    public static void ConfigureDefault(this WebApplicationBuilder builder)
+    
+    {
+        builder.AddConfigurationJson();
+        builder.RunPort();
+        builder.AddSerilog();
         
         builder.Services.Configure<JwtOption>(builder.Configuration
             .GetSection("JwtOption"));
@@ -70,24 +111,14 @@ public static class ConfigureApplication
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         
         builder.Services.AddMemoryCache();
+        
+        builder.AddMinIoService();
 
         builder
             .Services
             .AddHealthChecks();
-
-        builder
-            .Services
-            .AddCors(options =>
-            {
-                options
-                    .AddDefaultPolicy(policyBuilder =>
-                    {
-                        policyBuilder
-                            .AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    });
-            });
+        
+        builder.AddUseCors();
 
         builder.Services
             .Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
@@ -171,7 +202,7 @@ public static class ConfigureApplication
                     ClockSkew = TimeSpan.Zero
                 };
             });
-
+        var environment = builder.Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT");
         if (environment is null || !environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
             builder.Services.AddScoped<ICacheService, RedisCacheService>();
         else 
@@ -204,10 +235,12 @@ public static class ConfigureApplication
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
         await app.SynchronizePermissions();
-        
+        app.AppStartLog();
+    }
+    public static void AppStartLog(this WebApplication app)
+    {
         Log.Fatal($"#{app.Environment.ApplicationName} \nApplication starting...");
     }
-
     private static async Task SynchronizePermissions(this WebApplication app)
     {
         try
@@ -247,49 +280,49 @@ public static class ConfigureApplication
                 await dataContext.SaveChangesAsync();
             }
 
-            #region default Structure data
-            if (!await dataContext.Structures.AnyAsync(s => s.Type == 1))
-            {
-                int[] defaultPermission = [(int)UserPermissions.LogOut, (int)UserPermissions.ViewProfile];
-
-                await dataContext.Structures.AddAsync(new Structure()
-                {
-                    Id = 1,
-                    Type = 1,
-                    Name = "Default",
-                    StructurePermissions = dataContext.Permissions
-                        .Where(p => defaultPermission.Contains(p.Code))
-                        .Select(p => new StructurePermission()
-                            {
-                                PermissionId = p.Id
-                            })
-                        .ToList()
-                });
-            
-                await dataContext.SaveChangesAsync();
-            }
-            #endregion
-            
-            #region Super Admin Structure data
-            if (!await dataContext.Structures.AnyAsync(s => s.Type == 2))
-            {
-                await dataContext.Structures.AddAsync(new Structure()
-                {
-                    Id = 2,
-                    Type = 2,
-                    Name = "Super Admin",
-                    StructurePermissions = dataContext.Permissions
-                        .Select(p => new StructurePermission()
-                        {
-                            PermissionId = p.Id
-                        })
-                        .ToList()
-                });
-            
-                await dataContext.SaveChangesAsync();
-            }
-            #endregion
-            
+            // #region default Structure data
+            // if (!await dataContext.Structures.AnyAsync(s => s.Type == 1))
+            // {
+            //     int[] defaultPermission = [(int)UserPermissions.LogOut, (int)UserPermissions.ViewProfile];
+            //
+            //     await dataContext.Structures.AddAsync(new Structure()
+            //     {
+            //         Id = 1,
+            //         Type = 1,
+            //         Name = "Default",
+            //         StructurePermissions = dataContext.Permissions
+            //             .Where(p => defaultPermission.Contains(p.Code))
+            //             .Select(p => new StructurePermission()
+            //                 {
+            //                     PermissionId = p.Id
+            //                 })
+            //             .ToList()
+            //     });
+            //
+            //     await dataContext.SaveChangesAsync();
+            // }
+            // #endregion
+            //
+            // #region Super Admin Structure data
+            // if (!await dataContext.Structures.AnyAsync(s => s.Type == 2))
+            // {
+            //     await dataContext.Structures.AddAsync(new Structure()
+            //     {
+            //         Id = 2,
+            //         Type = 2,
+            //         Name = "Super Admin",
+            //         StructurePermissions = dataContext.Permissions
+            //             .Select(p => new StructurePermission()
+            //             {
+            //                 PermissionId = p.Id
+            //             })
+            //             .ToList()
+            //     });
+            //
+            //     await dataContext.SaveChangesAsync();
+            // }
+            // #endregion
+            //
             StaticCache.Permissions = await dataContext.Structures
                 .Select(s => new { s.Id, permissionCodes = s.StructurePermissions.Select(sp => sp.Permission.Code)})
                 .ToDictionaryAsync(s => s.Id, s => s.permissionCodes.ToList());;

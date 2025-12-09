@@ -1,28 +1,15 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Serilog;
 using WebCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.ConfigureDefault();
-
-builder
-    .Services
-    .AddCors(options =>
-    {
-        options
-            .AddDefaultPolicy(builder =>
-            {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-    });
-
+builder.AddConfigurationJson();
+builder.RunPort();
+builder.AddSerilog();
+builder.AddUseCors();
 builder.Services.AddOcelot(builder.Configuration);
 var app = builder.Build();
-Log.Fatal($"#{app.Environment.ApplicationName}" + " Application starting...");
 app.UseHttpsRedirection();
 app.UseOcelot().Wait();
+app.AppStartLog();
 app.Run();

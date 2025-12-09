@@ -10,6 +10,12 @@
     "ExpirationInMinutes": 60,
     "ExpirationRefreshTokenInMinutes": 180
   },
+  "Minio": {
+    "Endpoint": "minio:9000",
+    "AccessKey": "minio",
+    "SecretKey": "minio12345",
+    "UseSSL": false
+  },
   "Swagger": {
     "Docs": [
       "Client",

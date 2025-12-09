@@ -1,7 +1,7 @@
+using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using WebCore.Attributes;
 using WebCore.GeneralServices;
-using WebCore.Models;
 
 namespace WebCore.Controllers;
 

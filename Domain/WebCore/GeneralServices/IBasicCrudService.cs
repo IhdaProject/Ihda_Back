@@ -1,7 +1,6 @@
 using Entity.DataTransferObjects;
 using Entity.Models.ApiModels;
 using Entity.Models.Common;
-using WebCore.Models;
 
 namespace WebCore.GeneralServices;
 

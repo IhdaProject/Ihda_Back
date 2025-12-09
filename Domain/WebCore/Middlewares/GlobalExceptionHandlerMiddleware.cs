@@ -1,7 +1,7 @@
 using System.Net;
 using Entity.Exceptions.Common;
+using Entity.Models.ApiModels;
 using Serilog;
-using WebCore.Models;
 
 namespace WebCore.Middlewares;
 

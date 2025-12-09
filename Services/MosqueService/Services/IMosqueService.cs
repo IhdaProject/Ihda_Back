@@ -1,7 +1,6 @@
 using Entity.DataTransferObjects.Mosques;
 using Entity.DataTransferObjects.PrayerTimes;
 using Entity.Models.ApiModels;
-using WebCore.Models;
 
 namespace MosqueService.Services;
 

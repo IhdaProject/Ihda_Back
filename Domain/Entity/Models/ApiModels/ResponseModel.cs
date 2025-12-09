@@ -2,7 +2,7 @@ using System.Net;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace WebCore.Models;
+namespace Entity.Models.ApiModels;
 
 public class ResponseModel
 {
