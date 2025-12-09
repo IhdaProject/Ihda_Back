@@ -1,10 +1,10 @@
 using AuthService.Services;
 using Entity.DataTransferObjects.Authentication;
 using Entity.Enums;
+using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using WebCore.Attributes;
 using WebCore.Controllers;
-using WebCore.Models;
 
 namespace AuthApi.Controllers;
 [ApiGroup("Client")]

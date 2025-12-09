@@ -12,13 +12,11 @@ public abstract class SignMethod : ModelBase<long>
 
     [Column("user_id"), ForeignKey(nameof(User))]
     public long UserId { get; set; }
-
-    [NotMapped,JsonIgnore] public virtual User User { get; set; }
+    public virtual User User { get; set; }
 }
 public class DefaultSignMethod : SignMethod
 {
     [Column("username")] public string Username { get; set; }
     [Column("salt")] public string Salt { get; set; }
-
     [Column("password_hash")] public string PasswordHash { get; set; }
 }

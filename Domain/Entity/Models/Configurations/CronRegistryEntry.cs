@@ -1,5 +1,5 @@
 using NCrontab;
 
-namespace WebCore.Models;
+namespace Entity.Models.Configurations;
 
 public sealed record CronRegistryEntry(Type Type, CrontabSchedule CrontabSchedule);

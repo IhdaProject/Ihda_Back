@@ -4,9 +4,9 @@ using DatabaseBroker.Repositories.Auth;
 using Entity.DataTransferObjects.Authentication;
 using Entity.DataTransferObjects.Users;
 using Entity.Exceptions;
+using Entity.Models.ApiModels;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
-using WebCore.Models;
 
 namespace AuthService.Services;
 

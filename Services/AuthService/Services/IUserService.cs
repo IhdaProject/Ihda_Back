@@ -1,7 +1,7 @@
 using Entity.DataTransferObjects.Authentication;
 using Entity.DataTransferObjects.Users;
+using Entity.Models.ApiModels;
 using Entity.Models.Auth;
-using WebCore.Models;
 
 namespace AuthService.Services;
 

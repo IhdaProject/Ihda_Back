@@ -1,12 +1,12 @@
 using Entity.DataTransferObjects.Mosques;
 using Entity.DataTransferObjects.PrayerTimes;
 using Entity.Enums;
+using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using MosqueService.Services;
 using WebCore.Attributes;
 using WebCore.Controllers;
 using WebCore.Extensions;
-using WebCore.Models;
 
 namespace MosqueApi.Controllers;
 

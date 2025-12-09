@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuranCourseApi", "WebApis\Q
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuranCourseService", "Services\QuranCourseService\QuranCourseService.csproj", "{1955E5A6-F7E1-4066-8272-CEA6C6D2D04D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinIoBroker", "Infrastructures\MinIoBroker\MinIoBroker.csproj", "{1A63A5A8-B3CA-4DAA-BBD8-07A8AF16E9B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{1955E5A6-F7E1-4066-8272-CEA6C6D2D04D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1955E5A6-F7E1-4066-8272-CEA6C6D2D04D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1955E5A6-F7E1-4066-8272-CEA6C6D2D04D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A63A5A8-B3CA-4DAA-BBD8-07A8AF16E9B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A63A5A8-B3CA-4DAA-BBD8-07A8AF16E9B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A63A5A8-B3CA-4DAA-BBD8-07A8AF16E9B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A63A5A8-B3CA-4DAA-BBD8-07A8AF16E9B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{4ED4105D-0969-41EA-B89A-C16FD9ACCE82} = {026002AA-727F-4B37-88A9-B1D22262B5BD}
 		{7741FD68-792D-4F19-958D-F9CE977AA254} = {C797BED8-696F-45AC-8B97-B157AC79F375}
 		{1955E5A6-F7E1-4066-8272-CEA6C6D2D04D} = {026002AA-727F-4B37-88A9-B1D22262B5BD}
+		{1A63A5A8-B3CA-4DAA-BBD8-07A8AF16E9B7} = {CA2C7A00-8ADB-4CED-984E-D08046D61DA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B0A13641-9D7A-40CC-B5F6-EDA9F6EC62B2}

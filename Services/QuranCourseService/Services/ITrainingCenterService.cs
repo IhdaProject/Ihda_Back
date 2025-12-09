@@ -1,6 +1,5 @@
 using Entity.DataTransferObjects.QuranCourses;
 using Entity.Models.ApiModels;
-using WebCore.Models;
 
 namespace QuranCourseService.Services;
 

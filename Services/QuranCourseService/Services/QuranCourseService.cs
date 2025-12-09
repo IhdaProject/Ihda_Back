@@ -5,9 +5,9 @@ using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects.QuranCourses;
 using Entity.Enums;
 using Entity.Exceptions;
+using Entity.Models.ApiModels;
 using Entity.Models.QuranCourses;
 using Microsoft.EntityFrameworkCore;
-using WebCore.Models;
 
 namespace QuranCourseService.Services;
 

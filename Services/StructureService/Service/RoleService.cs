@@ -2,9 +2,9 @@ using DatabaseBroker.Extensions;
 using Entity.DataTransferObjects.Role;
 using DatabaseBroker.Repositories.Auth;
 using Entity.Exceptions;
+using Entity.Models.ApiModels;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
-using WebCore.Models;
 
 namespace RoleService.Service;
 

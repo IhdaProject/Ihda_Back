@@ -1,7 +1,6 @@
 using Entity.DataTransferObjects.Role;
 using Entity.Models.ApiModels;
 using Entity.Models.Auth;
-using WebCore.Models;
 
 namespace RoleService.Service;
 

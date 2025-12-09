@@ -1,11 +1,11 @@
 using Entity.DataTransferObjects.Role;
 using Entity.Enums;
 using Entity.Exceptions;
+using Entity.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using RoleService.Service;
 using WebCore.Attributes;
 using WebCore.Controllers;
-using WebCore.Models;
 
 namespace AuthApi.Controllers;
 [ApiGroup("Admin")]

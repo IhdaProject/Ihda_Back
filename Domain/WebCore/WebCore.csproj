@@ -13,6 +13,7 @@
         <ProjectReference Include="..\..\Infrastructures\AuthenticationBroker\AuthenticationBroker.csproj" />
         <ProjectReference Include="..\..\Infrastructures\CacheBroker\CacheBroker.csproj" />
         <ProjectReference Include="..\..\Infrastructures\DatabaseBroker\DatabaseBroker.csproj" />
+        <ProjectReference Include="..\..\Infrastructures\MinIoBroker\MinIoBroker.csproj" />
         <ProjectReference Include="..\Entity\Entity.csproj"/>
     </ItemGroup>
 
