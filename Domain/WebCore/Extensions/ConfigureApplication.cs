@@ -76,18 +76,14 @@ public static class ConfigureApplication
         builder.Services.Configure<MinIoConfiguration>(builder.Configuration
             .GetSection("Minio"));
         
-        builder.Services.AddSingleton<IMinioService,MinioService>(sp =>
+        builder.Services.PostConfigure<MinIoConfiguration>(options =>
         {
-            var options = sp.GetRequiredService<IOptions<MinIoConfiguration>>().Value;
-            var bucketName = builder.Environment.ApplicationName.ToLower();
-
-            return new MinioService(
-                options,
-                bucketName);
+            options.BucketName = builder.Environment.ApplicationName.ToLower();
         });
+        
+        builder.Services.AddSingleton<IMinioService, MinioService>();
     }
     public static void ConfigureDefault(this WebApplicationBuilder builder)
-    
     {
         builder.AddConfigurationJson();
         builder.RunPort();

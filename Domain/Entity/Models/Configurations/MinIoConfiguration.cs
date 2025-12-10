@@ -6,4 +6,5 @@ public class MinIoConfiguration
     public string AccessKey { get; set; }
     public string SecretKey { get; set; }
     public bool UseSSL { get; set; }
+    public string BucketName { get; set; }
 }

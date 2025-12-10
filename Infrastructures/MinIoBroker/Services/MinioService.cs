@@ -1,17 +1,18 @@
 using Entity.Models.Configurations;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 
 namespace MinIoBroker.Services;
 
-public class MinioService(MinIoConfiguration configuration, string bucketName) : IMinioService
+public class MinioService(IOptions<MinIoConfiguration> configuration) : IMinioService
 {
-    private readonly string bucketName = bucketName;
+    private readonly string bucketName = configuration.Value.BucketName;
     private readonly IMinioClient client = new MinioClient()
-        .WithEndpoint(configuration.Endpoint)
-        .WithCredentials(configuration.AccessKey, configuration.SecretKey)
-        .WithSSL(configuration.UseSSL)
+        .WithEndpoint(configuration.Value.Endpoint)
+        .WithCredentials(configuration.Value.AccessKey, configuration.Value.SecretKey)
+        .WithSSL(configuration.Value.UseSSL)
         .Build();
     
     public async Task EnsureBucketExistsAsync()
