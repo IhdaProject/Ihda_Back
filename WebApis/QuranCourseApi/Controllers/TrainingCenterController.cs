@@ -12,7 +12,7 @@ namespace QuranCourseApi.Controllers;
 public class TrainingCenterController(ITrainingCenterService trainingCenterService) : ApiControllerBase
 {
     [ApiGroup("Admin")]
-    [HttpPost, PermissionAuthorize(UserPermissions.CreateTrainingCenter)]
+    [HttpPost]
     public Task<ResponseModel<TrainingCenterDto>> CreateTrainingCenter(
         [FromBody] TrainingCenterDto trainingCenter)
         => trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);

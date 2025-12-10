@@ -32,7 +32,7 @@ public class TrainingCenter : ModelBase<long>
     /// <summary>
     /// O'quv markaz rasmlari
     /// </summary>
-    [Column("photos_link")]public string[] PhotosLink { get; set; }
+    [Column("photos_link", TypeName = "text[]")]public string[]? PhotosLink { get; set; }
     /// <summary>
     /// Ish kunnlari va soatlari
     /// </summary>
