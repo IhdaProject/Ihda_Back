@@ -66,7 +66,7 @@ public class TrainingCenterService(
 
         return incomingDbUrls.Concat(uploadedUrls).ToArray();
     }
-    private TrainingCenterDto MapTrainingCenterDto(TrainingCenter trainingCenter, List<FileItemDto>? fileItem = null)
+    private static TrainingCenterDto MapTrainingCenterDto(TrainingCenter trainingCenter, List<FileItemDto>? fileItem = null)
     {
         return new TrainingCenterDto(
             trainingCenter.Id,
@@ -81,7 +81,7 @@ public class TrainingCenterService(
             trainingCenter.Longitude,
             trainingCenter.DistrictId);
     }
-    private TrainingCenter MapTrainingCenter(TrainingCenterDto trainingCenterDto, string[] files, TrainingCenter? trainingCenter = null)
+    private static TrainingCenter MapTrainingCenter(TrainingCenterDto trainingCenterDto, string[] files, TrainingCenter? trainingCenter = null)
     {
         var result = trainingCenter ?? new TrainingCenter();
         result.Id = trainingCenterDto.Id;

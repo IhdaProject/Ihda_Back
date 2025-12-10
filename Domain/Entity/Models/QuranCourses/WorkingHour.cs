@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Entity.Models.QuranCourses;
 
 public class WorkingHour

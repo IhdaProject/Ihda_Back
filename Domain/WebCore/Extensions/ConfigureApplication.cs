@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MinIoBroker.Services;
 using NCrontab;
+using Npgsql;
 using Serilog;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
@@ -75,18 +76,14 @@ public static class ConfigureApplication
         builder.Services.Configure<MinIoConfiguration>(builder.Configuration
             .GetSection("Minio"));
         
-        builder.Services.AddSingleton<IMinioService,MinioService>(sp =>
+        builder.Services.PostConfigure<MinIoConfiguration>(options =>
         {
-            var options = sp.GetRequiredService<IOptions<MinIoConfiguration>>().Value;
-            var bucketName = builder.Environment.ApplicationName.ToLower();
-
-            return new MinioService(
-                options,
-                bucketName);
+            options.BucketName = builder.Environment.ApplicationName.ToLower();
         });
+        
+        builder.Services.AddSingleton<IMinioService, MinioService>();
     }
     public static void ConfigureDefault(this WebApplicationBuilder builder)
-    
     {
         builder.AddConfigurationJson();
         builder.RunPort();
@@ -97,14 +94,17 @@ public static class ConfigureApplication
 
         StaticCache.SymmetricKey = builder.Configuration.GetConnectionString("SymmetricKey") ?? "";
         
-        builder
-            .Services
-            .AddDbContextPool<IhdaDataContext>(optionsBuilder =>
-            {
-                optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-                optionsBuilder.UseLoggerFactory(new SerilogLoggerFactory(Log.Logger));
-                optionsBuilder.UseLazyLoadingProxies();
-            });
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+        dataSourceBuilder.EnableDynamicJson();
+        var dataSource = dataSourceBuilder.Build();
+        
+        builder.Services.AddDbContextPool<IhdaDataContext>(options =>
+        {
+            options.UseNpgsql(dataSource);
+            options.UseLazyLoadingProxies();
+            options.UseLoggerFactory(new SerilogLoggerFactory(Log.Logger));
+        });
         
         builder.Services.AddScoped(typeof(GenericRepository<,>));
         builder.Services.AddScoped(typeof(GenericCrudService<,,>));
@@ -222,12 +222,8 @@ public static class ConfigureApplication
             foreach (var docName in docNames)
                 options.SwaggerEndpoint($"/swagger/{docName}/swagger.json", $"{docName} API");
         });
-        // using var scope = app.Services.CreateScope();
-        // await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
-        // Log.Information("{0}", "Migrations applying...");
-        // await dataContext?.Database.MigrateAsync()!;
-        // Log.Information("{0}", "Migrations applied.");
-        // scope.Dispose();
+
+        //await app.UpMigration();
 
         app.UseHealthChecks("/healths");
 
@@ -236,6 +232,15 @@ public static class ConfigureApplication
 
         await app.SynchronizePermissions();
         app.AppStartLog();
+    }
+    public static async Task UpMigration(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        await using var dataContext = scope.ServiceProvider.GetService<IhdaDataContext>();
+        Log.Information("{0}", "Migrations applying...");
+        await dataContext?.Database.MigrateAsync()!;
+        Log.Information("{0}", "Migrations applied.");
+        scope.Dispose();
     }
     public static void AppStartLog(this WebApplication app)
     {
