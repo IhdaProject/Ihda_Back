@@ -14,13 +14,13 @@ public class TrainingCenterController(ITrainingCenterService trainingCenterServi
     [ApiGroup("Admin")]
     [HttpPost, PermissionAuthorize(UserPermissions.CreateTrainingCenter)]
     public Task<ResponseModel<TrainingCenterDto>> CreateTrainingCenter(
-        [FromBody] TrainingCenterDto trainingCenter)
+        [FromForm] TrainingCenterDto trainingCenter)
         => trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);
 
     [ApiGroup("Admin")]
     [HttpPut("{id:long}"), PermissionAuthorize(UserPermissions.UpdateTrainingCenter)]
     public Task<ResponseModel<TrainingCenterDto>> UpdateTrainingCenter(
-        [FromBody] TrainingCenterDto trainingCenter, [FromRoute] long id)
+        [FromForm] TrainingCenterDto trainingCenter, [FromRoute] long id)
         => trainingCenter.Id != id ? throw new ValidationException("Not valid id") : trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);
 
     [ApiGroup("Admin", "Client")]
