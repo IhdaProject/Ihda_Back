@@ -18,12 +18,12 @@ public class TrainingCenterService(
     IMinioService minioService,
     IMapper mapper) : ITrainingCenterService
 {
-    public async Task<ResponseModel<TrainingCenterDto>> OnSaveTrainingCenterAsync(TrainingCenterDto trainingCenter)
+    public async Task<ResponseModel<TrainingCenterDto>> OnSaveTrainingCenterAsync(TrainingCenterDto trainingCenter, List<FileDto> photos)
     {
         if (trainingCenter.Id == 0)
         {
             var newEntity = await trainingCenterRepository.AddWithSaveChangesAsync(
-                MapTrainingCenter(trainingCenter, [..trainingCenter.PhotosLink?.Select(pl =>
+                MapTrainingCenter(trainingCenter, [..photos.Select(pl =>
                     minioService.UploadFileFromFormFileAsync(pl.File, $"{Guid.NewGuid()}{Path.GetExtension(pl.File.FileName)}").Result) ?? []]));
             
             return ResponseModel<TrainingCenterDto>.ResultFromContent(
@@ -33,14 +33,15 @@ public class TrainingCenterService(
         }
 
         var entity = await trainingCenterRepository.GetByIdAsync(trainingCenter.Id) ?? throw new NotFoundException($"Not found {nameof(trainingCenter)}");
-        MapTrainingCenter(trainingCenter, await UpdateTrainingCenterPhotos(entity.PhotosLink, trainingCenter.PhotosLink ?? []),entity);
+        MapTrainingCenter(trainingCenter, await UpdateTrainingCenterPhotos(entity.PhotosLink, trainingCenter.PhotosLink ?? [], photos),entity);
         await trainingCenterRepository.UpdateWithSaveChangesAsync(entity);
 
         return ResponseModel<TrainingCenterDto>.ResultFromContent(MapTrainingCenterDto(entity));
     }
     public async Task<string[]> UpdateTrainingCenterPhotos(
         string[] photosLink,
-        List<FileItemDto> incomingPhotos)
+        List<FileItemDto> incomingPhotos,
+        List<FileDto> photos)
     {
         var incomingDbUrls = incomingPhotos
             .Where(x => !string.IsNullOrEmpty(x.DbUrl))
@@ -51,14 +52,10 @@ public class TrainingCenterService(
 
         foreach (var deleteUrl in toDelete)
             await minioService.DeleteFileAsync(deleteUrl);
-        
-        var toUpload = incomingPhotos
-            .Where(x => x.File != null && string.IsNullOrEmpty(x.DbUrl))
-            .ToList();
 
         var uploadedUrls = new List<string>();
 
-        foreach (var item in toUpload)
+        foreach (var item in photos)
         {
             var newUrl = await minioService.UploadFileFromFormFileAsync(item.File, $"{Guid.NewGuid()}{Path.GetExtension(item.File.FileName)}");
             uploadedUrls.Add(newUrl);
@@ -122,7 +119,7 @@ public class TrainingCenterService(
         
         return ResponseModel<TrainingCenterDto>.ResultFromContent(
             MapTrainingCenterDto(
-                result, [..result.PhotosLink.Select(pl => new FileItemDto(null, pl, minioService.GetPresignedUrlAsync(pl).Result))]));
+                result, [..result.PhotosLink.Select(pl => new FileItemDto(pl, minioService.GetPresignedUrlAsync(pl).Result))]));
     }
     public async Task<ResponseModel<CourseFormDto>> OnSaveCourseFormAsync(CourseFormDto courseForm)
     {

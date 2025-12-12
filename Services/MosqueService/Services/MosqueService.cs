@@ -45,7 +45,7 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
     {
         var mosque = await mosqueRepository.GetByIdAsync(id) ?? throw new NotFoundException($"Not found Mosque by Id: {id}");
         
-        return new ResponseModel<MosqueWithTimeDto>(new MosqueWithTimeDto(mosque.Id, mosque.Name, mosque.Description, [..mosque.PhotoUrls.Select(pl => new FileItemDto(null,pl,minioService.GetPresignedUrlAsync(pl).Result))],
+        return new ResponseModel<MosqueWithTimeDto>(new MosqueWithTimeDto(mosque.Id, mosque.Name, mosque.Description, [..mosque.PhotoUrls.Select(pl => new FileItemDto(pl,minioService.GetPresignedUrlAsync(pl).Result))],
             mosque.Latitude, mosque.Longitude, null));
     }
     public async Task<ResponseModel<MosqueDto>> OnSaveMosqueAsync(MosqueDto mosqueDto, long id, long userId)
@@ -78,7 +78,7 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
             await mosqueRepository.UpdateAsync(mosque);
         }
         
-        return new ResponseModel<MosqueDto>(new MosqueDto(mosque.Id, mosque.Name, mosque.Description, [..mosque.PhotoUrls.Select(pl => new FileItemDto(null,pl,minioService.GetPresignedUrlAsync(pl).Result))],mosque.Latitude, mosque.Longitude));
+        return new ResponseModel<MosqueDto>(new MosqueDto(mosque.Id, mosque.Name, mosque.Description, [..mosque.PhotoUrls.Select(pl => new FileItemDto(pl,minioService.GetPresignedUrlAsync(pl).Result))],mosque.Latitude, mosque.Longitude));
     }
     public async Task<ResponseModel<MosquePrayerTimeDto>> OnSavePrayerTimeAsync(MosquePrayerTimeDto mosquePrayerTimeDto,long id ,long userId)
     {
