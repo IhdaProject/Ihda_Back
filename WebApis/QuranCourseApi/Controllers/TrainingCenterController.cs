@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Entity.DataTransferObjects.Files;
 using Entity.DataTransferObjects.QuranCourses;
 using Entity.Enums;
 using Entity.Exceptions;
@@ -14,14 +16,21 @@ public class TrainingCenterController(ITrainingCenterService trainingCenterServi
     [ApiGroup("Admin")]
     [HttpPost, PermissionAuthorize(UserPermissions.CreateTrainingCenter)]
     public Task<ResponseModel<TrainingCenterDto>> CreateTrainingCenter(
-        [FromForm] TrainingCenterDto trainingCenter)
-        => trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);
+        [FromForm] string trainingCenterJson, [FromForm] List<IFormFile> photos)
+        => trainingCenterService.OnSaveTrainingCenterAsync(
+            JsonSerializer.Deserialize<TrainingCenterDto>(trainingCenterJson) ?? throw new ValidationException("Model not null"),
+            [..photos.Select(f => new FileDto(f))]);
 
     [ApiGroup("Admin")]
     [HttpPut("{id:long}"), PermissionAuthorize(UserPermissions.UpdateTrainingCenter)]
     public Task<ResponseModel<TrainingCenterDto>> UpdateTrainingCenter(
-        [FromForm] TrainingCenterDto trainingCenter, [FromRoute] long id)
-        => trainingCenter.Id != id ? throw new ValidationException("Not valid id") : trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);
+        [FromForm] string trainingCenterJson, [FromRoute] long id, [FromForm] List<IFormFile> photos)
+    {
+        var trainingCenter = JsonSerializer.Deserialize<TrainingCenterDto>(trainingCenterJson) ??
+            throw new ValidationException("Model not null");
+        return trainingCenter.Id != id ? throw new ValidationException("Not valid id") : trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter, 
+            [..photos.Select(f => new FileDto(f))]);
+    }
 
     [ApiGroup("Admin", "Client")]
     [HttpGet] 
