@@ -10,5 +10,7 @@ public class TrainingCenterMappingProfile : Profile
     {
         CreateMap<TrainingCenter, TrainingCenterDto>();
         CreateMap<TrainingCenterDto, TrainingCenter>();
+        CreateMap<CourseForm, CourseFormDto>();
+        CreateMap<CourseFormDto, CourseForm>();
     }
 }
