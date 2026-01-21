@@ -128,6 +128,7 @@ public class IhdaDataContext : DbContext
     public DbSet<District> Districts { get; set; }
     public DbSet<PrayerTimeStyle> PrayerTimeStyles { get; set; }
     public DbSet<CalculatingCentury> CalculatingCenturies { get; set; }
+    public DbSet<TypeSchema> Types { get; set; }
     #endregion
 
     #region Quran Course

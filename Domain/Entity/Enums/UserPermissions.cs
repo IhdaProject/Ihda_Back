@@ -56,6 +56,13 @@ public enum UserPermissions
             RemoveRegion = 30120004,
             UpdateRegion = 30120005,
         #endregion
+        
+        #region UniversalTypeController 13
+            UniversalTypeViewWithDetails = 30130001,
+            UniversalTypesView = 30130002,
+            UniversalTypeCreate = 30130003,
+            UniversalTypeUpdate = 30130004,
+        #endregion
 
     #endregion
     
