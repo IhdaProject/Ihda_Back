@@ -30,7 +30,11 @@ public enum UserPermissions
             RemoveUserStructure = 10120005,
         #endregion
     #endregion
-
+    #region CloudApi project 20
+        #region File Controller 10
+            UploadFile = 20100001,
+        #endregion
+    #endregion
     #region ReferenceBookApi 30
 
         #region CountryController 10
@@ -65,7 +69,6 @@ public enum UserPermissions
         #endregion
 
     #endregion
-    
     #region MosqueApi 40
         #region Mosques Controller 10
             OnSaveMosque = 40100001,

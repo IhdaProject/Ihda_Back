@@ -36,6 +36,24 @@ services:
     ports:
       - "${AUTH_PORT}:5001"
     restart: always
+    
+  CloudApi:
+    image: ihda_back/${IMAGE_BRANCH:-master}:cloudapi
+    build:
+      context: .
+      dockerfile: WebApis/CloudApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - EXTERNAL_CONFIG_PATH=${EXTERNAL_CONFIG_PATH}
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "${LOG_PATH}/cloud:/app/logs"
+      - "${EXTERNAL_CONFIG_PATH}:${EXTERNAL_CONFIG_PATH}"
+      - ./Domain/WebCore/GeneralSettings.json:/app/Domain/WebCore/GeneralSettings.json:ro
+    ports:
+      - "${CLOUD_PORT}:5002"
+    restart: always
 
   ReferenceBookApi:
     image: ihda_back/${IMAGE_BRANCH:-master}:referencebookapi

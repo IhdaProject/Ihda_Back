@@ -89,6 +89,8 @@ public static class ConfigureApplication
         builder.RunPort();
         builder.AddSerilog();
         
+        builder.Services.AddHttpContextAccessor();
+        
         builder.Services.Configure<JwtOption>(builder.Configuration
             .GetSection("JwtOption"));
 
@@ -99,7 +101,7 @@ public static class ConfigureApplication
         dataSourceBuilder.EnableDynamicJson();
         var dataSource = dataSourceBuilder.Build();
         
-        builder.Services.AddDbContextPool<IhdaDataContext>(options =>
+        builder.Services.AddDbContext<IhdaDataContext>(options =>
         {
             options.UseNpgsql(dataSource);
             options.UseLazyLoadingProxies();

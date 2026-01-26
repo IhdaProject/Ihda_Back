@@ -7,7 +7,7 @@ namespace Entity.Models.QuranCourses;
 /// O'quv markazdagi kurslar formasi(qolibi)
 /// </summary>
 [Table("course_forms", Schema = "quran_courses")]
-public class CourseForm : ModelBase<long>
+public class CourseForm : AuditableModelBase<long>
 {
     /// <summary>
     /// Forma nomi
@@ -22,7 +22,7 @@ public class CourseForm : ModelBase<long>
     /// </summary>
     [Column("admission_quota")]public int AdmissionQuota { get; set; }
     /// <summary>
-    /// kursning davomiyligi
+    /// kursning davomiyligi(kunlarda)
     /// </summary>
     [Column("duration")]public int Duration { get; set; }
     /// <summary>
@@ -40,7 +40,7 @@ public class CourseForm : ModelBase<long>
     /// <summary>
     /// qaysi kunlar va qaysi paytlarda o'qitilishi
     /// </summary>
-    [Column("working_hours", TypeName = "jsonb")]public WorkingHour TransitionTime { get; set; }
+    [Column("working_hours", TypeName = "jsonb")]public WorkingHour? TransitionTime { get; set; }
     /// <summary>
     /// Aynan qaysi o'quv markazga tegishliligi
     /// </summary>

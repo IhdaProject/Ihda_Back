@@ -21,7 +21,7 @@ public static class StringAndLongExtensions
         try
         {
             var decrypt = EncryptionHelper.Decrypt(encryptedData, StaticCache.SymmetricKey);
-            if (decrypt.Id is 0 || decrypt.UserId != currentUserId || decrypt.Timestamp.AddMinutes(AddMinutes) < DateTime.Now)
+            if (decrypt.Id is 0 || decrypt.UserId != currentUserId || decrypt.Timestamp.AddMinutes(AddMinutes) < DateTime.UtcNow)
                 throw new AlreadyExistsException("Forbidden");
         
             return decrypt.Id;

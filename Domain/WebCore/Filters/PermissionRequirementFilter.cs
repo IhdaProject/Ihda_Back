@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using AuthenticationBroker.TokenHandler;
+using Entity.Enums;
 using Entity.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using WebCore.Constants;

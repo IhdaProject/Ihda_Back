@@ -2,7 +2,7 @@ using Entity.Enums;
 
 namespace Entity.DataTransferObjects.ReferenceBook;
 
-public abstract record FieldSchemaDto(
+public record FieldSchemaDto(
     string Name,
     TypeForDynamic Type,
     int? TypeId ,

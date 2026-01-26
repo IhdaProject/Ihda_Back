@@ -17,7 +17,7 @@ public class QuranCourseService(GenericRepository<PetitionForQuranCourse, long> 
 {
     public async Task<ResponseModel<PetitionForQuranCourseDto>> CreatePetitionAsync(PetitionForQuranCourseDto petition)
     {
-        if (petition.PassportExpireDate < DateTime.Now)
+        if (petition.PassportExpireDate < DateTime.UtcNow)
             throw new ValidationException("This passport expired");
         
         if (await petitionForQuranCourseRepository.GetAllAsQueryable()
@@ -28,7 +28,7 @@ public class QuranCourseService(GenericRepository<PetitionForQuranCourse, long> 
         var courseForm = await courseFormRepository.GetByIdAsync(petition.CourseFormId)
             ?? throw new NotFoundException("Course form not found");
 
-        var yearsOld = (DateTime.Now - petition.BirthDay).Days / 365.0;
+        var yearsOld = (DateTime.UtcNow - petition.BirthDay).Days / 365.0;
         if (courseForm.MinYearsOld > yearsOld || courseForm.MaxYearsOld < yearsOld)
             throw new ValidationException("This years old problem");
         

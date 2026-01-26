@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using AuthenticationBroker.TokenHandler;
+using Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebCore.Controllers;

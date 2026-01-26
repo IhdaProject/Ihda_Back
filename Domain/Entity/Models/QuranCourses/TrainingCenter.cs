@@ -7,7 +7,7 @@ namespace Entity.Models.QuranCourses;
 /// O'quv markaz
 /// </summary>
 [Table("training_centers", Schema = "quran_courses")]
-public class TrainingCenter : ModelBase<long>
+public class TrainingCenter : AuditableModelBase<long>
 {
     /// <summary>
     /// O'quv markaz nomi
