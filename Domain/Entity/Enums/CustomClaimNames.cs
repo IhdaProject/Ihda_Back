@@ -1,4 +1,4 @@
-﻿namespace AuthenticationBroker.TokenHandler;
+﻿namespace Entity.Enums;
 
 public abstract class CustomClaimNames
 {

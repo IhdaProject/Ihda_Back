@@ -8,7 +8,7 @@ namespace Entity.Models.QuranCourses;
 /// O'quv kursi
 /// </summary>
 [Table("courses", Schema = "quran_courses")]
-public class Course : ModelBase<long>
+public class Course : AuditableModelBase<long>
 {
     /// <summary>
     /// Kursning holati

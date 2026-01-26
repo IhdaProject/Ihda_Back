@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using AuthenticationBroker.Options;
+using Entity.Enums;
 using Entity.Models;
 using Entity.Models.Auth;
 using Microsoft.Extensions.Options;

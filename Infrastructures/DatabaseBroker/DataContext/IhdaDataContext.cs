@@ -1,49 +1,50 @@
+using System.Security.Claims;
 using Entity.Enums;
 using Entity.Models.Auth;
 using Entity.Models.Common;
 using Entity.Models.Mosques;
 using Entity.Models.QuranCourses;
 using Entity.Models.ReferenceBook;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using File = Entity.Models.Clouds.File;
 
 namespace DatabaseBroker.DataContext;
 
 public class IhdaDataContext : DbContext
 {
-    public IhdaDataContext(DbContextOptions<IhdaDataContext> options)
+    private readonly IServiceProvider _serviceProvider;
+    public IhdaDataContext(DbContextOptions<IhdaDataContext> options, IServiceProvider serviceProvider)
         : base(options)
     {
+        _serviceProvider = serviceProvider;
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
-    /*private T GetService<T>() where T : class
-    {
-        var serviceProvider = this.GetInfrastructure<IServiceProvider>();
-        return serviceProvider.GetService<T>();
-    }
-    
+
     private int GetCurrentUserId()
     {
-        var httpContextAccessor = GetService<IHttpContextAccessor>();
-        var httpContextAccessor2 = GetService<IMosqueRepository>();
-        var userIdClaim = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
-    
+        var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
+        var userIdClaim = httpContextAccessor?.HttpContext?.User?.FindFirst(CustomClaimNames.UserId);
+
         if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
             return userId;
-    
+
         return -1;
-    }*/
+    }
     
     private void TrackActionsAt()
     {
-        var dateTimeNow = DateTime.Now;
-        //var userId = GetCurrentUserId();
+        var dateTimeNow = DateTime.UtcNow;
+        var userId = GetCurrentUserId();
         
         foreach (var entity in ChangeTracker.Entries()
                      .Where(x => x is { State: EntityState.Added, Entity: AuditableModelBase<long> }))
         {
             var model = (AuditableModelBase<long>)entity.Entity;
             model.CreatedAt = dateTimeNow;
-            //model.CreatedBy = userId;
+            model.CreatedBy = userId;
         }
 
         foreach (var entity in ChangeTracker.Entries()
@@ -51,7 +52,7 @@ public class IhdaDataContext : DbContext
         {
             var model = (AuditableModelBase<long>)entity.Entity;
             model.UpdatedAt = dateTimeNow;
-            //model.UpdatedBy = userId;
+            model.UpdatedBy = userId;
         }
     }
 
@@ -121,6 +122,10 @@ public class IhdaDataContext : DbContext
     public DbSet<SignMethod> UserSignMethods { get; set; }
     public DbSet<TokenModel> Tokens { get; set; }
     #endregion
+
+    #region Cloud schema
+    public DbSet<File>  Files { get; set; }
+    #endregion
     
     #region Reference Book schema
     public DbSet<Country> Countries { get; set; }
@@ -128,6 +133,7 @@ public class IhdaDataContext : DbContext
     public DbSet<District> Districts { get; set; }
     public DbSet<PrayerTimeStyle> PrayerTimeStyles { get; set; }
     public DbSet<CalculatingCentury> CalculatingCenturies { get; set; }
+    public DbSet<TypeSchema> Types { get; set; }
     #endregion
 
     #region Quran Course

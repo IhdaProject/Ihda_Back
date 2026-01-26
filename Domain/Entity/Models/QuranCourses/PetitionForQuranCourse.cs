@@ -8,7 +8,7 @@ namespace Entity.Models.QuranCourses;
 /// O'quv markaz Kurs formasida o'qish uchun topshirilgan arizaq
 /// </summary>
 [Table("petition_for_quran_course", Schema = "quran_courses")]
-public class PetitionForQuranCourse : ModelBase<long>
+public class PetitionForQuranCourse : AuditableModelBase<long>
 {
     /// <summary>
     /// qaysi kurs formasiga topshirilayotganligi

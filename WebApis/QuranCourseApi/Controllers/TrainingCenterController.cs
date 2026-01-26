@@ -1,5 +1,3 @@
-using System.Text.Json;
-using Entity.DataTransferObjects.Files;
 using Entity.DataTransferObjects.QuranCourses;
 using Entity.Enums;
 using Entity.Exceptions;
@@ -16,30 +14,23 @@ public class TrainingCenterController(ITrainingCenterService trainingCenterServi
     [ApiGroup("Admin")]
     [HttpPost, PermissionAuthorize(UserPermissions.CreateTrainingCenter)]
     public Task<ResponseModel<TrainingCenterDto>> CreateTrainingCenter(
-        [FromForm] string trainingCenterJson, [FromForm] List<IFormFile> photos)
-        => trainingCenterService.OnSaveTrainingCenterAsync(
-            JsonSerializer.Deserialize<TrainingCenterDto>(trainingCenterJson) ?? throw new ValidationException("Model not null"),
-            [..photos.Select(f => new FileDto(f))]);
+        [FromBody] TrainingCenterDto trainingCenter)
+        => trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);
 
     [ApiGroup("Admin")]
     [HttpPut("{id:long}"), PermissionAuthorize(UserPermissions.UpdateTrainingCenter)]
     public Task<ResponseModel<TrainingCenterDto>> UpdateTrainingCenter(
-        [FromForm] string trainingCenterJson, [FromRoute] long id, [FromForm] List<IFormFile> photos)
-    {
-        var trainingCenter = JsonSerializer.Deserialize<TrainingCenterDto>(trainingCenterJson) ??
-            throw new ValidationException("Model not null");
-        return trainingCenter.Id != id ? throw new ValidationException("Not valid id") : trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter, 
-            [..photos.Select(f => new FileDto(f))]);
-    }
+        [FromBody] TrainingCenterDto trainingCenter, [FromRoute] long id)
+        => trainingCenter.Id != id ? throw new ValidationException("Not valid id") : trainingCenterService.OnSaveTrainingCenterAsync(trainingCenter);
 
     [ApiGroup("Admin", "Client")]
     [HttpGet] 
-    //[PermissionAuthorize(UserPermissions.ViewTrainingCenters)]
+    [PermissionAuthorize(UserPermissions.ViewTrainingCenters)]
     public async Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCenter([FromQuery]MetaQueryModel metaQuery)
         => await trainingCenterService.GetTrainingCentersAsync(metaQuery);
     [ApiGroup("Admin", "Client")]
     [HttpGet("{id:long}")]
-    //[PermissionAuthorize(UserPermissions.ViewTrainingCenter)]
+    [PermissionAuthorize(UserPermissions.ViewTrainingCenter)]
     public async Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterById([FromRoute]long id)
         => await trainingCenterService.GetTrainingCenterByIdAsync(id);
 
@@ -56,12 +47,12 @@ public class TrainingCenterController(ITrainingCenterService trainingCenterServi
 
     [ApiGroup("Admin", "Client")]
     [HttpGet]
-    //[PermissionAuthorize(UserPermissions.ViewCourseForms)]
+    [PermissionAuthorize(UserPermissions.ViewCourseForms)]
     public async Task<ResponseModel<List<CourseFormDto>>> GetCourseForm([FromQuery]MetaQueryModel metaQuery)
         => await trainingCenterService.GetCourseFormsAsync(metaQuery);
     [ApiGroup("Admin", "Client")]
     [HttpGet("{id:long}")]
-    //[PermissionAuthorize(UserPermissions.ViewCourseForm)]
+    [PermissionAuthorize(UserPermissions.ViewCourseForm)]
     public async Task<ResponseModel<CourseFormDto>> GetCourseFormById([FromRoute]long id)
         => await trainingCenterService.GetCourseFormByIdAsync(id);
 }

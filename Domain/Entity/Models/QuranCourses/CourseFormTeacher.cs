@@ -7,7 +7,7 @@ namespace Entity.Models.QuranCourses;
 /// Kurs formasiga biriktirilgan o'qituvchi
 /// </summary>
 [Table("course_form_teachers", Schema = "quran_courses")]
-public class CourseFormTeacher : ModelBase<long>
+public class CourseFormTeacher : AuditableModelBase<long>
 {
     /// <summary>
     /// qaysi kurs formasiga bog'langanligi
