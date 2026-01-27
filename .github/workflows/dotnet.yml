@@ -28,6 +28,11 @@ jobs:
           dotnet restore WebApis/AuthApi/AuthApi.csproj
           dotnet build WebApis/AuthApi/AuthApi.csproj --no-restore
 
+      - name: Restore & Build CloudApi
+        run: |
+          dotnet restore WebApis/CloudApi/CloudApi.csproj
+          dotnet build WebApis/CloudApi/CloudApi.csproj --no-restore
+
       - name: Restore & Build ReferenceBookApi
         run: |
           dotnet restore WebApis/ReferenceBookApi/ReferenceBookApi.csproj
