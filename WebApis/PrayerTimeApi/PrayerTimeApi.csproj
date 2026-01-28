@@ -10,7 +10,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\WebCore\WebCore.csproj" />
     </ItemGroup>
-
+    
     <ItemGroup>
       <Content Include="..\..\.dockerignore">
         <Link>.dockerignore</Link>
