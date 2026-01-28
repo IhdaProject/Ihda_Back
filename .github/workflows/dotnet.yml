@@ -63,8 +63,14 @@ jobs:
           command_timeout: 30m
           script: |
             cd /home/projects/Ihda_Back
+
             git reset --hard
+            git clean -fd
+
+            git checkout master
+
             git pull origin master
+
             docker compose --env-file .env.prod down
             docker compose --env-file .env.prod build --no-cache
             docker compose --env-file .env.prod up -d
