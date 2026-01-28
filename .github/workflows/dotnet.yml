@@ -63,23 +63,8 @@ jobs:
           command_timeout: 30m
           script: |
             cd /home/projects/Ihda_Back
-            
-            echo "📥 Pulling latest code..."
             git reset --hard
             git pull origin master
-            
-            echo "🔨 Building Docker images..."
+            docker compose --env-file .env.prod down
             docker compose --env-file .env.prod build --no-cache
-            
-            echo "🚀 Starting new containers..."
-            docker compose --env-file .env.prod up -d --force-recreate
-            
-            echo "⏳ Waiting for services to start..."
-            sleep 15
-            
-            echo "🧹 Cleaning up old resources..."
-            docker container prune -f
-            docker image prune -f
-            
-            echo "✅ Deployment completed!"
-            docker compose --env-file .env.prod ps
+            docker compose --env-file .env.prod up -d
