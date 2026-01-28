@@ -12,11 +12,5 @@
         <ProjectReference Include="..\..\Domain\WebCore\WebCore.csproj" />
         <ProjectReference Include="..\..\Services\FileService\FileService.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
 
 </Project>

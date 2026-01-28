@@ -9,7 +9,6 @@ builder.Services
     .AddInfrastructure();
 
 var app = builder.Build();
-await app.UpMigration();
 await app.ConfigureDefault();
 app.UseCors();
 app.UseHttpsRedirection();
