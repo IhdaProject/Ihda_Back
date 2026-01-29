@@ -76,13 +76,10 @@ public class MinioService(IOptions<MinIoConfiguration> configuration) : IMinioSe
             .WithExpiry(expirySeconds));
 
         var uri = new Uri(url);
-        var builder = new UriBuilder(uri);
-        // {
-        //     Scheme = _scheme,
-        //     Host = _host,
-        //     Port = int.Parse(_port)
-        // };
-        return builder.ToString();
+        
+        var relativeUrl = "/api-cloud" + uri.PathAndQuery;
+
+        return relativeUrl;
     }
     public async Task<string> GetFileAsBase64Async(string objectName)
     {
