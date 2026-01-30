@@ -11,4 +11,6 @@ public interface IUserService
     Task<ResponseModel<UserFullDto>> GetUserByIdAsync(long userId);
     Task<ResponseModel<bool>> AddStructureAsync(ChangeUserStructureDto userStructure);
     Task<ResponseModel<bool>> RemoveStructureAsync(ChangeUserStructureDto userStructure);
+    Task<ResponseModel<UserFullDto>> GetUserProfileAsync(long userId);
+    Task<ResponseModel<string>> GetOnlyUserAvatarAsync(long userId);
 }

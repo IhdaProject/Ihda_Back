@@ -3,5 +3,7 @@
 public record UserFullDto(
     long Id,
     string FullName,
-    List<long> StructuresId
+    string AvatarUrl,
+    List<long> StructuresId,
+    List<string> StructuresName
 );

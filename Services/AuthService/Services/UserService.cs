@@ -36,8 +36,10 @@ public class UserService(IUserRepository userRepository,
             ?? throw new NotFoundException("Not found user");
 
         return ResponseModel<UserFullDto>.ResultFromContent(new UserFullDto(user.Id,
-            user.FullName, []));
+            user.FullName, user.AvatarUrl, [], new List<string>{"test"}));
     }
+    
+    
 
     public async Task<ResponseModel<bool>> AddStructureAsync(ChangeUserStructureDto userStructure)
     {
@@ -65,5 +67,20 @@ public class UserService(IUserRepository userRepository,
         await userStructureRepository.RemoveWithSaveChangesAsync(userStructureModel.Id);
 
         return true;
+    }
+
+    public async Task<ResponseModel<UserFullDto>> GetUserProfileAsync(long userId)
+    {
+        /*var user = await userRepository.GetByIdAsync(userId) ?? throw new NotFoundException("User is not found");
+
+        return ResponseModel<UserFullDto>.ResultFromContent(new UserFullDto(user.Id, user.FullName, user.AvatarUrl, [],
+            new List<string>{"test"}));*/
+        return await GetUserByIdAsync(userId);
+    }
+    public async Task<ResponseModel<string>> GetOnlyUserAvatarAsync(long userId)
+    {
+        var user = await userRepository.GetByIdAsync(userId) ?? throw new NotFoundException("User is not found");
+
+        return ResponseModel<string>.ResultFromContent(user.AvatarUrl);
     }
 }

@@ -36,4 +36,13 @@ public class UserController(IUserService userService) : ApiControllerBase
     [PermissionAuthorize(UserPermissions.RemoveUserStructure)]
     public async Task<ResponseModel<bool>> RemoveStructure([FromBody]ChangeUserStructureDto changeUserStructure)
         => await userService.RemoveStructureAsync(changeUserStructure);
+
+    
+    [HttpGet("{userId}/avatar")]
+    [ApiGroup("Client", "Admin")]
+    public async Task<IActionResult> GetUserAvatarUrl(long userId)
+    {
+        return Ok(await userService.GetOnlyUserAvatarAsync(userId));
+    }
+    
 }
