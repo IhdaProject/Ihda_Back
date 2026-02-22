@@ -55,6 +55,22 @@ public class QuranCourseService(GenericRepository<PetitionForQuranCourse, long> 
             total: await query.CountAsync());
     }
 
+    public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetCourseFormPetitionsAsync(MetaQueryModel metaQueryModel, long decryptId)
+    {
+        var query = petitionForQuranCourseRepository
+            .GetAllAsQueryable()
+            .Where(p => p.CourseFormId == decryptId)
+            .FilterByExpressions(metaQueryModel);
+        
+        return ResponseModel<List<PetitionForQuranCourseByListDto>>.ResultFromContent(
+            await query
+                .Sort(metaQueryModel)
+                .Paging(metaQueryModel)
+                .Select(p => mapper.Map<PetitionForQuranCourseByListDto>(p))
+                .ToListAsync(),
+            total: await query.CountAsync());
+    }
+
     public async Task<ResponseModel<PetitionInfosForQuranCourseDto>> GetPetitionInfoWithTimeAsync(GetPetitionInfoDto petitionInfoDto)
     {
         var petition = await petitionForQuranCourseRepository.GetAllAsQueryable()

@@ -93,7 +93,8 @@ public enum UserPermissions
             UpdateCourseForm = 60100008,
         #endregion
         #region Quran Course Controller 20
-            ViewPetitionQuranCourses = 60200001,
+            ViewAllPetitionQuranCourses = 60200001,
+            ViewPetitionQuranCourses = 60200002,
         #endregion
     #endregion
     

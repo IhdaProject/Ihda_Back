@@ -50,7 +50,8 @@ public class TrainingCenterService(
             trainingCenter.WorkingHours,
             trainingCenter.Latitude,
             trainingCenter.Longitude,
-            trainingCenter.DistrictId);
+            trainingCenter.DistrictId,
+            []);
     }
     private static TrainingCenter MapTrainingCenter(TrainingCenterDto trainingCenterDto, string[] files, TrainingCenter? trainingCenter = null)
     {
@@ -86,6 +87,12 @@ public class TrainingCenterService(
             items,
             total: totalCount);
     }
+
+    public Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCentersByManagerAsync(MetaQueryModel metaQuery, long userId)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterByIdAsync(long id)
     {
         var result = await trainingCenterRepository.GetByIdAsync(id)
@@ -126,6 +133,12 @@ public class TrainingCenterService(
             items,
             total: totalCount);
     }
+
+    public Task<ResponseModel<List<CourseFormDto>>> GetCourseFormsByTrainingCenterAsync(MetaQueryModel metaQuery, long trainingCenterId)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<ResponseModel<CourseFormDto>> GetCourseFormByIdAsync(long id)
         => ResponseModel<CourseFormDto>.ResultFromContent(
             mapper.Map<CourseFormDto>(await courseFormRepository.GetByIdAsync(id)));

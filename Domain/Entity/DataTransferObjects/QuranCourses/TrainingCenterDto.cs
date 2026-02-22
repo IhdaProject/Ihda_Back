@@ -14,4 +14,5 @@ public record TrainingCenterDto(
     WorkingHour WorkingHours,
     double Latitude,
     double Longitude,
-    long DistrictId) : BaseDto<long>(Id);
+    long DistrictId,
+    List<string> EncryptUserIds) : BaseDto<long>(Id);
