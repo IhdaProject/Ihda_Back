@@ -4,11 +4,13 @@ using DatabaseBroker.Extensions;
 using DatabaseBroker.Repositories;
 using Entity.DataTransferObjects.Files;
 using Entity.DataTransferObjects.QuranCourses;
+using Entity.Enums;
 using Entity.Exceptions;
 using Entity.Models.ApiModels;
 using Entity.Models.QuranCourses;
 using Microsoft.EntityFrameworkCore;
 using MinIoBroker.Services;
+using WebCore.Extensions;
 
 namespace QuranCourseService.Services;
 
@@ -18,12 +20,14 @@ public class TrainingCenterService(
     IMinioService minioService,
     IMapper mapper) : ITrainingCenterService
 {
-    public async Task<ResponseModel<TrainingCenterDto>> OnSaveTrainingCenterAsync(TrainingCenterDto trainingCenter)
+    public async Task<ResponseModel<TrainingCenterDto>> OnSaveTrainingCenterAsync(TrainingCenterDto trainingCenter, long userId)
     {
         if (trainingCenter.Id == 0)
         {
             var newEntity = await trainingCenterRepository.AddWithSaveChangesAsync(
                 MapTrainingCenter(trainingCenter, [..trainingCenter.PhotosLink?.Select(pl => pl.DbUrl) ?? []]));
+            
+            newEntity.CreatedBy = userId;
             
             return ResponseModel<TrainingCenterDto>.ResultFromContent(
                 MapTrainingCenterDto(
@@ -33,14 +37,16 @@ public class TrainingCenterService(
 
         var entity = await trainingCenterRepository.GetByIdAsync(trainingCenter.Id) ?? throw new NotFoundException($"Not found {nameof(trainingCenter)}");
         MapTrainingCenter(trainingCenter,[..trainingCenter.PhotosLink?.Select(pl => pl.DbUrl) ?? []],entity);
+        entity.UpdatedBy  = userId;
         await trainingCenterRepository.UpdateWithSaveChangesAsync(entity);
 
         return ResponseModel<TrainingCenterDto>.ResultFromContent(MapTrainingCenterDto(entity));
     }
-    private static TrainingCenterDto MapTrainingCenterDto(TrainingCenter trainingCenter, List<FileItemDto>? fileItem = null)
+    private static TrainingCenterDto MapTrainingCenterDto(TrainingCenter trainingCenter, List<FileItemDto>? fileItem = null, long? userId =  null)
     {
         return new TrainingCenterDto(
             trainingCenter.Id,
+            userId > 0 ? trainingCenter.Id.EncryptId("trainingcenterid", userId.Value) : "",
             trainingCenter.Name,
             trainingCenter.Description,
             trainingCenter.Address,
@@ -51,9 +57,11 @@ public class TrainingCenterService(
             trainingCenter.Latitude,
             trainingCenter.Longitude,
             trainingCenter.DistrictId,
-            []);
+            userId > 0 && trainingCenter.CenterManagers.Count > 0
+                ? trainingCenter.CenterManagers.Select(cm => cm.UserId.EncryptId("userid", userId.Value)).ToList()
+                : []);
     }
-    private static TrainingCenter MapTrainingCenter(TrainingCenterDto trainingCenterDto, string[] files, TrainingCenter? trainingCenter = null)
+    private static TrainingCenter MapTrainingCenter(TrainingCenterDto trainingCenterDto, string[] files, TrainingCenter? trainingCenter = null, long? userId = null)
     {
         var result = trainingCenter ?? new TrainingCenter();
         result.Id = trainingCenterDto.Id;
@@ -67,6 +75,18 @@ public class TrainingCenterService(
         result.Latitude = trainingCenterDto.Latitude;
         result.Longitude = trainingCenterDto.Longitude;
         result.DistrictId = trainingCenterDto.DistrictId;
+        if (!(userId > 0)) return result;
+        
+        var newUserIds = trainingCenterDto.EncryptUserIds.DecryptId("userid", userId.Value);
+        result.CenterManagers ??= [];
+
+        foreach (var manager in result.CenterManagers.Where(m => !newUserIds.Contains(m.UserId)))
+            result.CenterManagers.Remove(manager);
+            
+        var existingIds = result.CenterManagers.Select(m => m.UserId);
+        foreach (var id in newUserIds.Where(id => !existingIds.Contains(id)))
+            result.CenterManagers.Add(new CenterManager { UserId = id });
+        
         return result;
     }
     public async Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCentersAsync(MetaQueryModel metaQuery)
@@ -88,9 +108,24 @@ public class TrainingCenterService(
             total: totalCount);
     }
 
-    public Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCentersByManagerAsync(MetaQueryModel metaQuery, long userId)
+    public async Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCentersByManagerAsync(MetaQueryModel metaQuery, long userId)
     {
-        throw new NotImplementedException();
+        var query = trainingCenterRepository.GetAllAsQueryable()
+            .Where(tc => tc.CenterManagers.Any(m => m.UserId == userId))
+            .FilterByExpressions(metaQuery);
+
+        var items = await query
+            .Sort(metaQuery)
+            .Paging(metaQuery)
+            .Select(c => MapTrainingCenterDto(
+                c, null, userId))
+            .ToListAsync();
+
+        var totalCount = await query.CountAsync();
+
+        return ResponseModel<List<TrainingCenterDto>>.ResultFromContent(
+            items,
+            total: totalCount);
     }
 
     public async Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterByIdAsync(long id)
@@ -102,7 +137,7 @@ public class TrainingCenterService(
             MapTrainingCenterDto(
                 result, [..result.PhotosLink?.Select(pl => new FileItemDto(pl, minioService.GetPresignedUrlAsync(pl).Result)) ?? []]));
     }
-    public async Task<ResponseModel<CourseFormDto>> OnSaveCourseFormAsync(CourseFormDto courseForm)
+    public async Task<ResponseModel<CourseFormDto>> OnSaveCourseFormAsync(CourseFormDto courseForm, long userId)
     {
         if (courseForm.Id == 0)
             return ResponseModel<CourseFormDto>.ResultFromContent(
@@ -112,6 +147,7 @@ public class TrainingCenterService(
 
         var entity = await courseFormRepository.GetByIdAsync(courseForm.Id) ?? throw new NotFoundException($"Not found {nameof(courseForm)}");
         mapper.Map(courseForm, entity);
+        entity.UpdatedBy = userId;
         await courseFormRepository.UpdateWithSaveChangesAsync(entity);
 
         return ResponseModel<CourseFormDto>.ResultFromContent(mapper.Map<CourseFormDto>(entity));
@@ -134,9 +170,32 @@ public class TrainingCenterService(
             total: totalCount);
     }
 
-    public Task<ResponseModel<List<CourseFormDto>>> GetCourseFormsByTrainingCenterAsync(MetaQueryModel metaQuery, long trainingCenterId)
+    public async Task<ResponseModel<List<CourseFormByManagerDto>>> GetCourseFormsByTrainingCenterAsync(MetaQueryModel metaQuery, long trainingCenterId, long userId)
     {
-        throw new NotImplementedException();
+        var query = courseFormRepository.GetAllAsQueryable()
+            .Where(cf => cf.TrainingCenterId == trainingCenterId)
+            .FilterByExpressions(metaQuery);
+
+        var items = await query
+            .Sort(metaQuery)
+            .Paging(metaQuery)
+            .Select(c => new CourseFormByManagerDto(
+                c.Id,
+                c.Id.EncryptId("courseformid", userId),
+                c.Name,
+                c.Description,
+                c.AdmissionQuota,
+                c.Duration,
+                c.ForGender,
+                c.TransitionTime,
+                c.Petitions.Count(p => p.Status == QuranCoursePetitionStatus.New)))
+            .ToListAsync();
+
+        var totalCount = await query.CountAsync();
+
+        return ResponseModel<List<CourseFormByManagerDto>>.ResultFromContent(
+            items,
+            total: totalCount);
     }
 
     public async Task<ResponseModel<CourseFormDto>> GetCourseFormByIdAsync(long id)

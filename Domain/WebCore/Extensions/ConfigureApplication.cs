@@ -287,49 +287,49 @@ public static class ConfigureApplication
                 await dataContext.SaveChangesAsync();
             }
 
-            // #region default Structure data
-            // if (!await dataContext.Structures.AnyAsync(s => s.Type == 1))
-            // {
-            //     int[] defaultPermission = [(int)UserPermissions.LogOut, (int)UserPermissions.ViewProfile];
-            //
-            //     await dataContext.Structures.AddAsync(new Structure()
-            //     {
-            //         Id = 1,
-            //         Type = 1,
-            //         Name = "Default",
-            //         StructurePermissions = dataContext.Permissions
-            //             .Where(p => defaultPermission.Contains(p.Code))
-            //             .Select(p => new StructurePermission()
-            //                 {
-            //                     PermissionId = p.Id
-            //                 })
-            //             .ToList()
-            //     });
-            //
-            //     await dataContext.SaveChangesAsync();
-            // }
-            // #endregion
-            //
-            // #region Super Admin Structure data
-            // if (!await dataContext.Structures.AnyAsync(s => s.Type == 2))
-            // {
-            //     await dataContext.Structures.AddAsync(new Structure()
-            //     {
-            //         Id = 2,
-            //         Type = 2,
-            //         Name = "Super Admin",
-            //         StructurePermissions = dataContext.Permissions
-            //             .Select(p => new StructurePermission()
-            //             {
-            //                 PermissionId = p.Id
-            //             })
-            //             .ToList()
-            //     });
-            //
-            //     await dataContext.SaveChangesAsync();
-            // }
-            // #endregion
-            //
+            #region default Structure data
+            if (!await dataContext.Structures.AnyAsync(s => s.Type == 1))
+            {
+                int[] defaultPermission = [(int)UserPermissions.LogOut, (int)UserPermissions.ViewProfile, (int)UserPermissions.ViewMyPermissions];
+            
+                await dataContext.Structures.AddAsync(new Structure()
+                {
+                    Id = 1,
+                    Type = 1,
+                    Name = "Default",
+                    StructurePermissions = dataContext.Permissions
+                        .Where(p => defaultPermission.Contains(p.Code))
+                        .Select(p => new StructurePermission()
+                            {
+                                PermissionId = p.Id
+                            })
+                        .ToList()
+                });
+            
+                await dataContext.SaveChangesAsync();
+            }
+            #endregion
+            
+            #region Super Admin Structure data
+            if (!await dataContext.Structures.AnyAsync(s => s.Type == 2))
+            {
+                await dataContext.Structures.AddAsync(new Structure()
+                {
+                    Id = 2,
+                    Type = 2,
+                    Name = "Super Admin",
+                    StructurePermissions = dataContext.Permissions
+                        .Select(p => new StructurePermission()
+                        {
+                            PermissionId = p.Id
+                        })
+                        .ToList()
+                });
+            
+                await dataContext.SaveChangesAsync();
+            }
+            #endregion
+            
             StaticCache.Permissions = await dataContext.Structures
                 .Select(s => new { s.Id, permissionCodes = s.StructurePermissions.Select(sp => sp.Permission.Code)})
                 .ToDictionaryAsync(s => s.Id, s => s.permissionCodes.ToList());;

@@ -7,11 +7,14 @@ using Entity.Exceptions;
 using Entity.Models.ApiModels;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
+using MinIoBroker.Services;
 
 namespace AuthService.Services;
 
-public class UserService(IUserRepository userRepository,
-    GenericRepository<UserStructure, long> userStructureRepository) :  IUserService
+public class UserService(
+    IUserRepository userRepository,
+    GenericRepository<UserStructure, long> userStructureRepository,
+    IMinioService minioService) :  IUserService
 {
     public async Task<ResponseModel<List<UserDto>>> GetUsersAsync(MetaQueryModel metaQueryModel)
     {
@@ -35,12 +38,15 @@ public class UserService(IUserRepository userRepository,
         var user = await userRepository.GetByIdAsync(userId)
             ?? throw new NotFoundException("Not found user");
 
-        return ResponseModel<UserFullDto>.ResultFromContent(new UserFullDto(user.Id,
-            user.FullName, user.AvatarUrl, [], new List<string>{"test"}));
+        return ResponseModel<UserFullDto>.ResultFromContent(
+            new UserFullDto(
+                user.Id,
+                user.FullName,
+                await minioService.GetPresignedUrlAsync(user.AvatarUrl),
+                user.Structures.Select(s => s.StructureId).ToList(),
+                user.Structures.Select(s => s.Structure.Name).ToList()));
     }
     
-    
-
     public async Task<ResponseModel<bool>> AddStructureAsync(ChangeUserStructureDto userStructure)
     {
         if(await userStructureRepository.GetAllAsQueryable()
@@ -67,20 +73,5 @@ public class UserService(IUserRepository userRepository,
         await userStructureRepository.RemoveWithSaveChangesAsync(userStructureModel.Id);
 
         return true;
-    }
-
-    public async Task<ResponseModel<UserFullDto>> GetUserProfileAsync(long userId)
-    {
-        /*var user = await userRepository.GetByIdAsync(userId) ?? throw new NotFoundException("User is not found");
-
-        return ResponseModel<UserFullDto>.ResultFromContent(new UserFullDto(user.Id, user.FullName, user.AvatarUrl, [],
-            new List<string>{"test"}));*/
-        return await GetUserByIdAsync(userId);
-    }
-    public async Task<ResponseModel<string>> GetOnlyUserAvatarAsync(long userId)
-    {
-        var user = await userRepository.GetByIdAsync(userId) ?? throw new NotFoundException("User is not found");
-
-        return ResponseModel<string>.ResultFromContent(user.AvatarUrl);
     }
 }

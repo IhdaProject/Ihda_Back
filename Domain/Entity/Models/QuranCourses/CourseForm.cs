@@ -47,4 +47,5 @@ public class CourseForm : AuditableModelBase<long>
     [Column("training_center_id"),ForeignKey(nameof(TrainingCenter))] public long TrainingCenterId { get; set; }
     public virtual TrainingCenter TrainingCenter { get; set; }
     public virtual ICollection<CourseFormTeacher> Teachers { get; set; }
+    public virtual ICollection<PetitionForQuranCourse> Petitions { get; set; }
 }

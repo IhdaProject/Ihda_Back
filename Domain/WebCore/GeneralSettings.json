@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "DefaultConnectionString": "host=postgres;port=5432;database=ihda_db;Username=postgres;password=1234",
+    "DefaultConnectionString": "host=localhost;port=5432;database=ihda_db;Username=postgres;password=1234",
     "SymmetricKey": "<ihda_back_nimadur_symetrickey_yashirin_suz>"
   },
   "JwtOption": {

@@ -3,7 +3,7 @@ using Entity.Models.QuranCourses;
 
 namespace Entity.DataTransferObjects.QuranCourses;
 
-public record CourseFormDto(
+public record CourseFormByManagerDto(
     long Id,
     string MarkerId,
     string Name,
@@ -12,4 +12,4 @@ public record CourseFormDto(
     int Duration,
     Gender? ForGender,
     WorkingHour TransitionTime,
-    long TrainingCenterId) : BaseDto<long>(Id);
+    int NewPetitionCount) : BaseDto<long>(Id);

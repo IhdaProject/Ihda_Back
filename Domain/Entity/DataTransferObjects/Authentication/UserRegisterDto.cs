@@ -8,4 +8,5 @@ public record UserRegisterDto(
     Gender Gender,
     string Pinfl,
     string UserName,
-    string Password);
+    string Password,
+    string PhotoUrl);

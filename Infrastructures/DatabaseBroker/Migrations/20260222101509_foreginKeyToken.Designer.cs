@@ -6,6 +6,7 @@ using Entity.Models.QuranCourses;
 using Entity.Models.ReferenceBook;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -14,9 +15,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DatabaseBroker.Migrations
 {
     [DbContext(typeof(IhdaDataContext))]
-    partial class IhdaDataContextModelSnapshot : ModelSnapshot
+    [Migration("20260222101509_foreginKeyToken")]
+    partial class foreginKeyToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

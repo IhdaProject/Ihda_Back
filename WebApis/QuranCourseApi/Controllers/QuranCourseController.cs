@@ -13,7 +13,7 @@ public class QuranCourseController(IQuranCourseService quranCourseService) : Api
 {
     [HttpPost]
     [ApiGroup("Client")]
-    public async Task<ResponseModel<PetitionForQuranCourseDto>> CreatePetition([FromBody]PetitionForQuranCourseDto petition)
+    public async Task<ResponseModel<PetitionForQuranCourseDto>> CreatePetition([FromBody]PetitionForCreatedQuranCourseDto petition)
         => await quranCourseService.CreatePetitionAsync(petition);
     [HttpGet]
     [ApiGroup("Client")]
@@ -24,7 +24,7 @@ public class QuranCourseController(IQuranCourseService quranCourseService) : Api
     public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetAllPetitions([FromQuery]MetaQueryModel metaQueryModel)
         => await quranCourseService.GetAllPetitionsAsync(metaQueryModel);
     [ApiGroup("Admin")]
-    [HttpGet, PermissionAuthorize(UserPermissions.ViewPetitionQuranCourses)]
+    [HttpGet, PermissionAuthorize(UserPermissions.ViewPetitionQuranCoursesForManager)]
     public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetCourseFormPetitions([FromQuery]MetaQueryModel metaQueryModel, [FromRoute]string courseFormId)
         => await quranCourseService.GetCourseFormPetitionsAsync(metaQueryModel, courseFormId.DecryptId("courseformid", UserId));
 }

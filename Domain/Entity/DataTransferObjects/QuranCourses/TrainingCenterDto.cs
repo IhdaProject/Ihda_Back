@@ -5,6 +5,7 @@ namespace Entity.DataTransferObjects.QuranCourses;
 
 public record TrainingCenterDto(
     long Id,
+    string MarkerId,
     string Name,
     string Description,
     string Address,

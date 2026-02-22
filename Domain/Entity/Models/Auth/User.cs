@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Entity.Enums;
 using Entity.Models.Common;
@@ -11,7 +10,7 @@ public class User : AuditableModelBase<long>
     [Column("birth_date")] public DateTime? BirthDate { get; set; }
     [Column("gender")] public Gender Gender { get; set; }
     [Column("pinfl")] public string? Pinfl { get; set; }
-    [Column("avatarurl")]public string AvatarUrl { get; set; } = string.Empty;
+    [Column("avatar_url")]public string AvatarUrl { get; set; }
     [NotMapped] public virtual IEnumerable<SignMethod> SignMethods { get; set; }
     public virtual ICollection<UserStructure> Structures { get; set; }
 }
