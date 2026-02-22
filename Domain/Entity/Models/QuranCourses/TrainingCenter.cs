@@ -50,4 +50,6 @@ public class TrainingCenter : AuditableModelBase<long>
     /// </summary>
     [Column("district_id"),ForeignKey(nameof(District))] public long DistrictId { get; set; }
     public virtual District District { get; set; }
+    public virtual ICollection<CenterManager> CenterManagers { get; set; }
+    public virtual ICollection<CourseForm> CourseForms { get; set; }
 }

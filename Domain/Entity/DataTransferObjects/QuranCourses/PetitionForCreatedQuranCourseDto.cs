@@ -2,8 +2,7 @@ using Entity.Enums;
 
 namespace Entity.DataTransferObjects.QuranCourses;
 
-public record PetitionForQuranCourseDto(
-    long Id,
+public record PetitionForCreatedQuranCourseDto(
     long CourseFormId,
     string FullName,
     string Pinfl,
@@ -11,6 +10,5 @@ public record PetitionForQuranCourseDto(
     string Passport,
     string PassportPhotoUrl,
     string PhoneNumber,
-    QuranCoursePetitionStatus Status,
     DateTime BirthDay,
-    Gender Gender) : BaseDto<long>(Id);
+    Gender Gender);

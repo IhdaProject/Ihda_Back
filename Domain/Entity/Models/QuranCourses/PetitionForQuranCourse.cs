@@ -33,6 +33,10 @@ public class PetitionForQuranCourse : AuditableModelBase<long>
     /// </summary>
     [Column("passport")]public string Passport { get; set; }
     /// <summary>
+    /// Pasport rasmi
+    /// </summary>
+    [Column("passport_photo_url")]public string PassportPhotoUrl { get; set; }
+    /// <summary>
     /// Passportining amal qilish muddat
     /// </summary>
     [Column("passport_expire_date")]public DateTime PassportExpireDate { get; set; }

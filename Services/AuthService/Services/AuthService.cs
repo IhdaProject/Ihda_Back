@@ -32,6 +32,7 @@ public class AuthService(
             Gender = userRegisterDto.Gender,
             Pinfl = userRegisterDto.Pinfl,
             BirthDate = userRegisterDto.BirthDate.ToDateTime(new TimeOnly(0,0,0)),
+            AvatarUrl = userRegisterDto.PhotoUrl,
             SignMethods = new List<SignMethod>(),
             Structures = [
                 new UserStructure

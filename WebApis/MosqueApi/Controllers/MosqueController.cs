@@ -15,12 +15,12 @@ public class MosqueController(IMosqueService mosqueService) : ApiControllerBase
     [HttpPost("{id}"), PermissionAuthorize(UserPermissions.OnSaveMosque)]
     [ApiGroup("Client","Admin")]
     public async Task<ResponseModel<MosqueDto>> OnSaveMosque([FromBody]MosqueDto mosqueDto, [FromRoute]string id)
-        => await mosqueService.OnSaveMosqueAsync(mosqueDto, id.DecryptId(UserId), UserId);
+        => await mosqueService.OnSaveMosqueAsync(mosqueDto, id.DecryptId("mosqueid",UserId), UserId);
     
     [HttpPost("{id}"), PermissionAuthorize(UserPermissions.OnSavePreyerTime)]
     [ApiGroup("Client","Admin")]
     public async Task<ResponseModel<MosquePrayerTimeDto>> OnSaveMosquePreyerTime([FromBody]MosquePrayerTimeDto prayerTimeDto,  [FromRoute]string id)
-        => await mosqueService.OnSavePrayerTimeAsync(prayerTimeDto, id.DecryptId(UserId), UserId);
+        => await mosqueService.OnSavePrayerTimeAsync(prayerTimeDto, id.DecryptId("prayertimeid",UserId), UserId);
     
     [HttpGet, PermissionAuthorize(UserPermissions.ViewMosques)]
     [ApiGroup("Client")]
@@ -33,7 +33,7 @@ public class MosqueController(IMosqueService mosqueService) : ApiControllerBase
     [HttpPost("{mosqueId}"), PermissionAuthorize(UserPermissions.AddMosqueAdmin)]
     [ApiGroup("Admin")]
     public async Task<ResponseModel<bool>> AddMosqueAdmin([FromRoute]string mosqueId, [FromBody]string userId)
-        => await mosqueService.AddMosqueAdminAsync(mosqueId.DecryptId(UserId),userId.DecryptId(UserId) ,UserId);
+        => await mosqueService.AddMosqueAdminAsync(mosqueId.DecryptId("mosqueid",UserId),userId.DecryptId("userid",UserId) ,UserId);
     [HttpGet("{id}"), PermissionAuthorize(UserPermissions.ViewMosque)]
     [ApiGroup("Client", "Admin")]
     public async Task<ResponseModel<MosqueWithTimeDto>> GetById(long id)

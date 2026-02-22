@@ -91,9 +91,13 @@ public enum UserPermissions
             ViewCourseForm = 60100006,
             UpdateTrainingCenter = 60100007,
             UpdateCourseForm = 60100008,
+            ViewTrainingCentersForManager = 60100009,
+            ViewCourseFormsForManager = 60100010,
         #endregion
         #region Quran Course Controller 20
-            ViewPetitionQuranCourses = 60200001,
+            ViewAllPetitionQuranCourses = 60200001,
+            ViewPetitionQuranCourses = 60200002,
+            ViewPetitionQuranCoursesForManager = 60200003,
         #endregion
     #endregion
     

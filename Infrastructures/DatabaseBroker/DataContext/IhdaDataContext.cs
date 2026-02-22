@@ -138,6 +138,7 @@ public class IhdaDataContext : DbContext
 
     #region Quran Course
     public DbSet<TrainingCenter> TrainingCenters { get; set; }
+    public DbSet<CenterManager> CenterManagers { get; set; }
     public DbSet<CourseForm> CourseForms { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseFormTeacher> CourseFormTeachers { get; set; }

@@ -15,7 +15,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     [ApiGroup("Admin")]
     [PermissionAuthorize(UserPermissions.ViewUsers)]
     public async Task<ResponseModel<List<UserDto>>> GetUsers([FromQuery]MetaQueryModel metaQueryModel)
-        => await userService.GetUsersAsync(metaQueryModel);
+        => await userService.GetUsersAsync(metaQueryModel, UserId);
     [HttpGet("{id}")]
     [ApiGroup("Admin")]
     [PermissionAuthorize(UserPermissions.ViewUser)]

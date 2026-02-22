@@ -6,6 +6,7 @@ using Entity.Models.QuranCourses;
 using Entity.Models.ReferenceBook;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -14,9 +15,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DatabaseBroker.Migrations
 {
     [DbContext(typeof(IhdaDataContext))]
-    partial class IhdaDataContextModelSnapshot : ModelSnapshot
+    [Migration("20260222095748_add_files")]
+    partial class add_files
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,8 +238,6 @@ namespace DatabaseBroker.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("tokens", "auth");
                 });
@@ -1270,17 +1271,6 @@ namespace DatabaseBroker.Migrations
                     b.Navigation("Permission");
 
                     b.Navigation("Structure");
-                });
-
-            modelBuilder.Entity("Entity.Models.Auth.TokenModel", b =>
-                {
-                    b.HasOne("Entity.Models.Auth.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entity.Models.Auth.UserStructure", b =>

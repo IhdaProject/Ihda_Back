@@ -148,7 +148,7 @@ public class MosqueService(GenericRepository<Mosque,long> mosqueRepository,
         var query = mosqueRepository.GetAllAsQueryable().Where(m => m.MosqueAdmins.Any(ma => ma.UserId == userId));
 
         return new ResponseModel<List<MosqueByListDto>>(await query.Skip(metaQuery.Skip).Take(metaQuery.Take)
-            .Select(m => new MosqueByListDto(m.Id, m.Id.EncryptId(userId),m.Name, m.Latitude, m.Longitude)).ToListAsync())
+            .Select(m => new MosqueByListDto(m.Id, m.Id.EncryptId("mosqueid",userId),m.Name, m.Latitude, m.Longitude)).ToListAsync())
         {
             Total = await query.CountAsync()
         };

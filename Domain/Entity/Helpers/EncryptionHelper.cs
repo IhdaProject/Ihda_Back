@@ -5,10 +5,10 @@ namespace Entity.Helpers;
 
 public static class EncryptionHelper
 {
-    public static string Encrypt(long id, long userId, string key)
+    public static string Encrypt(string type, long id, long userId, string key)
     {
         var timestamp = DateTime.UtcNow.Ticks;
-        var data = $"{id}:{userId}:{timestamp}";
+        var data = $"{type}:{id}:{userId}:{timestamp}";
         using var aesAlg = Aes.Create();
         aesAlg.Key = Encoding.UTF8.GetBytes(key.PadRight(32)[..32]);
         aesAlg.IV = GenerateRandomBytes(aesAlg.BlockSize / 8);
@@ -61,7 +61,7 @@ public static class EncryptionHelper
 
         return Convert.ToBase64String(msEncrypt.ToArray());
     }
-    public static (long Id, long UserId, DateTime Timestamp) Decrypt(string encrypted, string key)
+    public static (string Type, long Id, long UserId, DateTime Timestamp) Decrypt(string encrypted, string key)
     {
         var fullCipher = Convert.FromBase64String(encrypted);
         using var aesAlg = Aes.Create();
@@ -79,13 +79,14 @@ public static class EncryptionHelper
         var decrypted = srDecrypt.ReadToEnd();
 
         var parts = decrypted.Split(':');
-        if (parts.Length != 3) return default;
+        if (parts.Length != 4) return default;
 
-        var id = long.Parse(parts[0]);
-        var userId = long.Parse(parts[1]);
-        var timestamp = new DateTime(long.Parse(parts[2]));
+        var type = parts[0];
+        var id = long.Parse(parts[1]);
+        var userId = long.Parse(parts[2]);
+        var timestamp = new DateTime(long.Parse(parts[3]));
 
-        return (id, userId, timestamp);
+        return (type, id, userId, timestamp);
     }
     public static (string url, long UserId) DecryptString(string encrypted, string key)
     {

@@ -15,7 +15,7 @@ public class QuranCourseService(GenericRepository<PetitionForQuranCourse, long> 
     GenericRepository<CourseForm, long> courseFormRepository,
     IMapper mapper) : IQuranCourseService
 {
-    public async Task<ResponseModel<PetitionForQuranCourseDto>> CreatePetitionAsync(PetitionForQuranCourseDto petition)
+    public async Task<ResponseModel<PetitionForQuranCourseDto>> CreatePetitionAsync(PetitionForCreatedQuranCourseDto petition)
     {
         if (petition.PassportExpireDate < DateTime.UtcNow)
             throw new ValidationException("This passport expired");
@@ -44,6 +44,22 @@ public class QuranCourseService(GenericRepository<PetitionForQuranCourse, long> 
     public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetAllPetitionsAsync(MetaQueryModel metaQueryModel)
     {
         var query = petitionForQuranCourseRepository.GetAllAsQueryable()
+            .FilterByExpressions(metaQueryModel);
+        
+        return ResponseModel<List<PetitionForQuranCourseByListDto>>.ResultFromContent(
+            await query
+                .Sort(metaQueryModel)
+                .Paging(metaQueryModel)
+                .Select(p => mapper.Map<PetitionForQuranCourseByListDto>(p))
+                .ToListAsync(),
+            total: await query.CountAsync());
+    }
+
+    public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetCourseFormPetitionsAsync(MetaQueryModel metaQueryModel, long courseFormId)
+    {
+        var query = petitionForQuranCourseRepository
+            .GetAllAsQueryable()
+            .Where(p => p.CourseFormId == courseFormId)
             .FilterByExpressions(metaQueryModel);
         
         return ResponseModel<List<PetitionForQuranCourseByListDto>>.ResultFromContent(
