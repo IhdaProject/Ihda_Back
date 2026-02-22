@@ -24,7 +24,7 @@ public class QuranCourseController(IQuranCourseService quranCourseService) : Api
     public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetAllPetitions([FromQuery]MetaQueryModel metaQueryModel)
         => await quranCourseService.GetAllPetitionsAsync(metaQueryModel);
     [ApiGroup("Admin")]
-    [HttpGet, PermissionAuthorize(UserPermissions.ViewPetitionQuranCoursesForManager)]
+    [HttpGet("{courseFormId}"), PermissionAuthorize(UserPermissions.ViewPetitionQuranCoursesForManager)]
     public async Task<ResponseModel<List<PetitionForQuranCourseByListDto>>> GetCourseFormPetitions([FromQuery]MetaQueryModel metaQueryModel, [FromRoute]string courseFormId)
         => await quranCourseService.GetCourseFormPetitionsAsync(metaQueryModel, courseFormId.DecryptId("courseformid", UserId));
 }
