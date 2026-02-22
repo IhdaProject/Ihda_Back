@@ -8,6 +8,7 @@ using Entity.Models.ApiModels;
 using Entity.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 using MinIoBroker.Services;
+using WebCore.Extensions;
 
 namespace AuthService.Services;
 
@@ -16,7 +17,7 @@ public class UserService(
     GenericRepository<UserStructure, long> userStructureRepository,
     IMinioService minioService) :  IUserService
 {
-    public async Task<ResponseModel<List<UserDto>>> GetUsersAsync(MetaQueryModel metaQueryModel)
+    public async Task<ResponseModel<List<UserDto>>> GetUsersAsync(MetaQueryModel metaQueryModel, long userId)
     {
         var query = userRepository
             .GetAllAsQueryable()
@@ -27,11 +28,13 @@ public class UserService(
             .Paging(metaQueryModel)
             .Select(u => new UserDto(
                 u.Id,
+                u.Id.EncryptId("userid", userId),
                 u.FullName,
+                u.AvatarUrl,
                 u.Structures.Select(s => s.StructureId).ToList()))
             .ToListAsync();
         
-        return ResponseModel<List<UserDto>>.ResultFromContent(items,total: await query.CountAsync());
+        return ResponseModel<List<UserDto>>.ResultFromContent(items.Select(u => u with { AvatarUrl = minioService.GetPresignedUrlAsync(u.AvatarUrl).Result }).ToList(),total: await query.CountAsync());
     }
     public async Task<ResponseModel<UserFullDto>> GetUserByIdAsync(long userId)
     {
