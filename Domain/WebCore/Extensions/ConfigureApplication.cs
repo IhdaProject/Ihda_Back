@@ -78,7 +78,7 @@ public static class ConfigureApplication
         
         builder.Services.PostConfigure<MinIoConfiguration>(options =>
         {
-            options.BucketName = builder.Environment.ApplicationName.ToLower();
+            options.BucketName = "cloudapi";//builder.Environment.ApplicationName.ToLower();
         });
         
         builder.Services.AddSingleton<IMinioService, MinioService>();
