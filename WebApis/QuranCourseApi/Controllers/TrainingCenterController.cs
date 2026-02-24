@@ -40,7 +40,7 @@ public class TrainingCenterController(ITrainingCenterService trainingCenterServi
     [HttpGet("{id:long}")]
     [PermissionAuthorize(UserPermissions.ViewTrainingCenter)]
     public async Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterById([FromRoute]long id)
-        => await trainingCenterService.GetTrainingCenterByIdAsync(id);
+        => await trainingCenterService.GetTrainingCenterByIdAsync(id, UserId);
 
     [HttpPost, PermissionAuthorize(UserPermissions.CreateCourseForm)]
     [ApiGroup("Admin")]

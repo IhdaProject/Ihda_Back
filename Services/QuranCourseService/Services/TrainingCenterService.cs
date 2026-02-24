@@ -128,14 +128,14 @@ public class TrainingCenterService(
             total: totalCount);
     }
 
-    public async Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterByIdAsync(long id)
+    public async Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterByIdAsync(long id, long userId)
     {
         var result = await trainingCenterRepository.GetByIdAsync(id)
             ??  throw new NotFoundException($"Not found {nameof(TrainingCenter)}");
         
         return ResponseModel<TrainingCenterDto>.ResultFromContent(
             MapTrainingCenterDto(
-                result, [..result.PhotosLink?.Select(pl => new FileItemDto(pl, minioService.GetPresignedUrlAsync(pl).Result)) ?? []]));
+                result, [..result.PhotosLink?.Select(pl => new FileItemDto(pl, minioService.GetPresignedUrlAsync(pl).Result)) ?? []], userId));
     }
     public async Task<ResponseModel<CourseFormDto>> OnSaveCourseFormAsync(CourseFormDto courseForm, long userId)
     {
