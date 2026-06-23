@@ -8,7 +8,7 @@ public interface ITrainingCenterService
     Task<ResponseModel<TrainingCenterDto>> OnSaveTrainingCenterAsync(TrainingCenterDto trainingCenter, long userId);
     Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCentersAsync(MetaQueryModel metaQuery);
     Task<ResponseModel<List<TrainingCenterDto>>> GetTrainingCentersByManagerAsync(MetaQueryModel metaQuery, long userId);
-    Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterByIdAsync(long id);
+    Task<ResponseModel<TrainingCenterDto>> GetTrainingCenterByIdAsync(long id, long userId);
     Task<ResponseModel<CourseFormDto>> OnSaveCourseFormAsync(CourseFormDto courseForm, long userId);
     Task<ResponseModel<List<CourseFormDto>>> GetCourseFormsAsync(MetaQueryModel metaQuery);
     Task<ResponseModel<List<CourseFormByManagerDto>>> GetCourseFormsByTrainingCenterAsync(MetaQueryModel metaQuery, long trainingCenterId, long userId);
