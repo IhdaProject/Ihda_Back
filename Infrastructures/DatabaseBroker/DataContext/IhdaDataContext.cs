@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Entity.Enums;
 using Entity.Models.Auth;
 using Entity.Models.Common;
@@ -7,7 +6,6 @@ using Entity.Models.QuranCourses;
 using Entity.Models.ReferenceBook;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using File = Entity.Models.Clouds.File;
 
